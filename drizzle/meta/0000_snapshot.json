@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "e1c970d6-e099-43cd-bc6a-68177ba5b93a",
+  "id": "9ac8ae05-78ed-4108-9619-1c21ae501941",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "artworks": {
@@ -10,9 +10,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "user_id": {
           "name": "user_id",
@@ -50,15 +51,16 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "artwork_id": {
           "name": "artwork_id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "url": {
           "name": "url",
@@ -72,47 +74,6 @@
         "images_artwork_id_artworks_id_fk": {
           "name": "images_artwork_id_artworks_id_fk",
           "tableFrom": "images",
-          "tableTo": "artworks",
-          "columnsFrom": [
-            "artwork_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {}
-    },
-    "tags": {
-      "name": "tags",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "artwork_id": {
-          "name": "artwork_id",
-          "type": "serial",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "tag": {
-          "name": "tag",
-          "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "tags_artwork_id_artworks_id_fk": {
-          "name": "tags_artwork_id_artworks_id_fk",
-          "tableFrom": "tags",
           "tableTo": "artworks",
           "columnsFrom": [
             "artwork_id"

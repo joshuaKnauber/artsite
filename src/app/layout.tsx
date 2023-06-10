@@ -1,6 +1,7 @@
 import "./globals.css";
 import { ClerkProvider, UserButton } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,10 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
-          <UserButton afterSignOutUrl="/" />
+          <header className="sticky left-0 top-0 flex w-full flex-row items-center justify-between bg-slate-300">
+            <Link href="/">Duet Art</Link>
+            <UserButton afterSignOutUrl="/" />
+          </header>
           {children}
         </body>
       </html>

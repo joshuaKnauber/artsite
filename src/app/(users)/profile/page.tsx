@@ -1,11 +1,7 @@
 import { currentUser } from "@clerk/nextjs";
 
 const getInvites = async () => {
-  const inviteResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URL}/api/invites`
-  );
-  const invites = await inviteResponse.json();
-  return invites;
+  return [];
 };
 
 export default async function ProfilePage() {

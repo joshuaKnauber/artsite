@@ -1,7 +1,7 @@
-import { pgTable, serial, text, varchar, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, timestamp, uuid } from "drizzle-orm/pg-core";
 
 export const artworks = pgTable("artworks", {
-  id: serial("id").primaryKey(),
+  id: uuid("id").primaryKey().defaultRandom(),
   user_id: varchar("user_id", { length: 256 }),
   title: varchar("title", { length: 256 }),
   description: text("description"),
@@ -9,7 +9,7 @@ export const artworks = pgTable("artworks", {
 });
 
 export const images = pgTable("images", {
-  id: serial("id").primaryKey(),
-  artwork_id: serial("artwork_id").references(() => artworks.id),
+  id: uuid("id").primaryKey().defaultRandom(),
+  artwork_id: uuid("artwork_id").references(() => artworks.id),
   url: varchar("url", { length: 256 }),
 });

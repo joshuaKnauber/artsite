@@ -2,22 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAuth, clerkClient } from "@clerk/nextjs/server";
 import z from "zod";
 
-export async function GET(request: NextRequest) {
-  const { userId } = getAuth(request);
-  console.log(userId);
-  //   if (!userId) {
-  //     return new NextResponse("Unauthorized", {
-  //       status: 401,
-  //     });
-  //   }
-
-  // TODO get invites from database
-
-  return NextResponse.json({ invites: [] });
-}
-
 export async function POST(request: NextRequest) {
-  console.log("hit post");
   const { invite } = await request.json();
 
   if (!z.string().length(5).safeParse(invite).success) {
