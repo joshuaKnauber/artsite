@@ -8,7 +8,7 @@ export default async function HomePage() {
   if (!user) {
     return (
       <main className="flex min-h-screen">
-        <h1>Discover (not signed in)</h1>
+        <h1>{"Discover (not signed in)"}</h1>
       </main>
     );
   }
@@ -16,7 +16,7 @@ export default async function HomePage() {
   if (!user.publicMetadata.unlocked) {
     return (
       <main className="flex min-h-screen">
-        <h1>Discover (not unlocked)</h1>
+        <h1>{"Discover (not unlocked)"}</h1>
         <InviteForm />
       </main>
     );

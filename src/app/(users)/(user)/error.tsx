@@ -7,7 +7,7 @@ export default function UserErrorPage() {
 
   return (
     <main className="flex min-h-screen">
-      <span>couldn't find user {name}</span>
+      <span>couldnt find user {name}</span>
     </main>
   );
 }
