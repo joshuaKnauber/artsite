@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1686433735428,
+      "tag": "0000_parched_changeling",
+      "breakpoints": false
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1686434723499,
+      "tag": "0001_furry_peter_parker",
+      "breakpoints": false
+    }
+  ]
+}

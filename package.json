@@ -1,0 +1,37 @@
+{
+  "name": "artapp",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "generate": "drizzle-kit generate:pg",
+    "migrate": "tsx -r dotenv/config drizzle/migrate.ts"
+  },
+  "dependencies": {
+    "@clerk/nextjs": "^4.20.0",
+    "@neondatabase/serverless": "^0.4.11",
+    "@types/node": "20.2.6",
+    "@types/react": "18.2.10",
+    "@types/react-dom": "18.2.4",
+    "autoprefixer": "10.4.14",
+    "drizzle-orm": "^0.26.5",
+    "eslint": "8.42.0",
+    "eslint-config-next": "13.4.4",
+    "next": "13.4.4",
+    "postcss": "8.4.24",
+    "postgres": "^3.3.5",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "tailwindcss": "3.3.2",
+    "typescript": "5.1.3",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "dotenv": "^16.1.4",
+    "drizzle-kit": "^0.18.1",
+    "tsx": "^3.12.7"
+  }
+}
