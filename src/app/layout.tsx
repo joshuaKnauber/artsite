@@ -1,4 +1,5 @@
 import "./globals.css";
+import "@uploadthing/react/styles.css";
 import { ClerkProvider, UserButton } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
 import Link from "next/link";

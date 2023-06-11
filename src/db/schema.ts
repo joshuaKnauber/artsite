@@ -1,4 +1,5 @@
 import { pgTable, text, varchar, timestamp, uuid } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 
 export const artworks = pgTable("artworks", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -10,10 +11,21 @@ export const artworks = pgTable("artworks", {
     .notNull(),
 });
 
+export const artworksRelations = relations(artworks, ({ many }) => ({
+  images: many(images),
+}));
+
 export const images = pgTable("images", {
   id: uuid("id").primaryKey().defaultRandom(),
   artwork_id: uuid("artwork_id")
     .references(() => artworks.id)
     .notNull(),
-  url: varchar("url", { length: 256 }).notNull(),
+  key: varchar("key", { length: 256 }).notNull(),
 });
+
+export const imagesRelations = relations(images, ({ one }) => ({
+  artwork: one(artworks, {
+    fields: [images.artwork_id],
+    references: [artworks.id],
+  }),
+}));
