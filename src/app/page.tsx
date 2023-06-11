@@ -1,10 +1,10 @@
-import { currentUser } from "@clerk/nextjs";
+import { clerkClient, currentUser } from "@clerk/nextjs";
 import { ClerkUser } from "@/types";
 import InviteForm from "./components/InviteForm";
 import db from "@/db";
 import { artworks as artworksTable } from "@/db/schema";
 import { desc } from "drizzle-orm";
-import Link from "next/link";
+import ArtworkGrid from "@/components/ArtworkGrid";
 
 export default async function HomePage() {
   const user = (await currentUser()) as ClerkUser | null;
@@ -26,25 +26,15 @@ export default async function HomePage() {
     );
   }
 
-  const artworks = await db
-    .select({
-      id: artworksTable.id,
-      title: artworksTable.title,
-      userId: artworksTable.user_id,
-    })
-    .from(artworksTable)
-    .orderBy(desc(artworksTable.created_at));
+  const artworks = await db.query.artworks.findMany({
+    with: { images: true },
+    columns: { id: true, title: true, user_id: true },
+    orderBy: desc(artworksTable.created_at),
+  });
 
   return (
-    <main className="flex">
-      <h1>Discover</h1>
-      <div>
-        {artworks.map((artwork) => (
-          <Link href={`/a/${artwork.id}`} key={artwork.id}>
-            {artwork.title}
-          </Link>
-        ))}
-      </div>
+    <main className="flex w-full">
+      <ArtworkGrid artworks={artworks} />
     </main>
   );
 }

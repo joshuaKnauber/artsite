@@ -1,5 +1,5 @@
 import db from "@/db";
-import { artworks as artworksTable, images as imagesTable } from "@/db/schema";
+import { artworks as artworksTable } from "@/db/schema";
 import { clerkClient } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
 import Link from "next/link";
@@ -10,15 +10,6 @@ export default async function ArtworkPage({
   params: { id: string };
 }) {
   const { id } = params;
-
-  // const artworks =
-  //   // await (await db.select().from(artworksTable)).where(eq(artworksTable.id, id))
-  //   await db
-  //     .select()
-  //     .from(artworksTable)
-  //     .where(eq(artworksTable.id, id))
-  //     .rightJoin(imagesTable, eq(artworksTable.id, imagesTable.artwork_id));
-  // console.log(artworks);
 
   const [artwork] = await db.query.artworks.findMany({
     with: { images: true },

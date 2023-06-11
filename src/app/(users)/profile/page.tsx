@@ -14,7 +14,7 @@ export default async function ProfilePage() {
   console.log(invites);
 
   return (
-    <main className="flex min-h-screen">
+    <main className="flex">
       <h1>Profile {user?.username || ""}</h1>
       {JSON.stringify(invites)}
     </main>

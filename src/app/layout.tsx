@@ -1,10 +1,12 @@
 import "./globals.css";
 import "@uploadthing/react/styles.css";
-import { ClerkProvider, UserButton } from "@clerk/nextjs";
-import { Inter } from "next/font/google";
-import Link from "next/link";
+import { ClerkProvider } from "@clerk/nextjs";
+import localFont from "next/font/local";
+import Header from "@/components/Header";
 
-const inter = Inter({ subsets: ["latin"] });
+const outfit = localFont({
+  src: "../fonts/Outfit-Variable.ttf",
+});
 
 export const metadata = {
   title: "Create Next App",
@@ -19,11 +21,8 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={inter.className}>
-          <header className="sticky left-0 top-0 flex w-full flex-row items-center justify-between bg-slate-300">
-            <Link href="/">Duet Art</Link>
-            <UserButton afterSignOutUrl="/" />
-          </header>
+        <body className={`${outfit.className} bg-bg-500 text-white`}>
+          <Header />
           {children}
         </body>
       </html>
