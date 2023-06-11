@@ -1,10 +1,10 @@
-import { clerkClient, currentUser } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs";
 import { ClerkUser } from "@/types";
-import InviteForm from "./components/InviteForm";
+import InviteForm from "@/app/components/InviteForm";
 import db from "@/db";
-import { artworks as artworksTable } from "@/db/schema";
+import { ArtworkWithRelations, artworks as artworksTable } from "@/db/schema";
 import { desc } from "drizzle-orm";
-import ArtworkGrid from "@/components/ArtworkGrid";
+import ArtworkGrid from "@/app/components/ArtworkGrid";
 
 export default async function HomePage() {
   const user = (await currentUser()) as ClerkUser | null;
@@ -33,8 +33,8 @@ export default async function HomePage() {
   });
 
   return (
-    <main className="flex w-full">
-      <ArtworkGrid artworks={artworks} />
-    </main>
+    <div className="flex w-full px-8 py-8">
+      <ArtworkGrid artworks={artworks as ArtworkWithRelations[]} />
+    </div>
   );
 }

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.20.0",
+    "@clerk/themes": "^1.7.5",
     "@egjs/grid": "^1.14.1",
     "@egjs/react-grid": "^1.15.1",
     "@neondatabase/serverless": "^0.4.11",

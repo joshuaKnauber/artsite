@@ -3,6 +3,7 @@ import { artworks as artworksTable } from "@/db/schema";
 import { clerkClient } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
 import Link from "next/link";
+import DeleteBtn from "../components/DeleteBtn";
 
 export default async function ArtworkPage({
   params,
@@ -21,6 +22,7 @@ export default async function ArtworkPage({
   return (
     <main className="flex flex-col">
       <h1>Artwork {artwork.title}</h1>
+      <DeleteBtn id={artwork.id} />
       <span>{artwork.description}</span>
       <Link href={`/user/${artist.username}`}>{artist.username}</Link>
       {artwork.images.map((image) => (

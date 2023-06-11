@@ -1,4 +1,4 @@
-import { currentUser } from "@clerk/nextjs";
+import { SignOutButton, currentUser } from "@clerk/nextjs";
 
 const getInvites = async () => {
   return [];
@@ -16,6 +16,7 @@ export default async function ProfilePage() {
   return (
     <main className="flex">
       <h1>Profile {user?.username || ""}</h1>
+      <SignOutButton />
       {JSON.stringify(invites)}
     </main>
   );
