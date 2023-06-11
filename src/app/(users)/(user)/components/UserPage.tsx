@@ -2,6 +2,7 @@ import db from "@/db";
 import { eq } from "drizzle-orm";
 import { artworks as artworksTable } from "@/db/schema";
 import { clerkClient } from "@clerk/nextjs";
+import Link from "next/link";
 
 type UserPageProps = {
   name: string;
@@ -21,9 +22,9 @@ const UserPage = async ({ name }: UserPageProps) => {
     <main className="flex min-h-screen">
       <h1>User {user.firstName}</h1>
       {artworks.map((artwork) => (
-        <div key={artwork.id}>
-          {artwork.title} by {artwork.user_id}
-        </div>
+        <Link key={artwork.id} href={`/a/${artwork.id}`}>
+          {artwork.title}
+        </Link>
       ))}
     </main>
   );
