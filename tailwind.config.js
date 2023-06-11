@@ -14,6 +14,7 @@ module.exports = {
       },
       colors: {
         bg: {
+          400: "#0d0d0d",
           500: "#111111",
         },
       },

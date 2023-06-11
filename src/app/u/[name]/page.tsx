@@ -1,7 +1,7 @@
-import UserPage from "../../components/UserPage";
+import UserPage from "@/app/components/UserPage";
 
 export default async function Page({ params }: { params: { name: string } }) {
   const { name } = params;
 
-  return <UserPage name={name} />;
+  return <UserPage name={name} minimal={true} />;
 }

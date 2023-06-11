@@ -1,4 +1,4 @@
-import UserPage from "../../components/UserPage";
+import UserPage from "../../../../../components/UserPage";
 
 export default async function Page({ params }: { params: { name: string } }) {
   const { name } = params;

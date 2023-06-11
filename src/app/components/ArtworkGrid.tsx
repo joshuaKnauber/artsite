@@ -11,7 +11,7 @@ const ArtworkGrid = ({ children }: ArtworkGridProps) => {
 
   const [gridItems, setGridItems] = useState<React.ReactNode[][]>([]);
 
-  const MAX_ITEM_WIDTH = 500;
+  const MAX_ITEM_WIDTH = 400;
 
   const updateGridItems = () => {
     if (!containerRef.current) return;
@@ -42,13 +42,13 @@ const ArtworkGrid = ({ children }: ArtworkGridProps) => {
 
   return (
     <div
-      className="flex w-full flex-row items-start justify-center gap-6"
+      className="flex w-full flex-row items-start justify-center gap-4"
       ref={containerRef}
     >
       {gridItems.map((items, i) => (
         <div
           key={i}
-          className="flex flex-grow flex-col gap-6"
+          className="flex flex-grow flex-col gap-4"
           style={{
             maxWidth: MAX_ITEM_WIDTH,
           }}
