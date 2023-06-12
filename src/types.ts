@@ -4,6 +4,11 @@ export type PrivateUserMetadata = {};
 
 export type PublicUserMetadata = {
   unlocked?: boolean;
+  location?: string;
+  bio?: string;
+  twitter?: string;
+  instagram?: string;
+  for_hire?: boolean;
 };
 
 export type ClerkUser = User & {

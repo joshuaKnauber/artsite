@@ -9,6 +9,8 @@ import { LinkIcon, MapPinIcon } from "@heroicons/react/24/solid";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import ProfileDialogButton from "./components/ProfileDialogButton";
 import ProfileDialog from "./components/ProfileDialog";
+import { InstagramIcon, TwitterIcon } from "./components/Icons";
+import { ClerkUser } from "@/types";
 
 type UserPageProps = {
   name: string;
@@ -18,7 +20,7 @@ type UserPageProps = {
 const UserPage = async ({ name, minimal }: UserPageProps) => {
   const users = await clerkClient.users.getUserList({ username: [name] });
   if (users.length === 0) throw new Error("User not found");
-  const user = users[0];
+  const user = users[0] as ClerkUser;
 
   const current = await currentUser();
   const isProfile = current && current.id === user.id;
@@ -55,39 +57,73 @@ const UserPage = async ({ name, minimal }: UserPageProps) => {
               </button>
             </div>
           )}
+          {user.publicMetadata.for_hire && (
+            <div className="flex w-fit flex-row items-center gap-4 rounded-full bg-orange-900 bg-opacity-10 px-6 py-2">
+              <div className="h-1 w-1 rounded-full bg-orange-400"></div>
+              <span className="text-sm text-orange-400">For Hire!</span>
+            </div>
+          )}
           <div className="flex flex-row items-start gap-4">
             <img
               src={user.profileImageUrl}
               alt="Profile Picture"
               className="h-28 w-28 rounded-full"
             />
-            <div className="flex h-full flex-1 flex-col justify-between">
-              {user.firstName || user.lastName ? (
-                <>
-                  <div className="flex flex-col gap-2">
+            <div className="flex h-28 flex-col justify-between">
+              <div
+                className={`flex flex-grow flex-col gap-2 ${
+                  !minimal && isProfile ? "justify-start" : "justify-center"
+                }`}
+              >
+                {user.firstName || user.lastName ? (
+                  <>
                     <span className="text-xl font-semibold leading-none">
                       {user.firstName} {user.lastName}
                     </span>
                     <span className="leading-none opacity-50">
                       @{user.username}
                     </span>
-                  </div>
-                  {isProfile && !minimal && <ProfileDialogButton />}
-                </>
-              ) : (
-                <span className="text-lg leading-none">@{user.username}</span>
-              )}
+                  </>
+                ) : (
+                  <span className="text-lg leading-none">@{user.username}</span>
+                )}
+              </div>
+              {isProfile && !minimal && <ProfileDialogButton />}
             </div>
           </div>
-          <div className="flex flex-row items-center gap-2 opacity-50">
-            <MapPinIcon className="h-5 w-5" />
-            <span>My Location</span>
+          {user.publicMetadata.location && (
+            <div className="flex flex-row items-center gap-2 opacity-50">
+              <MapPinIcon className="h-5 w-5" />
+              <span>{user.publicMetadata.location}</span>
+            </div>
+          )}
+          {user.publicMetadata.bio && (
+            <span className="whitespace-pre-line font-light leading-snug opacity-75">
+              {user.publicMetadata.bio}
+            </span>
+          )}
+          <div className="flex flex-row items-center gap-2">
+            {user.publicMetadata.twitter && (
+              <Link
+                href={user.publicMetadata.twitter}
+                rel="noopener noreferrer"
+                target="_blank"
+                className="flex h-10 w-10 items-center justify-center rounded-md bg-white bg-opacity-0 md:hover:bg-opacity-5"
+              >
+                <TwitterIcon className="h-5 w-5" />
+              </Link>
+            )}
+            {user.publicMetadata.instagram && (
+              <Link
+                href={user.publicMetadata.instagram}
+                rel="noopener noreferrer"
+                target="_blank"
+                className="flex h-10 w-10 items-center justify-center rounded-md bg-white bg-opacity-0 md:hover:bg-opacity-5"
+              >
+                <InstagramIcon className="h-5 w-5" />
+              </Link>
+            )}
           </div>
-          <span className="whitespace-pre-line font-light leading-snug opacity-75">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maxime
-            possimus quam nostrum voluptatem expedita quae nobis iste tempora,
-            ullam recusandae inventore maiores enim!
-          </span>
         </div>
         <div
           className={`md:flex-grow md:bg-bg-400 ${

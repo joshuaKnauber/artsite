@@ -20,9 +20,11 @@ export async function POST(request: NextRequest) {
   if (invite !== "12345") {
     return new NextResponse("Invalid Invite", { status: 400 });
   }
+  const user = await clerkClient.users.getUser(userId);
 
   clerkClient.users.updateUser(userId, {
     publicMetadata: {
+      ...user.publicMetadata,
       unlocked: true,
     },
   });

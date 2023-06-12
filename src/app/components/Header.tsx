@@ -23,7 +23,7 @@ const Header = async () => {
           >
             Upload
           </Link>
-          <Link href="/profile">
+          <Link href={`/user/${user.username}`}>
             <img src={user.profileImageUrl} className="h-8 w-8 rounded-full" />
           </Link>
         </div>

@@ -16,11 +16,21 @@ const TextInput = ({
   area,
 }: TextInputProps) => {
   return (
-    <div className="flex flex-row gap-4">
-      <label htmlFor={label}>{label}</label>
+    <div
+      className={`flex w-full flex-row gap-4 ${
+        area ? "items-start" : "items-center"
+      }`}
+    >
+      <label
+        className="w-[100px] text-right text-sm font-light"
+        htmlFor={label}
+      >
+        {label}
+      </label>
       {!area ? (
         <input
           type="text"
+          className="h-10 flex-grow rounded-sm bg-bg-600 px-4"
           name={label}
           value={value}
           placeholder={placeholder}
@@ -28,6 +38,7 @@ const TextInput = ({
         />
       ) : (
         <textarea
+          className="min-h-16 h-24 flex-grow rounded-sm bg-bg-600 p-4"
           name={label}
           value={value}
           placeholder={placeholder}

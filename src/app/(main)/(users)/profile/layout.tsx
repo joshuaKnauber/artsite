@@ -11,7 +11,7 @@ export default function ProfileLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="flex w-full">
+    <main className="flex w-full flex-col">
       <Header />
       {children}
     </main>
