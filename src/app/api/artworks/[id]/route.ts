@@ -32,6 +32,10 @@ export async function DELETE(
       });
     }
 
+    // delete images in db
+    if (artwork.images.length > 0)
+      await db.delete(imagesTable).where(eq(imagesTable.artwork_id, artworkId));
+
     // delete artwork
     await db.delete(artworksTable).where(eq(artworksTable.id, artworkId));
 
