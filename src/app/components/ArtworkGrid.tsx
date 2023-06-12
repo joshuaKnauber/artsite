@@ -42,13 +42,13 @@ const ArtworkGrid = ({ children }: ArtworkGridProps) => {
 
   return (
     <div
-      className="flex w-full flex-row items-start justify-center gap-4"
+      className="flex w-full flex-row items-start justify-center gap-5"
       ref={containerRef}
     >
       {gridItems.map((items, i) => (
         <div
           key={i}
-          className="flex flex-grow flex-col gap-4"
+          className="flex flex-grow flex-col gap-8 md:gap-6"
           style={{
             maxWidth: MAX_ITEM_WIDTH,
           }}

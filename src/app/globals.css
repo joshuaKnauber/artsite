@@ -14,3 +14,19 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #323232;
 }
+
+.pride {
+  background: linear-gradient(
+    180deg,
+    #fe000099 16.66%,
+    #fd8c0099 16.66%,
+    33.32%,
+    #ffe50099 33.32%,
+    49.98%,
+    #119f0b99 49.98%,
+    66.64%,
+    #0644b399 66.64%,
+    83.3%,
+    #c22edc99 83.3%
+  );
+}

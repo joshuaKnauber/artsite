@@ -13,13 +13,13 @@ const Header = async () => {
   const user = await currentUser();
 
   return (
-    <header className="sticky left-0 top-0 z-50 flex h-16 w-full flex-row items-center justify-between border-b border-b-white border-opacity-10 bg-bg-500 md:px-8">
+    <header className="sticky left-0 top-0 z-50 flex h-16 w-full flex-row items-center justify-between border-b border-b-white border-opacity-10 bg-bg-500 px-4 md:px-8">
       <Link href="/">D</Link>
       {user ? (
         <div className="flex flex-row items-center gap-4">
           <Link
             href="/upload"
-            className="rounded-md border border-white border-opacity-50 px-4 py-1.5 font-medium leading-none"
+            className="pride flex flex-row items-center rounded-md px-4 py-1.5 font-medium leading-none transition-all md:hover:scale-105"
           >
             Upload
           </Link>
