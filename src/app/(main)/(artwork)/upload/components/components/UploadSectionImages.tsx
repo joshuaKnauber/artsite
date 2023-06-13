@@ -5,6 +5,7 @@ import { ArtworkFileRouter } from "@/app/api/uploadthing/core";
 import { useCallback } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import PreviewImage from "./PreviewImage";
+import { PhotoIcon } from "@heroicons/react/24/outline";
 
 export const { useUploadThing, uploadFiles } =
   generateReactHelpers<ArtworkFileRouter>();
@@ -12,9 +13,16 @@ export const { useUploadThing, uploadFiles } =
 type UploadSectionImagesProps = {
   files: File[];
   setFiles: (files: File[]) => void;
+  thumbnailIndex: number;
+  setThumbnailIndex: (index: number) => void;
 };
 
-const UploadSectionImages = ({ files, setFiles }: UploadSectionImagesProps) => {
+const UploadSectionImages = ({
+  files,
+  setFiles,
+  thumbnailIndex,
+  setThumbnailIndex,
+}: UploadSectionImagesProps) => {
   const onDrop = useCallback(
     (acceptedFiles: FileWithPath[]) => {
       setFiles([...files, ...acceptedFiles]);
@@ -40,16 +48,44 @@ const UploadSectionImages = ({ files, setFiles }: UploadSectionImagesProps) => {
   });
 
   return (
-    <div className="flex flex-col">
-      {files.map((file, i) => (
-        <div key={i}>
-          <PreviewImage file={file} onRemove={() => onRemove(i)} />
-          <button onClick={() => onRemove(files.indexOf(file))}>X</button>
+    <div className="flex flex-col gap-8">
+      {files.length > 0 && (
+        <div className="flex flex-col gap-4">
+          {files.map((file, i) => (
+            <div className="relative" key={i}>
+              <button
+                onClick={() => setThumbnailIndex(i)}
+                type="button"
+                className={`absolute bottom-4 right-4 flex h-8 flex-row items-center gap-2 rounded-md border border-white border-opacity-50 bg-black bg-opacity-50 px-3 text-sm font-light ${
+                  thumbnailIndex === i ? "opacity-100" : "opacity-50"
+                }`}
+              >
+                <PhotoIcon className="h-4 w-4" />
+                {thumbnailIndex === i ? "Thumbnail" : ""}
+              </button>
+              <PreviewImage
+                showLabel
+                file={file}
+                onRemove={() => onRemove(i)}
+              />
+            </div>
+          ))}
         </div>
-      ))}
-      <div {...getRootProps()}>
+      )}
+      <div
+        className="flex h-32 w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-md border-2 border-dashed border-white border-opacity-10 bg-white bg-opacity-5"
+        {...getRootProps()}
+      >
         <input {...getInputProps()} />
-        Drop files here!
+        <span className="hidden text-lg font-light text-white text-opacity-50 md:block">
+          {"Drop files here!"}
+        </span>
+        <span className="block text-lg font-light text-white text-opacity-50 md:hidden">
+          {"Tap to select images!"}
+        </span>
+        <span className="text-sm font-light text-white text-opacity-50">
+          {"(jpg, png, gif, 16MB max)"}
+        </span>
       </div>
     </div>
   );

@@ -27,18 +27,69 @@ export default async function ArtworkPage({
   return (
     <>
       {!minimal && <Header />}
-      <main className="flex w-full flex-col">
-        <h1>Artwork {artwork.title}</h1>
-        <DeleteBtn id={artwork.id} />
-        <span>{artwork.description}</span>
-        <Link href={`/user/${artist.username}`}>{artist.username}</Link>
-        {artwork.images.map((image) => (
-          <img
-            className="w-48"
-            src={`https://uploadthing.com/f/${image.key}`}
-            key={image.id}
-          />
-        ))}
+      <main className="flex w-full flex-col md:flex-row">
+        <div
+          className={`flex w-full flex-shrink-0 flex-col gap-8 overflow-y-auto md:sticky md:left-0 md:h-[100vh] md:w-sidebar md:px-8 md:py-8 ${
+            minimal ? "md:top-0" : "md:top-header md:max-h-[calc(100vh-4rem)]"
+          }`}
+        >
+          <div className="flex flex-col gap-4">
+            <h1 className="text-2xl font-medium leading-snug">
+              {artwork.title}
+            </h1>
+            <span className="font-light leading-snug opacity-75">
+              {artwork.description}
+            </span>
+          </div>
+          {artwork.feedback && (
+            <div className="flex w-fit flex-row items-center gap-3 rounded-full bg-orange-900 bg-opacity-10 px-4 py-1">
+              <div className="h-1 w-1 rounded-full bg-orange-400"></div>
+              <span className="text-sm text-orange-400">
+                Looking for feedback on this
+              </span>
+            </div>
+          )}
+          <Link
+            href={
+              minimal ? `/u/${artist.username}` : `/user/${artist.username}`
+            }
+            className="flex flex-row gap-4"
+          >
+            <img
+              src={artist.profileImageUrl}
+              className="h-12 w-12 rounded-full"
+            />
+            <div className="flex flex-col gap-1.5">
+              {artist.firstName || artist.lastName ? (
+                <>
+                  <span className="font-medium leading-none">
+                    {artist.firstName} {artist.lastName}
+                  </span>
+                  <span className="text-sm font-light leading-none opacity-75">
+                    @{artist.username}
+                  </span>
+                </>
+              ) : (
+                <span className="font-mediun leading-none">
+                  @{artist.username}
+                </span>
+              )}
+            </div>
+          </Link>
+          <DeleteBtn id={artwork.id} />
+        </div>
+        <div className="flex flex-col items-center gap-8 px-4 md:flex-grow md:bg-bg-400 md:px-16 md:py-16">
+          {artwork.images.map((image) => (
+            <img
+              className="mb-4 w-full md:mb-0 md:h-[100vh] md:max-h-[calc(100vh-4rem)] md:w-auto"
+              src={`https://uploadthing.com/f/${image.key}`}
+              key={image.id}
+              style={{
+                aspectRatio: image.height ? image.width / image.height : 1,
+              }}
+            />
+          ))}
+        </div>
       </main>
     </>
   );

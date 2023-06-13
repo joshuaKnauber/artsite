@@ -9,20 +9,41 @@ const useOnUpload = () => {
   const [uploading, setUploading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
+  const getImageSizes = async (files: File[]) => {
+    const sizes = await Promise.all(
+      files.map((file) => {
+        return new Promise<{ width: number; height: number }>((resolve) => {
+          const img = new Image();
+          img.onload = () => {
+            resolve({ width: img.width, height: img.height });
+            URL.revokeObjectURL(img.src);
+          };
+          img.src = URL.createObjectURL(file);
+        });
+      })
+    );
+    return sizes;
+  };
+
   const onUpload = async ({
     title,
     description,
     tags,
     files,
+    feedback,
+    thumbnailIndex,
   }: {
     title: string;
     description: string;
     tags: string[];
     files: File[];
+    feedback: boolean;
+    thumbnailIndex: number;
   }) => {
     try {
       setUploading(true);
       setError("");
+      const imageSizes = await getImageSizes(files);
       const imageResponse = await uploadFiles(files, "artworkImages");
       if (imageResponse.length !== files.length) {
         throw new Error("Not all files were uploaded");
@@ -32,6 +53,9 @@ const useOnUpload = () => {
         description,
         tags,
         imageIds: imageResponse.map((image) => image.fileKey),
+        imageSizes: imageResponse.map((_, i) => imageSizes[i]),
+        thumbnailIndex,
+        wantsFeedback: feedback,
       };
       const metaResponse = await fetch("/api/artworks", {
         method: "POST",

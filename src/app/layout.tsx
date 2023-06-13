@@ -1,5 +1,4 @@
 import "./globals.css";
-import "@uploadthing/react/styles.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import localFont from "next/font/local";
 

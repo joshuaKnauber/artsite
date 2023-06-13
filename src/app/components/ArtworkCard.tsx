@@ -6,6 +6,7 @@ type ArtworkCardProps = {
   artistId?: string;
   thumbnailKey: string;
   minimal?: boolean;
+  thumbnailSize: { width: number; height: number };
 };
 
 const ArtworkCard = async ({
@@ -13,6 +14,7 @@ const ArtworkCard = async ({
   thumbnailKey,
   artistId,
   minimal,
+  thumbnailSize,
 }: ArtworkCardProps) => {
   const artist =
     artistId && !minimal && (await clerkClient.users.getUser(artistId));
@@ -22,6 +24,11 @@ const ArtworkCard = async ({
       className={
         "group/artwork flex w-full flex-grow flex-col gap-2 transition-all md:hover:scale-[102%]"
       }
+      style={{
+        aspectRatio: thumbnailSize.height
+          ? thumbnailSize.width / thumbnailSize.height
+          : 1,
+      }}
     >
       {thumbnailKey && (
         <Link
@@ -37,6 +44,10 @@ const ArtworkCard = async ({
                 <img
                   src={artist.profileImageUrl || ""}
                   className="h-7 w-7 rounded-full"
+                  style={{
+                    objectFit: "cover",
+                    aspectRatio: thumbnailSize.width / thumbnailSize.height,
+                  }}
                 />
                 <span className="leading-none">{artist.username || ""}</span>
               </Link>
@@ -45,6 +56,11 @@ const ArtworkCard = async ({
           <img
             src={`https://uploadthing.com/f/${thumbnailKey}`}
             className="w-full"
+            style={{
+              aspectRatio: thumbnailSize.height
+                ? thumbnailSize.width / thumbnailSize.height
+                : 1,
+            }}
           />
         </Link>
       )}

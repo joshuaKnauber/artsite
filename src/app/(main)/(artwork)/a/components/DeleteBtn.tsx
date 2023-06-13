@@ -13,20 +13,22 @@ const DeleteBtn = ({ id }: DeleteBtnProps) => {
   const [deleting, setDeleting] = useState<boolean>(false);
 
   const deleteArtwork = async () => {
-    setDeleting(true);
-    try {
-      const response = await fetch(`/api/artworks/${id}`, {
-        method: "DELETE",
-      });
-      if (!response.ok) {
-        console.error(response);
-        return;
+    if (confirm("Are you sure you want to delete this piece?")) {
+      setDeleting(true);
+      try {
+        const response = await fetch(`/api/artworks/${id}`, {
+          method: "DELETE",
+        });
+        if (!response.ok) {
+          console.error(response);
+          return;
+        }
+        router.push("/");
+      } catch (error) {
+        console.error(error);
       }
-      router.push("/");
-    } catch (error) {
-      console.error(error);
+      setDeleting(false);
     }
-    setDeleting(false);
   };
 
   return (

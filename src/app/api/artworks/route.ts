@@ -9,6 +9,9 @@ const schemaPostArtworkData = z.object({
   description: z.string(),
   tags: z.array(z.string()),
   imageIds: z.array(z.string()),
+  imageSizes: z.array(z.object({ width: z.number(), height: z.number() })),
+  wantsFeedback: z.boolean(),
+  thumbnailIndex: z.number().min(0),
 });
 
 export type PostArtworkData = z.infer<typeof schemaPostArtworkData>;
@@ -16,7 +19,10 @@ export type PostArtworkData = z.infer<typeof schemaPostArtworkData>;
 export async function POST(request: NextRequest) {
   const data = (await request.json()) as PostArtworkData;
 
-  if (!schemaPostArtworkData.safeParse(data).success) {
+  if (
+    !schemaPostArtworkData.safeParse(data).success ||
+    data.imageIds.length !== data.imageSizes.length
+  ) {
     return new NextResponse("Invalid Data", { status: 400 });
   }
 
@@ -35,15 +41,19 @@ export async function POST(request: NextRequest) {
         title: data.title,
         description: data.description,
         user_id: userId,
+        feedback: data.wantsFeedback,
       })
       .returning({ artworkId: artworksTable.id });
     const artworkId = insertedArtworks[0].artworkId;
 
     // add images
     await db.insert(imagesTable).values(
-      data.imageIds.map((imageId) => ({
+      data.imageIds.map((imageId, i) => ({
         artwork_id: artworkId,
         key: imageId,
+        is_thumbnail: i === data.thumbnailIndex,
+        width: data.imageSizes[i].width,
+        height: data.imageSizes[i].height,
       }))
     );
 

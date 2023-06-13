@@ -5,6 +5,8 @@ import {
   timestamp,
   uuid,
   boolean,
+  integer,
+  primaryKey,
 } from "drizzle-orm/pg-core";
 import { relations, InferModel } from "drizzle-orm";
 
@@ -13,7 +15,7 @@ export const artworks = pgTable("artworks", {
   user_id: varchar("user_id", { length: 256 }).notNull(),
   title: varchar("title", { length: 256 }).notNull(),
   description: text("description").notNull(),
-  feedback: boolean("feedback").notNull().default(false),
+  feedback: boolean("feedback").notNull().default(true),
   created_at: timestamp("created_at", { mode: "string" })
     .defaultNow()
     .notNull(),
@@ -30,6 +32,9 @@ export const images = pgTable("images", {
     .references(() => artworks.id)
     .notNull(),
   key: varchar("key", { length: 256 }).notNull(),
+  width: integer("width").notNull().default(0),
+  height: integer("height").notNull().default(0),
+  is_thumbnail: boolean("is_thumbnail").notNull().default(false),
 });
 
 export const imagesRelations = relations(images, ({ one }) => ({

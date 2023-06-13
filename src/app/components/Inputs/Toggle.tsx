@@ -10,7 +10,7 @@ const Toggle = ({ label, onChange, value }: ToggleProps) => {
   return (
     <div className="flex w-full flex-row items-center gap-4">
       <label
-        className="w-[100px] text-right text-sm font-light"
+        className="text-sm font-light md:w-[100px] md:text-right"
         htmlFor={label}
       >
         {label}

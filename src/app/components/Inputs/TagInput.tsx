@@ -1,5 +1,6 @@
 "use client";
 
+import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 
 type TagInputProps = {
@@ -38,18 +39,27 @@ const TagInput = ({ label, setValue, value, placeholder }: TagInputProps) => {
   };
 
   return (
-    <div className="flex flex-row gap-4">
-      <label htmlFor={label}>{label}</label>
-      <div>
+    <div className="flex w-full flex-col items-start gap-1 md:flex-row md:gap-4">
+      <label
+        htmlFor={label}
+        className="flex-shrink-0 text-sm font-light md:w-[100px] md:text-right"
+      >
+        {label}
+      </label>
+      <div className="flex w-full flex-grow flex-row flex-wrap gap-2 rounded-sm bg-bg-600 p-4 md:w-auto">
         {value.map((tag, i) => (
-          <div key={i}>
-            <span>{tag}</span>
+          <div
+            key={i}
+            className="flex w-fit flex-row items-center gap-3 rounded-sm bg-bg-500 px-3 py-2"
+          >
+            <span className="font-light leading-none">{tag}</span>
             <button onClick={() => onRemove(i)} type="button">
-              x
+              <XMarkIcon className="h-4 w-4" />
             </button>
           </div>
         ))}
         <input
+          className="flex-grow bg-transparent focus:outline-none"
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}

@@ -55,11 +55,11 @@ const ProfileForm = ({ metadata, invites, username }: ProfileFormPRops) => {
   return (
     <form
       onSubmit={onSubmit}
-      className="mx-auto mt-8 flex w-full max-w-2xl flex-col gap-4 px-4 md:mt-16"
+      className="mx-auto mt-8 flex w-full max-w-2xl flex-col gap-6 px-4 md:mt-16"
     >
       <Link
         href={`/user/${username}`}
-        className="text-light ml-[calc(100px+1rem)] underline opacity-50"
+        className="text-light underline opacity-50 md:ml-[calc(100px+1rem)]"
       >
         View Profile
       </Link>
@@ -89,7 +89,7 @@ const ProfileForm = ({ metadata, invites, username }: ProfileFormPRops) => {
         onChange={setInstagram}
       />
       <Toggle label="For Hire" value={forHire} onChange={setForHire} />
-      <div className="ml-[calc(100px+1rem)] mt-4 w-fit rounded-md bg-white text-black transition-all md:hover:brightness-90">
+      <div className="mt-4 w-fit rounded-md bg-white text-black transition-all md:ml-[calc(100px+1rem)] md:hover:brightness-90">
         <button
           disabled={loading}
           type="submit"

@@ -20,6 +20,12 @@ module.exports = {
           700: "#444444",
         },
       },
+      width: {
+        sidebar: "450px",
+      },
+      spacing: {
+        header: "4rem",
+      },
     },
   },
   plugins: [],
