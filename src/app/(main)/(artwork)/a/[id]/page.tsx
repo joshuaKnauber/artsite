@@ -3,8 +3,9 @@ import { artworks as artworksTable } from "@/db/schema";
 import { clerkClient } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
 import Link from "next/link";
-import DeleteBtn from "../components/DeleteBtn";
+import DeleteBtn from "./components/DeleteBtn";
 import Header from "@/app/components/Header";
+import Artwork from "./components/Artwork";
 
 export default async function ArtworkPage({
   params,
@@ -29,7 +30,7 @@ export default async function ArtworkPage({
       {!minimal && <Header />}
       <main className="flex w-full flex-col md:flex-row">
         <div
-          className={`flex w-full flex-shrink-0 flex-col gap-8 overflow-y-auto md:sticky md:left-0 md:h-[100vh] md:w-sidebar md:px-8 md:py-8 ${
+          className={`flex w-full flex-shrink-0 flex-col gap-8 overflow-y-auto p-4 md:sticky md:left-0 md:h-[100vh] md:w-sidebar md:px-8 md:py-8 ${
             minimal ? "md:top-0" : "md:top-header md:max-h-[calc(100vh-4rem)]"
           }`}
         >
@@ -78,16 +79,9 @@ export default async function ArtworkPage({
           </Link>
           <DeleteBtn id={artwork.id} />
         </div>
-        <div className="flex flex-col items-center gap-8 px-4 md:flex-grow md:bg-bg-400 md:px-16 md:py-16">
+        <div className="flex flex-col items-center gap-8 px-4 md:flex-grow md:bg-bg-400 md:px-16 md:py-8">
           {artwork.images.map((image) => (
-            <img
-              className="mb-4 w-full md:mb-0 md:h-[100vh] md:max-h-[calc(100vh-4rem)] md:w-auto"
-              src={`https://uploadthing.com/f/${image.key}`}
-              key={image.id}
-              style={{
-                aspectRatio: image.height ? image.width / image.height : 1,
-              }}
-            />
+            <Artwork image={image} key={image.id} />
           ))}
         </div>
       </main>

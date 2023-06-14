@@ -24,7 +24,7 @@ const Header = async () => {
         <div className="flex flex-row items-center gap-4">
           <Link
             href="/upload"
-            className="pride flex h-8 flex-row items-center rounded-full border border-white border-opacity-0 px-5 text-sm font-medium leading-none transition-all"
+            className="flex h-8 flex-row items-center rounded-full border border-white border-opacity-0 px-5 text-sm font-medium leading-none transition-all"
           >
             Upload
           </Link>

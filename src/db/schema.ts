@@ -24,6 +24,7 @@ export const artworks = pgTable("artworks", {
 export const artworksRelations = relations(artworks, ({ many }) => ({
   images: many(images),
   tags: many(tags),
+  comments: many(comments),
 }));
 
 export const images = pgTable("images", {
@@ -37,10 +38,40 @@ export const images = pgTable("images", {
   is_thumbnail: boolean("is_thumbnail").notNull().default(false),
 });
 
-export const imagesRelations = relations(images, ({ one }) => ({
+export const imagesRelations = relations(images, ({ one, many }) => ({
   artwork: one(artworks, {
     fields: [images.artwork_id],
     references: [artworks.id],
+  }),
+  comments: many(comments),
+}));
+
+export const comments = pgTable("comments", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  artwork_id: uuid("artwork_id")
+    .references(() => artworks.id)
+    .notNull(),
+  user_id: varchar("user_id", { length: 256 }).notNull(),
+  text: text("text").notNull(),
+  created_at: timestamp("created_at", { mode: "string" })
+    .defaultNow()
+    .notNull(),
+  is_feedback: boolean("is_feedback").notNull().default(false),
+  feedback_image_id: uuid("feedback_image_id").references(
+    () => images.id
+  ),
+  feedback_image_x: integer("feedback_image_x").notNull().default(0),
+  feedback_image_y: integer("feedback_image_y").notNull().default(0),
+});
+
+export const commentsRelations = relations(comments, ({ one }) => ({
+  artwork: one(artworks, {
+    fields: [comments.artwork_id],
+    references: [artworks.id],
+  }),
+  feedback_image: one(images, {
+    fields: [comments.feedback_image_id],
+    references: [images.id],
   }),
 }));
 
