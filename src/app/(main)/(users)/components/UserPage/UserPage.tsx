@@ -5,8 +5,7 @@ import { clerkClient, currentUser } from "@clerk/nextjs";
 import ArtworkGrid from "@/app/components/ArtworkGrid";
 import ArtworkCard from "@/app/components/ArtworkCard";
 import Link from "next/link";
-import { ArrowLeftIcon, LinkIcon, MapPinIcon } from "@heroicons/react/24/solid";
-import { ArrowRightIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftIcon, MapPinIcon } from "@heroicons/react/24/solid";
 import ProfileDialogButton from "./components/ProfileDialogButton";
 import ProfileDialog from "./components/ProfileDialog";
 import { InstagramIcon, TwitterIcon } from "./components/Icons";
@@ -35,7 +34,7 @@ const UserPage = async ({ name, minimal }: UserPageProps) => {
 
   return (
     <>
-      <ProfileDialog />
+      {isProfile && <ProfileDialog />}
       <div className="flex w-full flex-col gap-8 px-4 py-8 md:flex-row md:gap-0 md:px-0 md:py-0">
         <div
           className={`flex w-full flex-shrink-0 flex-col gap-8 overflow-y-auto md:sticky md:left-0 md:h-[100vh] md:w-sidebar ${

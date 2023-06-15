@@ -18,7 +18,10 @@ const ArtworkGrid = ({ children }: ArtworkGridProps) => {
 
     const containerWidth = containerRef.current.clientWidth;
 
-    const numColumns = Math.max(1, Math.floor(containerWidth / MAX_ITEM_WIDTH));
+    const numColumns = Math.min(
+      4,
+      Math.max(1, Math.floor(containerWidth / MAX_ITEM_WIDTH))
+    );
 
     let items: React.ReactNode[][] = [];
     for (let i = 0; i < numColumns; i++) {

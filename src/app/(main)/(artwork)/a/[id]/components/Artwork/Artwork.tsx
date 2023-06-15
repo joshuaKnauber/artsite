@@ -1,26 +1,19 @@
-import { Image, comments as commentsTable } from "@/db/schema";
-import FeedbackBubble from "./components/FeedbackBubble";
-import db from "@/db";
-import { eq } from "drizzle-orm";
-import FeedbackInput from "./components/FeedbackInput";
+"use client";
+
+import { Image } from "@/db/schema";
+import FeedbackOverlay from "./components/FeedbackOverlay";
 
 type ArtworkProps = {
   image: Image;
+  minimal?: boolean;
 };
 
-const Artwork = async ({ image }: ArtworkProps) => {
-  const comments = await db.query.comments.findMany({
-    where: eq(commentsTable.feedback_image_id, image.id),
-  });
-
+const Artwork = ({ image, minimal }: ArtworkProps) => {
   return (
     <div className="relative">
-      <FeedbackInput image={image} />
-      {comments.map((comment) => (
-        <FeedbackBubble key={comment.id} feedback={comment} />
-      ))}
+      {!minimal && <FeedbackOverlay image={image} />}
       <img
-        className="mb-4 w-full md:mb-0 md:max-h-[calc(100vh-4rem)] md:w-auto"
+        className="w-full md:max-h-[calc(100vh-8rem)] md:w-auto"
         src={`https://uploadthing.com/f/${image.key}`}
         style={{
           aspectRatio: image.height ? image.width / image.height : 1,

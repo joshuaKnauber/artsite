@@ -6,7 +6,7 @@ const useFeedbackBubbles = (artworkId: string, imageId: string) => {
   const refContainer = useRef<HTMLDivElement>(null);
   const refComment = useRef<HTMLDivElement>(null);
 
-  const { comments, refetchComments } = useComments(artworkId);
+  const { refetchComments, commentsWithFeedback } = useComments(artworkId);
 
   const [mousePos, setMousePos] = useState<[number, number]>([0, 0]);
   const [inSelection, setInSelection] = useState<boolean>(false);
@@ -41,6 +41,7 @@ const useFeedbackBubbles = (artworkId: string, imageId: string) => {
     if (!inSelection) return;
     e.preventDefault();
     setInSelection(false);
+    setIsWriting(false);
   };
 
   const onImgLeave = () => {
@@ -94,10 +95,7 @@ const useFeedbackBubbles = (artworkId: string, imageId: string) => {
     };
   }, [inSelection, isWriting]);
 
-  const feedbacks = comments.filter((c) => c.feedback_image_id === imageId);
-
   return {
-    feedbacks,
     refContainer,
     refComment,
     mousePos,
@@ -109,6 +107,7 @@ const useFeedbackBubbles = (artworkId: string, imageId: string) => {
     onRightClick,
     onImgLeave,
     sendFeedback,
+    feedback: commentsWithFeedback,
   };
 };
 

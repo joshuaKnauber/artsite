@@ -1,28 +1,41 @@
-import { Comment } from "@/db/schema";
-import { clerkClient } from "@clerk/nextjs";
+"use client";
+
+import { CommentWithAuthor } from "../../hooks/useComments";
 
 type FeedbackBubbleProps = {
-  feedback: Comment;
+  feedback: CommentWithAuthor;
 };
 
-const FeedbackBubble = async ({ feedback }: FeedbackBubbleProps) => {
-  const user = await clerkClient.users.getUser(feedback.user_id);
+const FeedbackBubble = ({ feedback }: FeedbackBubbleProps) => {
+  const { comment, author } = feedback;
+
+  if (!author) return null;
 
   return (
     <div
-      key={feedback.id}
-      className="absolute flex origin-bottom-left flex-row items-center gap-2 rounded-full rounded-bl-sm bg-white p-1 shadow-md"
+      key={comment.id}
+      className="scale-in group/bubble absolute flex origin-bottom-left scale-0 flex-row items-start justify-end rounded-[1rem] rounded-bl-sm bg-white p-0.5 shadow-md hover:z-10 hover:p-1"
       style={{
-        left: `${feedback.feedback_image_x}%`,
-        top: `${feedback.feedback_image_y}%`,
-        transform: "translateY(-100%)",
+        left: `${comment.feedback_image_x}%`,
+        bottom: `calc(100% - ${comment.feedback_image_y}%)`,
       }}
     >
       <img
-        src={user.profileImageUrl}
-        className="h-6 w-6 flex-shrink-0 rounded-full"
+        src={author.profileImageUrl}
+        className="h-5 w-5 flex-shrink-0 rounded-full transition-all group-hover/bubble:mt-0.5"
       />
-      <span className="text-xs text-black">{feedback.text}</span>
+      <div className="mx-0 my-0 grid grid-cols-[0fr] transition-all group-hover/bubble:mx-2 group-hover/bubble:my-1 group-hover/bubble:grid-cols-[1fr]">
+        <div className="grid grid-rows-[0fr] transition-all group-hover/bubble:grid-rows-[1fr]">
+          <div className="flex flex-col gap-0 overflow-hidden">
+            <span className="whitespace-nowrap text-sm font-medium leading-none text-black">
+              {author.username}
+            </span>
+            <span className="w-[200px] max-w-[200px] text-sm text-black">
+              {comment.text}
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

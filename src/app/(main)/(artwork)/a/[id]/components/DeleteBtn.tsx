@@ -1,5 +1,6 @@
 "use client";
 
+import Spinner from "@/app/components/Spinner/Spinner";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -32,7 +33,16 @@ const DeleteBtn = ({ id }: DeleteBtnProps) => {
   };
 
   return (
-    <button onClick={deleteArtwork}>{deleting ? "loading" : "delete"}</button>
+    <button
+      onClick={deleteArtwork}
+      className="flex h-8 w-[200px] items-center justify-center rounded-full border border-red-500 bg-red-900 bg-opacity-20 text-sm text-red-500 transition-all md:hover:bg-opacity-30"
+    >
+      {deleting ? (
+        <Spinner className="h-5 w-5 fill-red-500" />
+      ) : (
+        "Delete Artwork"
+      )}
+    </button>
   );
 };
 

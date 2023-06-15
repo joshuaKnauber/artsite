@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAuth } from "@clerk/nextjs/server";
+import { clerkClient, getAuth } from "@clerk/nextjs/server";
 import z from "zod";
 import db from "@/db";
 import { comments as commentsTable } from "@/db/schema";
@@ -74,7 +74,11 @@ export async function GET(
       orderBy: desc(commentsTable.created_at),
     });
 
-    return NextResponse.json(comments);
+    const authors = await clerkClient.users.getUserList({
+      userId: comments.map((c) => c.user_id),
+    });
+
+    return NextResponse.json({ comments, authors });
   } catch (error) {
     console.error(error);
     return new NextResponse("Internal Server Error", { status: 500 });

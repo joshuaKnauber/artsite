@@ -15,8 +15,10 @@ const Header = async () => {
   return (
     <header className="sticky left-0 top-0 z-40 flex h-header w-full flex-row items-center justify-between border-b border-b-white border-opacity-10 bg-bg-500 px-4 md:px-8">
       <div className="flex flex-row items-center gap-4">
-        <Link href="/">Duet</Link>
-        <span className="flex h-5 flex-col justify-center rounded-md border border-blue-500 bg-blue-800 bg-opacity-10 px-2 text-xs leading-none text-blue-500">
+        <Link className="font-medium leading-none" href="/">
+          Duet
+        </Link>
+        <span className="flex h-5 flex-col justify-center rounded-md border border-blue-200 bg-blue-800 bg-opacity-10 px-2 text-xs leading-none text-blue-200">
           BETA
         </span>
       </div>
@@ -24,7 +26,7 @@ const Header = async () => {
         <div className="flex flex-row items-center gap-4">
           <Link
             href="/upload"
-            className="flex h-8 flex-row items-center rounded-full border border-white border-opacity-0 px-5 text-sm font-medium leading-none transition-all"
+            className="flex h-8 flex-row items-center rounded-full border border-blue-400 bg-blue-900 bg-opacity-10 px-5 text-sm font-medium leading-none text-blue-400 transition-all md:hover:bg-opacity-30"
           >
             Upload
           </Link>
@@ -33,7 +35,12 @@ const Header = async () => {
           </Link>
         </div>
       ) : (
-        <Link href="/sign-in">Sign In</Link>
+        <Link
+          href="/sign-in"
+          className="flex h-8 flex-row items-center rounded-full border border-zinc-200 bg-zinc-600 bg-opacity-10 px-5 text-sm font-medium leading-none text-zinc-200 transition-all md:hover:bg-opacity-30"
+        >
+          Sign In
+        </Link>
       )}
     </header>
   );

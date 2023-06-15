@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuth } from "@clerk/nextjs/server";
 import db from "@/db";
-import { artworks as artworksTable, images as imagesTable } from "@/db/schema";
+import {
+  artworks as artworksTable,
+  images as imagesTable,
+  comments as commentsTable,
+} from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { utapi } from "uploadthing/server";
 
@@ -21,6 +25,7 @@ export async function DELETE(
       columns: { user_id: true },
       with: {
         images: true,
+        comments: true,
       },
     });
 
@@ -31,6 +36,12 @@ export async function DELETE(
         status: 401,
       });
     }
+
+    // delete comments in db
+    if (artwork.comments.length > 0)
+      await db
+        .delete(commentsTable)
+        .where(eq(commentsTable.artwork_id, artworkId));
 
     // delete images in db
     if (artwork.images.length > 0)
