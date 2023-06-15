@@ -6,7 +6,7 @@ import {
   uuid,
   boolean,
   integer,
-  primaryKey,
+  decimal,
 } from "drizzle-orm/pg-core";
 import { relations, InferModel } from "drizzle-orm";
 
@@ -57,11 +57,9 @@ export const comments = pgTable("comments", {
     .defaultNow()
     .notNull(),
   is_feedback: boolean("is_feedback").notNull().default(false),
-  feedback_image_id: uuid("feedback_image_id").references(
-    () => images.id
-  ),
-  feedback_image_x: integer("feedback_image_x").notNull().default(0),
-  feedback_image_y: integer("feedback_image_y").notNull().default(0),
+  feedback_image_id: uuid("feedback_image_id").references(() => images.id),
+  feedback_image_x: decimal("feedback_image_x"),
+  feedback_image_y: decimal("feedback_image_y"),
 });
 
 export const commentsRelations = relations(comments, ({ one }) => ({
@@ -91,3 +89,4 @@ export type ArtworkWithRelations = InferModel<typeof artworks> & {
 };
 export type Image = InferModel<typeof images>;
 export type Tag = InferModel<typeof tags>;
+export type Comment = InferModel<typeof comments>;

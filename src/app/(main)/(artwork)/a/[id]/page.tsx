@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 import Link from "next/link";
 import DeleteBtn from "./components/DeleteBtn";
 import Header from "@/app/components/Header";
-import Artwork from "./components/Artwork";
+import Artwork from "./components/Artwork/Artwork";
 
 export default async function ArtworkPage({
   params,

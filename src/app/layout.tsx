@@ -1,6 +1,7 @@
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import localFont from "next/font/local";
+import QueryProvider from "./components/QueryProvider";
 
 const outfit = localFont({
   src: "../fonts/Outfit-Variable.ttf",
@@ -18,11 +19,13 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body className={`${outfit.className} bg-bg-500 text-white`}>
-          {children}
-        </body>
-      </html>
+      <QueryProvider>
+        <html lang="en">
+          <body className={`${outfit.className} bg-bg-500 text-white`}>
+            {children}
+          </body>
+        </html>
+      </QueryProvider>
     </ClerkProvider>
   );
 }

@@ -7,9 +7,9 @@ import { utapi } from "uploadthing/server";
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { artwork: string } }
 ) {
-  const artworkId = params.id || "";
+  const artworkId = params.artwork || "";
 
   if (!artworkId) {
     return new NextResponse("Invalid Data", { status: 400 });
