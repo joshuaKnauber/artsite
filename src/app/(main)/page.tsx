@@ -22,8 +22,9 @@ export default async function HomePage() {
           {"Hey, something great is coming here!"}
         </span>
         <span className="max-w-lg rounded-lg border border-blue-400 bg-blue-800 bg-opacity-10 p-6 text-center font-light text-blue-400">
-          We're building things behind the scenes for now, but you can already
-          sign up and participate if you have an invite code!
+          {
+            "We're building things behind the scenes for now, but you can already sign up and participate if you have an invite code!"
+          }
         </span>
         <Link
           href="/sign-up"
