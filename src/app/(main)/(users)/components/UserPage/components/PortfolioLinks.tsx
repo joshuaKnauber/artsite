@@ -50,9 +50,10 @@ const PortfolioLinks = ({ username }: PortfolioLinksProps) => {
         </button>
       </div>
       <span className="text-sm font-light leading-snug opacity-50">
-        <InformationCircleIcon className="mt-[-4px] inline-block h-3 w-3" /> You
-        can share your portfolio and art with others even while we're in a
-        closed beta!
+        <InformationCircleIcon className="mt-[-4px] inline-block h-3 w-3" />
+        {
+          " You can share your portfolio and art with others even while we're in a closed beta!"
+        }
       </span>
     </div>
   );
