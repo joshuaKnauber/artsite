@@ -23,14 +23,14 @@ const Toggle = ({ label, onChange, value }: ToggleProps) => {
         onChange={(e) => onChange(e.target.checked)}
       />
       <div
-        className={`h-7 w-12 cursor-pointer rounded-full p-0.5 transition-all ${
-          value ? "bg-white" : "bg-bg-600"
+        className={`h-7 w-12 cursor-pointer rounded-full p-1 transition-all ${
+          value ? "bg-bg-700" : "bg-bg-600"
         }`}
         onClick={() => onChange(!value)}
       >
         <div
-          className={`h-6 w-6 rounded-full transition-all ${
-            value ? "ml-5 bg-black" : "ml-0 bg-bg-700"
+          className={`h-5 w-5 rounded-full transition-all ${
+            value ? "ml-5 bg-white" : "ml-0 bg-bg-700"
           }`}
         />
       </div>

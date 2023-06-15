@@ -1,6 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuth, clerkClient } from "@clerk/nextjs/server";
 import z from "zod";
+import { ClerkUser } from "@/types";
+
+export async function GET(request: NextRequest) {
+  const { userId } = getAuth(request);
+  if (!userId) {
+    return new NextResponse("Unauthorized", {
+      status: 401,
+    });
+  }
+
+  const user = (await clerkClient.users.getUser(userId)) as ClerkUser;
+
+  return NextResponse.json({
+    invites: user.privateMetadata.invites || [],
+  });
+}
 
 export async function POST(request: NextRequest) {
   const { invite } = await request.json();

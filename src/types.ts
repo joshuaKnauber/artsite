@@ -1,6 +1,8 @@
 import { User } from "@clerk/nextjs/dist/types/server";
 
-export type PrivateUserMetadata = {};
+export type PrivateUserMetadata = {
+  invites: string[];
+};
 
 export type PublicUserMetadata = {
   unlocked?: boolean;

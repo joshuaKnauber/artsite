@@ -1,12 +1,4 @@
-import {
-  SignedIn,
-  SignedOut,
-  RedirectToSignIn,
-  UserProfile,
-  UserButton,
-  clerkClient,
-  currentUser,
-} from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs";
 import Link from "next/link";
 
 const Header = async () => {
@@ -15,7 +7,7 @@ const Header = async () => {
   return (
     <header className="sticky left-0 top-0 z-40 flex h-header w-full flex-row items-center justify-between border-b border-b-white border-opacity-10 bg-bg-500 px-4 md:px-8">
       <div className="flex flex-row items-center gap-4">
-        <Link className="font-medium leading-none" href="/">
+        <Link className="font-semibold leading-none" href="/">
           Duet
         </Link>
         <span className="flex h-5 flex-col justify-center rounded-md border border-blue-200 bg-blue-800 bg-opacity-10 px-2 text-xs leading-none text-blue-200">
