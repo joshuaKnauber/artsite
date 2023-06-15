@@ -5,13 +5,11 @@ import { Metadata } from "next";
 
 export async function generateMetadata({
   params,
-  searchParams,
 }: {
   params: { id: string };
-  searchParams: { min: string };
 }): Promise<Metadata> {
   const id = params.id;
-  const min = searchParams?.min;
+  const min = "" as unknown; // FIX searchParams where not working
 
   const [artwork] = await db.query.artworks.findMany({
     where: eq(artworksTable.id, id),
