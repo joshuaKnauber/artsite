@@ -13,20 +13,15 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: { artwork: string } }
 ) {
-  const artworkId = params.artwork || "";
+  const artworkId = parseInt(params.artwork || "");
 
-  if (!artworkId) {
+  if (isNaN(artworkId)) {
     return new NextResponse("Invalid Data", { status: 400 });
   }
 
   try {
-    const [artwork] = await db.query.artworks.findMany({
+    const artwork = await db.query.artworks.findFirst({
       where: eq(artworksTable.id, artworkId),
-      columns: { user_id: true },
-      with: {
-        images: true,
-        comments: true,
-      },
     });
 
     const { userId } = getAuth(request);
@@ -38,21 +33,21 @@ export async function DELETE(
     }
 
     // delete comments in db
-    if (artwork.comments.length > 0)
-      await db
-        .delete(commentsTable)
-        .where(eq(commentsTable.artwork_id, artworkId));
+    await db
+      .delete(commentsTable)
+      .where(eq(commentsTable.artwork_id, artworkId));
 
     // delete images in db
-    if (artwork.images.length > 0)
-      await db.delete(imagesTable).where(eq(imagesTable.artwork_id, artworkId));
+    const images = await db.query.images.findMany({
+      where: eq(imagesTable.artwork_id, artworkId),
+    });
+    await db.delete(imagesTable).where(eq(imagesTable.artwork_id, artworkId));
 
     // delete artwork
     await db.delete(artworksTable).where(eq(artworksTable.id, artworkId));
 
     // delete images
-    if (artwork.images.length > 0)
-      await utapi.deleteFiles(artwork.images.map((image) => image.key));
+    await utapi.deleteFiles(images.map((image) => image.key));
 
     return new NextResponse(null, { status: 204 });
   } catch (error) {

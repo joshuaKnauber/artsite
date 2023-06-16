@@ -68,7 +68,7 @@ const useOnUpload = () => {
         throw new Error(metaResponse.statusText);
       }
       const newArtwork = await metaResponse.json();
-      router.push(`/a/${newArtwork.id}`);
+      router.push(`/a/${newArtwork.key}`);
     } catch (e) {
       console.error(e);
       setError("Something went wrong");

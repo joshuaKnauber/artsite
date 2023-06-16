@@ -1,1 +1,0 @@
-ALTER TABLE "artworks" ALTER COLUMN "feedback" SET DEFAULT true;

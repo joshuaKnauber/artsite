@@ -1,43 +1,53 @@
 {
   "version": "5",
-  "dialect": "pg",
-  "id": "e104be94-18de-496a-b70e-000bce01015e",
-  "prevId": "c49204d6-023b-4cbd-b8bf-a0a2ce38fff2",
+  "dialect": "mysql",
+  "id": "38820f3d-fc5c-44b0-944e-87cb7e8827b7",
+  "prevId": "b7d4fd46-3151-4eb2-a1dd-ed2329d5cb7c",
   "tables": {
     "artworks": {
       "name": "artworks",
-      "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "int",
           "primaryKey": true,
           "notNull": true,
-          "default": "gen_random_uuid()"
+          "autoincrement": true
+        },
+        "key": {
+          "name": "key",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         },
         "user_id": {
           "name": "user_id",
           "type": "varchar(256)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "title": {
           "name": "title",
           "type": "varchar(256)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "description": {
           "name": "description",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "feedback": {
           "name": "feedback",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false,
           "default": true
         },
         "created_at": {
@@ -45,7 +55,8 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "default": "now()"
+          "autoincrement": false,
+          "default": "(now())"
         }
       },
       "indexes": {},
@@ -54,132 +65,123 @@
     },
     "comments": {
       "name": "comments",
-      "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "int",
           "primaryKey": true,
           "notNull": true,
-          "default": "gen_random_uuid()"
+          "autoincrement": true
         },
         "artwork_id": {
           "name": "artwork_id",
-          "type": "uuid",
+          "type": "int",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "user_id": {
           "name": "user_id",
-          "type": "varchar(256)",
+          "type": "int",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "text": {
           "name": "text",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "default": "now()"
+          "autoincrement": false,
+          "default": "(now())"
         },
         "is_feedback": {
           "name": "is_feedback",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false,
           "default": false
         },
         "feedback_image_id": {
           "name": "feedback_image_id",
-          "type": "uuid",
+          "type": "int",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "autoincrement": false
         },
         "feedback_image_x": {
           "name": "feedback_image_x",
-          "type": "numeric",
+          "type": "decimal",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "autoincrement": false
         },
         "feedback_image_y": {
           "name": "feedback_image_y",
-          "type": "numeric",
+          "type": "decimal",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "autoincrement": false
         }
       },
-      "indexes": {},
-      "foreignKeys": {
-        "comments_artwork_id_artworks_id_fk": {
-          "name": "comments_artwork_id_artworks_id_fk",
-          "tableFrom": "comments",
-          "tableTo": "artworks",
-          "columnsFrom": [
+      "indexes": {
+        "artwork_idx": {
+          "name": "artwork_idx",
+          "columns": [
             "artwork_id"
           ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "comments_feedback_image_id_images_id_fk": {
-          "name": "comments_feedback_image_id_images_id_fk",
-          "tableFrom": "comments",
-          "tableTo": "images",
-          "columnsFrom": [
-            "feedback_image_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "isUnique": false
         }
       },
+      "foreignKeys": {},
       "compositePrimaryKeys": {}
     },
     "images": {
       "name": "images",
-      "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "int",
           "primaryKey": true,
           "notNull": true,
-          "default": "gen_random_uuid()"
+          "autoincrement": true
         },
         "artwork_id": {
           "name": "artwork_id",
-          "type": "uuid",
+          "type": "int",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "key": {
           "name": "key",
           "type": "varchar(256)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "autoincrement": false
         },
         "width": {
           "name": "width",
-          "type": "integer",
+          "type": "int",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false,
           "default": 0
         },
         "height": {
           "name": "height",
-          "type": "integer",
+          "type": "int",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false,
           "default": 0
         },
         "is_thumbnail": {
@@ -187,51 +189,23 @@
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false,
           "default": false
         }
       },
-      "indexes": {},
-      "foreignKeys": {
-        "images_artwork_id_artworks_id_fk": {
-          "name": "images_artwork_id_artworks_id_fk",
-          "tableFrom": "images",
-          "tableTo": "artworks",
-          "columnsFrom": [
+      "indexes": {
+        "artwork_idx": {
+          "name": "artwork_idx",
+          "columns": [
             "artwork_id"
           ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "isUnique": true
         }
       },
-      "compositePrimaryKeys": {}
-    },
-    "tags": {
-      "name": "tags",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {}
     }
   },
-  "enums": {},
   "schemas": {},
   "_meta": {
     "schemas": {},

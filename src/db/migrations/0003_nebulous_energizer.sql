@@ -1,0 +1,1 @@
+ALTER TABLE `comments` MODIFY COLUMN `user_id` varchar(256) NOT NULL;

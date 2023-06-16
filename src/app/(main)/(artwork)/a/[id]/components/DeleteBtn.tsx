@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 type DeleteBtnProps = {
-  id: string;
+  id: number;
 };
 
 const DeleteBtn = ({ id }: DeleteBtnProps) => {

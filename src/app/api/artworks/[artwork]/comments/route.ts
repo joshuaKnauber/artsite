@@ -7,7 +7,7 @@ import { desc, eq } from "drizzle-orm";
 
 const schemaPostComment = z.object({
   text: z.string().min(1).max(1000),
-  imageId: z.string().uuid().optional(),
+  imageId: z.number().optional(),
   posX: z.number().min(0).max(100).optional(),
   posY: z.number().min(0).max(100).optional(),
 });
@@ -18,14 +18,14 @@ export async function POST(
   request: NextRequest,
   { params }: { params: { artwork: string } }
 ) {
-  const artworkId = params.artwork || "";
+  const artworkId = parseInt(params.artwork || "");
   const data = (await request.json()) as PostComment;
 
   if (
     !schemaPostComment.safeParse(data).success ||
     (data.posX === undefined) !== (data.posY === undefined) ||
     (data.posX !== undefined) !== (data.imageId !== undefined) ||
-    !artworkId
+    isNaN(artworkId)
   ) {
     return new NextResponse("Invalid Data", { status: 400 });
   }
@@ -38,19 +38,16 @@ export async function POST(
   }
 
   try {
-    const [insertedComment] = await db
-      .insert(commentsTable)
-      .values({
-        text: data.text,
-        artwork_id: artworkId,
-        user_id: userId,
-        is_feedback: data.imageId !== undefined,
-        feedback_image_id: data.imageId,
-        feedback_image_x: (data.posX || 0).toString(),
-        feedback_image_y: (data.posY || 0).toString(),
-      })
-      .returning({ commentId: commentsTable.id });
-    const commentId = insertedComment.commentId;
+    const { insertId: commentId } = await db.insert(commentsTable).values({
+      text: data.text,
+      user_id: userId,
+      artwork_id: artworkId,
+
+      is_feedback: data.imageId !== undefined,
+      feedback_image_id: data.imageId,
+      feedback_image_x: (data.posX || 0).toString(),
+      feedback_image_y: (data.posY || 0).toString(),
+    });
 
     return NextResponse.json({ id: commentId });
   } catch (error) {
@@ -63,8 +60,8 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { artwork: string } }
 ) {
-  const artworkId = params.artwork || "";
-  if (!artworkId) {
+  const artworkId = parseInt(params.artwork || "");
+  if (isNaN(artworkId)) {
     return new NextResponse("Invalid Data", { status: 400 });
   }
 

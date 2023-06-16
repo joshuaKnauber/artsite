@@ -1,1 +1,0 @@
-ALTER TABLE "images" RENAME COLUMN "url" TO "key";

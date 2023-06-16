@@ -8,7 +8,7 @@ export type CommentWithAuthor = {
   author?: ClerkUser;
 };
 
-const useComments = (artworkId: string) => {
+const useComments = (artworkId: number) => {
   const fetchComments = async () => {
     const res = await fetch(`/api/artworks/${artworkId}/comments`);
     if (!res.ok) {

@@ -11,9 +11,8 @@ export async function generateMetadata({
   const id = params.id;
   const min = "" as unknown; // FIX searchParams where not working
 
-  const [artwork] = await db.query.artworks.findMany({
-    where: eq(artworksTable.id, id),
-    columns: { title: true },
+  const artwork = await db.query.artworks.findFirst({
+    where: eq(artworksTable.key, id),
   });
 
   return {

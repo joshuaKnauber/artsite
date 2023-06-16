@@ -1,5 +1,5 @@
 import db from "@/db";
-import { artworks as artworksTable } from "@/db/schema";
+import { artworks as artworksTable, images as imagesTable } from "@/db/schema";
 import { clerkClient, currentUser } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
 import Link from "next/link";
@@ -19,9 +19,13 @@ export default async function ArtworkPage({
   const { min } = searchParams;
   const minimal = min === "1";
 
-  const [artwork] = await db.query.artworks.findMany({
-    with: { images: true },
-    where: eq(artworksTable.id, id),
+  const artwork = await db.query.artworks.findFirst({
+    where: eq(artworksTable.key, id),
+  });
+  if (!artwork) throw new Error("Artwork not found");
+
+  const images = await db.query.images.findMany({
+    where: eq(imagesTable.artwork_id, artwork.id),
   });
 
   const user = await currentUser();
@@ -85,7 +89,7 @@ export default async function ArtworkPage({
           </Link>
           {!minimal && (
             <div className="hidden md:block">
-              <CommentSection artworkId={id} />
+              <CommentSection artworkId={artwork.id} />
               {isOwnArtwork && (
                 <>
                   <div className="my-8 h-0.5 w-full bg-bg-600"></div>
@@ -96,7 +100,7 @@ export default async function ArtworkPage({
           )}
         </div>
         <div className="flex flex-col items-center gap-4 px-4 md:flex-grow md:gap-8 md:bg-bg-400 md:px-16 md:py-8">
-          {artwork.images.map((image) => (
+          {images.map((image) => (
             <Artwork
               withFeedback={artwork.feedback}
               image={image}
@@ -107,7 +111,7 @@ export default async function ArtworkPage({
         </div>
         {!minimal && (
           <div className="block p-4 md:hidden">
-            <CommentSection artworkId={id} />
+            <CommentSection artworkId={artwork.id} />
           </div>
         )}
       </main>

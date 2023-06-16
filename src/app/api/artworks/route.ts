@@ -35,21 +35,19 @@ export async function POST(request: NextRequest) {
 
   try {
     // add artwork
-    const insertedArtworks = await db
-      .insert(artworksTable)
-      .values({
-        title: data.title,
-        description: data.description,
-        user_id: userId,
-        feedback: data.wantsFeedback,
-      })
-      .returning({ artworkId: artworksTable.id });
-    const artworkId = insertedArtworks[0].artworkId;
+    const artworkKey = crypto.randomUUID().replaceAll("-", "");
+    const { insertId: artworkId } = await db.insert(artworksTable).values({
+      key: artworkKey,
+      title: data.title,
+      description: data.description,
+      user_id: userId,
+      feedback: data.wantsFeedback,
+    });
 
     // add images
     await db.insert(imagesTable).values(
       data.imageIds.map((imageId, i) => ({
-        artwork_id: artworkId,
+        artwork_id: parseInt(artworkId),
         key: imageId,
         is_thumbnail: i === data.thumbnailIndex,
         width: data.imageSizes[i].width,
@@ -57,7 +55,7 @@ export async function POST(request: NextRequest) {
       }))
     );
 
-    return NextResponse.json({ id: artworkId });
+    return NextResponse.json({ key: artworkKey });
   } catch (error) {
     console.error(error);
     return new NextResponse("Internal Server Error", { status: 500 });

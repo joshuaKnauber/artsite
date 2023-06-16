@@ -1,23 +1,29 @@
 import Link from "next/link";
 import { clerkClient } from "@clerk/nextjs";
+import db from "@/db";
+import { eq } from "drizzle-orm";
+import { images as imagesTable } from "@/db/schema";
 
 type ArtworkCardProps = {
-  id: string;
+  id: number;
+  artworkKey: string;
   artistId?: string;
-  thumbnailKey: string;
   minimal?: boolean;
-  thumbnailSize: { width: number; height: number };
 };
 
 const ArtworkCard = async ({
   id,
-  thumbnailKey,
+  artworkKey,
   artistId,
   minimal,
-  thumbnailSize,
 }: ArtworkCardProps) => {
   const artist =
     artistId && !minimal && (await clerkClient.users.getUser(artistId));
+
+  const images = await db.query.images.findMany({
+    where: eq(imagesTable.artwork_id, id),
+  });
+  const thumbnail = images.find((img) => img.is_thumbnail);
 
   return (
     <div
@@ -25,14 +31,12 @@ const ArtworkCard = async ({
         "group/artwork flex w-full flex-grow flex-col gap-2 transition-all md:hover:scale-[102%]"
       }
       style={{
-        aspectRatio: thumbnailSize.height
-          ? thumbnailSize.width / thumbnailSize.height
-          : 1,
+        aspectRatio: thumbnail ? thumbnail.width / thumbnail.height : 1,
       }}
     >
-      {thumbnailKey && (
+      {thumbnail && (
         <Link
-          href={minimal ? `/a/${id}?min=1` : `/a/${id}`}
+          href={minimal ? `/a/${artworkKey}?min=1` : `/a/${artworkKey}`}
           className="relative w-full overflow-hidden"
         >
           {artist && (
@@ -46,7 +50,7 @@ const ArtworkCard = async ({
                   className="h-7 w-7 rounded-full"
                   style={{
                     objectFit: "cover",
-                    aspectRatio: thumbnailSize.width / thumbnailSize.height,
+                    aspectRatio: thumbnail.width / thumbnail.height,
                   }}
                 />
                 <span className="leading-none">{artist.username || ""}</span>
@@ -54,12 +58,10 @@ const ArtworkCard = async ({
             </div>
           )}
           <img
-            src={`https://uploadthing.com/f/${thumbnailKey}`}
+            src={`https://uploadthing.com/f/${thumbnail.key}`}
             className="w-full"
             style={{
-              aspectRatio: thumbnailSize.height
-                ? thumbnailSize.width / thumbnailSize.height
-                : 1,
+              aspectRatio: thumbnail ? thumbnail.width / thumbnail.height : 1,
             }}
           />
         </Link>

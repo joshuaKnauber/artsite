@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useClerk } from "@clerk/nextjs";
 
 type CommentSectionProps = {
-  artworkId: string;
+  artworkId: number;
 };
 
 const CommentSection = ({ artworkId }: CommentSectionProps) => {

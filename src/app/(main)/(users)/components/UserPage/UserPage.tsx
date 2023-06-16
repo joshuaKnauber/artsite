@@ -26,9 +26,8 @@ const UserPage = async ({ name, minimal }: UserPageProps) => {
   const isProfile = current && current.id === user.id;
 
   const artworks = await db.query.artworks.findMany({
-    with: { images: true },
     where: eq(artworksTable.user_id, user.id),
-    columns: { id: true, title: true, user_id: true },
+    columns: { id: true, key: true, title: true, user_id: true },
     orderBy: desc(artworksTable.created_at),
   });
 
@@ -132,18 +131,11 @@ const UserPage = async ({ name, minimal }: UserPageProps) => {
         >
           <ArtworkGrid>
             {artworks.map((artwork) => {
-              const thumbnail =
-                artwork.images.find((img) => img.is_thumbnail) ||
-                artwork.images[0];
               return (
                 <ArtworkCard
                   id={artwork.id}
                   key={artwork.id}
-                  thumbnailKey={thumbnail.key}
-                  thumbnailSize={{
-                    width: thumbnail.width,
-                    height: thumbnail.height,
-                  }}
+                  artworkKey={artwork.key}
                   minimal={minimal}
                 />
               );
