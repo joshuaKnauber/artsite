@@ -120,7 +120,7 @@ const FeedbackOverlay = ({ image }: FeedbackOverlayProps) => {
       <div className="absolute bottom-2 right-2 z-10 flex flex-row items-center gap-2">
         <button
           onClick={() => setShowFeedback(!showFeedback)}
-          className="hidden h-8 w-8 items-center justify-center rounded-md bg-black bg-opacity-50 transition-all md:flex md:hover:bg-opacity-60"
+          className="hidden h-9 w-9 items-center justify-center rounded-md bg-black bg-opacity-50 transition-all md:flex md:hover:bg-opacity-60"
         >
           {showFeedback ? (
             <EyeSlashIcon className="h-4 w-4" />
@@ -131,7 +131,7 @@ const FeedbackOverlay = ({ image }: FeedbackOverlayProps) => {
         {user && (
           <button
             onClick={onClickFeedback}
-            className="hidden h-8 w-8 items-center justify-center rounded-md bg-black bg-opacity-50 transition-all md:flex md:hover:bg-opacity-60"
+            className="hidden h-9 w-9 items-center justify-center rounded-md bg-black bg-opacity-50 transition-all md:flex md:hover:bg-opacity-60"
           >
             <ChatBubbleOvalLeftEllipsisIcon className="h-5 w-5" />
           </button>

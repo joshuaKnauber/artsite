@@ -51,7 +51,7 @@ export default async function ArtworkPage({
               <div className="flex w-fit flex-row items-center gap-3 rounded-full bg-orange-900 bg-opacity-10 px-4 py-1">
                 <div className="h-1 w-1 rounded-full bg-orange-400"></div>
                 <span className="text-sm text-orange-400">
-                  Looking for feedback on this
+                  Looking for feedback
                 </span>
               </div>
             )}
@@ -97,7 +97,12 @@ export default async function ArtworkPage({
         </div>
         <div className="flex flex-col items-center gap-4 px-4 md:flex-grow md:gap-8 md:bg-bg-400 md:px-16 md:py-8">
           {artwork.images.map((image) => (
-            <Artwork image={image} key={image.id} minimal={minimal} />
+            <Artwork
+              withFeedback={artwork.feedback}
+              image={image}
+              key={image.id}
+              minimal={minimal}
+            />
           ))}
         </div>
         {!minimal && (

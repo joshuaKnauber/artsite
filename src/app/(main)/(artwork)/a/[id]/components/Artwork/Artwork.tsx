@@ -6,12 +6,13 @@ import FeedbackOverlay from "./components/FeedbackOverlay";
 type ArtworkProps = {
   image: Image;
   minimal?: boolean;
+  withFeedback: boolean;
 };
 
-const Artwork = ({ image, minimal }: ArtworkProps) => {
+const Artwork = ({ image, minimal, withFeedback }: ArtworkProps) => {
   return (
     <div className="relative">
-      {!minimal && <FeedbackOverlay image={image} />}
+      {!minimal && withFeedback && <FeedbackOverlay image={image} />}
       <img
         className="w-full md:max-h-[calc(100vh-8rem)] md:w-auto"
         src={`https://uploadthing.com/f/${image.key}`}
