@@ -25,7 +25,7 @@ const NotificationBell = () => {
         ></div>
       )}
       <div
-        className={`absolute -bottom-2 right-4 z-10 flex max-h-[500px] w-[300px] origin-top-right translate-y-full flex-col items-center gap-2 overflow-y-auto rounded-sm bg-bg-600 p-2 transition-all ${
+        className={`fixed left-0 top-header z-10 flex max-h-[500px] w-full origin-top flex-col items-center gap-2 overflow-y-auto rounded-sm bg-bg-600 p-2 transition-all md:absolute md:-bottom-2 md:right-4 md:w-[300px] md:origin-top-right md:translate-y-full ${
           showNotifications ? "scale-100" : "scale-0"
         }`}
       >
