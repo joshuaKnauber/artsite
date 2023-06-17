@@ -25,7 +25,7 @@ const TextInput = ({
       {!area ? (
         <input
           type="text"
-          className="h-9 w-full flex-grow rounded-md border border-white border-opacity-20 bg-white bg-opacity-5 px-4 font-light placeholder-white placeholder-opacity-50"
+          className="h-9 w-full flex-grow rounded-md border border-white border-opacity-20 bg-bg-600 px-4 font-light placeholder-white placeholder-opacity-50"
           name={label}
           value={value}
           placeholder={placeholder}
@@ -33,7 +33,7 @@ const TextInput = ({
         />
       ) : (
         <textarea
-          className="min-h-16 h-24 w-full flex-grow rounded-md border border-white border-opacity-20 bg-white bg-opacity-5 p-4 font-light placeholder-white placeholder-opacity-50"
+          className="min-h-16 h-24 w-full flex-grow rounded-md border border-white border-opacity-20 bg-bg-600 p-4 font-light placeholder-white placeholder-opacity-50"
           name={label}
           value={value}
           placeholder={placeholder}

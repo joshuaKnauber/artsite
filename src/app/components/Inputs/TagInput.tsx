@@ -43,11 +43,11 @@ const TagInput = ({ label, setValue, value, placeholder }: TagInputProps) => {
       <label htmlFor={label} className="flex-shrink-0 text-sm font-light">
         {label}
       </label>
-      <div className="flex w-full flex-grow flex-row flex-wrap gap-2 rounded-md border border-white border-opacity-20 bg-white bg-opacity-5 p-4">
+      <div className="flex w-full flex-grow flex-row flex-wrap gap-2 rounded-md border border-white border-opacity-20 bg-bg-600 p-4">
         {value.map((tag, i) => (
           <div
             key={i}
-            className="flex h-8 w-fit flex-row items-center gap-3 rounded-lg border border-white border-opacity-20 bg-white bg-opacity-5 px-3 pr-2"
+            className="flex h-8 w-fit flex-row items-center gap-3 rounded-lg border border-white border-opacity-20 bg-bg-600 px-3 pr-2"
           >
             <span className="text-sm font-light leading-none">{tag}</span>
             <button onClick={() => onRemove(i)} type="button">
