@@ -16,7 +16,7 @@ const FeedbackBubble = ({ feedback }: FeedbackBubbleProps) => {
   return (
     <div
       key={comment.id}
-      className={`scale-in group/bubble absolute flex w-[250px] origin-bottom-left scale-0 flex-row hover:z-10 ${
+      className={`scale-in group/bubble absolute flex w-fit origin-bottom-left scale-0 flex-row hover:z-10 ${
         inRightHalf ? "justify-end" : "justify-start"
       }`}
       style={{
@@ -42,7 +42,7 @@ const FeedbackBubble = ({ feedback }: FeedbackBubbleProps) => {
               <span className="whitespace-nowrap text-sm font-medium leading-none text-black">
                 {author.username}
               </span>
-              <span className="text-sm leading-tight text-black">
+              <span className="max-w-[250px] text-sm leading-tight text-black">
                 {comment.text}
               </span>
             </div>

@@ -22,8 +22,9 @@ const useFeedbackBubbles = (artworkId: number, imageId: number) => {
     setInSelection(true);
   };
 
-  const onClickImg = () => {
+  const onClickImg = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!inSelection || !refContainer.current) return;
+    e.stopPropagation();
     setInSelection(false);
     setIsWriting(true);
   };
@@ -72,10 +73,10 @@ const useFeedbackBubbles = (artworkId: number, imageId: number) => {
 
   useEffect(() => {
     const onClickOutside = (e: MouseEvent) => {
-      if (!(inSelection || isWriting) || !refComment.current) return;
+      if (!isWriting || !refComment.current) return;
       if (!refComment.current.contains(e.target as Node)) {
-        // setInSelection(false);
-        // setIsWriting(false);
+        setInSelection(false);
+        setIsWriting(false);
       }
     };
 
