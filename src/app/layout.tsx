@@ -22,7 +22,9 @@ export default function RootLayout({
     <ClerkProvider>
       <QueryProvider>
         <html lang="en">
-          <body className={`${outfit.className} bg-bg-500 text-white`}>
+          <body
+            className={`${outfit.className} overflow-x-hidden bg-bg-500 text-white`}
+          >
             {children}
           </body>
           <Analytics />

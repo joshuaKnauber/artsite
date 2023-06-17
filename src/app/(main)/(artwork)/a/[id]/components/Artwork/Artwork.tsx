@@ -2,6 +2,7 @@
 
 import { Image } from "@/db/schema";
 import FeedbackOverlay from "./components/FeedbackOverlay";
+import { useState } from "react";
 
 type ArtworkProps = {
   image: Image;
@@ -10,10 +11,15 @@ type ArtworkProps = {
 };
 
 const Artwork = ({ image, minimal, withFeedback }: ArtworkProps) => {
+  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
+
   return (
     <div className="relative">
-      {!minimal && withFeedback && <FeedbackOverlay image={image} />}
+      {!minimal && withFeedback && imageLoaded && (
+        <FeedbackOverlay image={image} />
+      )}
       <img
+        onLoad={() => setImageLoaded(true)}
         className="w-full md:max-h-[calc(100vh-8rem)] md:w-auto"
         src={`https://uploadthing.com/f/${image.key}`}
         style={{

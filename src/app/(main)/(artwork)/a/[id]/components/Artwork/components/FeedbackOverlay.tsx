@@ -60,6 +60,8 @@ const FeedbackOverlay = ({ image }: FeedbackOverlayProps) => {
     setShowTutorial(!localStorage.getItem("seenTutorial"));
   }, []);
 
+  const inRightHalf = mousePos[0] > 50;
+
   return (
     <div
       className="absolute left-0 top-0 hidden h-full w-full md:block"
@@ -81,9 +83,12 @@ const FeedbackOverlay = ({ image }: FeedbackOverlayProps) => {
       {user && (
         <div
           ref={refComment}
-          className="absolute flex origin-top-left flex-row items-center gap-2 rounded-full rounded-bl-sm bg-white p-1 shadow-md"
+          className={`absolute flex origin-top-left flex-row items-center gap-2 rounded-full bg-white p-1 shadow-md ${
+            inRightHalf ? "rounded-br-sm" : "rounded-bl-sm"
+          }`}
           style={{
-            left: `${mousePos[0]}%`,
+            left: inRightHalf ? "unset" : `${mousePos[0]}%`,
+            right: inRightHalf ? `${100 - mousePos[0]}%` : "unset",
             top: `${mousePos[1]}%`,
             scale: inSelection || isWriting ? 1 : 0,
             transform: "translateY(-100%)",
