@@ -39,27 +39,24 @@ const TagInput = ({ label, setValue, value, placeholder }: TagInputProps) => {
   };
 
   return (
-    <div className="flex w-full flex-col items-start gap-1 md:flex-row md:gap-4">
-      <label
-        htmlFor={label}
-        className="flex-shrink-0 text-sm font-light md:w-[100px] md:text-right"
-      >
+    <div className="flex w-full flex-col items-start gap-2">
+      <label htmlFor={label} className="flex-shrink-0 text-sm font-light">
         {label}
       </label>
-      <div className="flex w-full flex-grow flex-row flex-wrap gap-2 rounded-sm bg-bg-600 p-4 md:w-auto">
+      <div className="flex w-full flex-grow flex-row flex-wrap gap-2 rounded-md border border-white border-opacity-20 bg-white bg-opacity-5 p-4">
         {value.map((tag, i) => (
           <div
             key={i}
-            className="flex w-fit flex-row items-center gap-3 rounded-sm bg-bg-500 px-3 py-2"
+            className="flex h-8 w-fit flex-row items-center gap-3 rounded-lg border border-white border-opacity-20 bg-white bg-opacity-5 px-3 pr-2"
           >
-            <span className="font-light leading-none">{tag}</span>
+            <span className="text-sm font-light leading-none">{tag}</span>
             <button onClick={() => onRemove(i)} type="button">
               <XMarkIcon className="h-4 w-4" />
             </button>
           </div>
         ))}
         <input
-          className="flex-grow bg-transparent focus:outline-none"
+          className="flex-grow bg-transparent pl-1 focus:outline-none"
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}

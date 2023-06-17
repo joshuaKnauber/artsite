@@ -24,7 +24,13 @@ const UploadSectionPublish = ({
 }: UploadSectionPublishProps) => {
   return (
     <div className="flex flex-col gap-8">
-      {title && <span className="text-xl font-medium">{title}</span>}
+      <span
+        className={`text-xl font-medium ${
+          title ? "opacity-100" : "opacity-50"
+        }`}
+      >
+        {title || "Untitled"}
+      </span>
       {description && (
         <span className="font-light leading-snug opacity-75">
           {description}
@@ -33,7 +39,10 @@ const UploadSectionPublish = ({
       {tags.length > 0 && (
         <div className="flex flex-row flex-wrap items-center gap-2">
           {tags.map((tag, i) => (
-            <span className="rounded-sm bg-bg-600 px-4 py-1 text-sm" key={i}>
+            <span
+              className="rounded-md border border-white border-opacity-20 bg-white bg-opacity-5 px-4 py-1 text-sm font-light"
+              key={i}
+            >
               {tag}
             </span>
           ))}
@@ -43,7 +52,6 @@ const UploadSectionPublish = ({
         <div className="flex flex-row flex-wrap gap-2">
           {feedback && (
             <div className="flex w-fit flex-row items-center gap-2 rounded-full border border-orange-400 bg-orange-900 bg-opacity-10 px-4 py-1">
-              <CheckIcon className="h-4 w-4 text-orange-400" />
               <span className="text-sm text-orange-400">
                 Looking for feedback
               </span>

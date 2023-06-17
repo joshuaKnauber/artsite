@@ -9,12 +9,6 @@ type ToggleProps = {
 const Toggle = ({ label, onChange, value }: ToggleProps) => {
   return (
     <div className="flex w-full flex-row items-center gap-4">
-      <label
-        className="text-sm font-light md:w-[100px] md:text-right"
-        htmlFor={label}
-      >
-        {label}
-      </label>
       <input
         type="checkbox"
         className="hidden"
@@ -34,6 +28,9 @@ const Toggle = ({ label, onChange, value }: ToggleProps) => {
           }`}
         />
       </div>
+      <label className="text-sm font-light" htmlFor={label}>
+        {label}
+      </label>
     </div>
   );
 };

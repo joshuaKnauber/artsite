@@ -16,21 +16,16 @@ const TextInput = ({
   area,
 }: TextInputProps) => {
   return (
-    <div
-      className={`flex w-full flex-col gap-1 md:flex-row md:gap-4 ${
-        area ? "items-start" : "items-start md:items-center"
-      }`}
-    >
-      <label
-        className="text-sm font-light md:w-[100px] md:text-right"
-        htmlFor={label}
-      >
-        {label}
-      </label>
+    <div className="flex w-full flex-col items-start gap-2">
+      {label && (
+        <label className="text-sm font-light" htmlFor={label}>
+          {label}
+        </label>
+      )}
       {!area ? (
         <input
           type="text"
-          className="h-10 w-full flex-grow rounded-sm bg-bg-600 px-4 md:w-auto"
+          className="h-9 w-full flex-grow rounded-md border border-white border-opacity-20 bg-white bg-opacity-5 px-4 font-light placeholder-white placeholder-opacity-50"
           name={label}
           value={value}
           placeholder={placeholder}
@@ -38,7 +33,7 @@ const TextInput = ({
         />
       ) : (
         <textarea
-          className="min-h-16 h-24 w-full flex-grow rounded-sm bg-bg-600 p-4 md:w-auto"
+          className="min-h-16 h-24 w-full flex-grow rounded-md border border-white border-opacity-20 bg-white bg-opacity-5 p-4 font-light placeholder-white placeholder-opacity-50"
           name={label}
           value={value}
           placeholder={placeholder}

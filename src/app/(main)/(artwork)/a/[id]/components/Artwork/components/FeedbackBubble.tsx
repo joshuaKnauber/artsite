@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { CommentWithAuthor } from "../../hooks/useComments";
 
 type FeedbackBubbleProps = {
@@ -32,10 +33,12 @@ const FeedbackBubble = ({ feedback }: FeedbackBubbleProps) => {
           inRightHalf ? "rounded-br-sm" : "rounded-bl-sm"
         }`}
       >
-        <img
-          src={author.profileImageUrl}
-          className="h-5 w-5 flex-shrink-0 rounded-full transition-all duration-200 group-hover/bubble:mt-0.5"
-        />
+        <Link href={`/user/${author.username}`}>
+          <img
+            src={author.profileImageUrl}
+            className="h-5 w-5 flex-shrink-0 rounded-full transition-all duration-200 group-hover/bubble:mt-0.5"
+          />
+        </Link>
         <div className="mx-0 my-0 grid grid-cols-[0fr] transition-all duration-200 group-hover/bubble:mx-2 group-hover/bubble:my-1 group-hover/bubble:grid-cols-[1fr]">
           <div className="grid grid-rows-[0fr] transition-all duration-200 group-hover/bubble:grid-rows-[1fr]">
             <div className="flex flex-col gap-1 overflow-hidden">

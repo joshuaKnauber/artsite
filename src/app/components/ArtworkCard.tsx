@@ -45,12 +45,12 @@ const ArtworkCard = async ({
       >
         <div className="absolute right-4 top-4 flex flex-row gap-2">
           {wip && (
-            <span className="flex h-6 items-center rounded-full border border-purple-400 bg-purple-950 bg-opacity-70 px-2 text-sm leading-none text-purple-400">
+            <span className="flex h-7 items-center rounded-full border border-white border-opacity-30 bg-black bg-opacity-70 px-3 text-sm font-light leading-none text-white text-opacity-80">
               WIP
             </span>
           )}
           {feedback && (
-            <span className="flex h-6 w-7 items-center justify-center rounded-full border border-orange-400 bg-orange-950 bg-opacity-60 text-sm leading-none text-orange-400">
+            <span className="flex h-7 items-center rounded-full border border-white border-opacity-30 bg-black bg-opacity-70 px-3 text-sm font-light leading-none text-white text-opacity-80">
               <ChatBubbleOvalLeftEllipsisIcon className="h-4 w-4" />
             </span>
           )}

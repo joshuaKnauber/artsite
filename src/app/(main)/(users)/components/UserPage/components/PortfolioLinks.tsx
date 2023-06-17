@@ -29,10 +29,10 @@ const PortfolioLinks = ({ username }: PortfolioLinksProps) => {
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex h-8 w-full flex-shrink-0 flex-row items-center gap-2">
+    <div className="flex flex-col gap-3">
+      <div className="flex h-7 w-full flex-shrink-0 flex-row items-center gap-2">
         <Link
-          className="flex h-full flex-grow items-center gap-2 rounded-md border border-amber-400 border-opacity-50 bg-amber-900 bg-opacity-10 px-2 text-sm font-light text-amber-400 transition-all md:hover:border-opacity-100"
+          className="text-white-400 flex h-full flex-grow items-center gap-2 rounded-md border border-white border-opacity-50 bg-white bg-opacity-5 px-2 text-sm font-light transition-all md:hover:border-opacity-100"
           href={`/u/${username}`}
         >
           <ArrowRightIcon className="h-3 w-3" />
@@ -40,7 +40,7 @@ const PortfolioLinks = ({ username }: PortfolioLinksProps) => {
         </Link>
         <button
           onClick={copyLink}
-          className="flex aspect-square h-full items-center justify-center rounded-md border border-amber-400 border-opacity-50 bg-amber-900 bg-opacity-10 text-amber-400 transition-all md:hover:border-opacity-100"
+          className="text-white-400 flex aspect-square h-full items-center justify-center rounded-md border border-white border-opacity-50 bg-white bg-opacity-5 transition-all md:hover:border-opacity-100"
         >
           {copied ? (
             <ClipboardDocumentCheckIcon className="h-4 w-4" />
@@ -49,8 +49,8 @@ const PortfolioLinks = ({ username }: PortfolioLinksProps) => {
           )}
         </button>
       </div>
-      <span className="text-sm font-light leading-snug opacity-50">
-        <InformationCircleIcon className="mt-[-4px] inline-block h-3 w-3" />
+      <span className="text-sm font-light leading-tight opacity-50">
+        <InformationCircleIcon className="mr-1 mt-[-4px] inline-block h-3 w-3" />
         {
           " You can share your portfolio and art with others even while we're in a closed beta!"
         }
