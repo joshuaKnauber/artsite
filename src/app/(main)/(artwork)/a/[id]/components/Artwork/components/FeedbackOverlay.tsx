@@ -47,6 +47,7 @@ const FeedbackOverlay = ({ image }: FeedbackOverlayProps) => {
     try {
       await sendFeedback(feedback);
       setFeedback("");
+      setShowFeedback(true);
     } catch (e) {
       console.error(e);
     }
