@@ -36,47 +36,49 @@ const CommentSection = ({ artworkId }: CommentSectionProps) => {
   };
 
   return (
-    <div className="flex w-full flex-col gap-4">
-      <span className="font-medium leading-none">Comments</span>
-      {user && (
-        <form onSubmit={onSubmit} className="flex flex-row gap-2">
-          <input
-            className="h-9 flex-grow rounded-full bg-bg-600 px-4 text-sm font-light leading-none focus:outline-none"
-            placeholder="Say something nice!.."
-            value={value}
-            disabled={sending}
-            onChange={(e) => setValue(e.target.value)}
-          />
-          <button
-            type="submit"
-            disabled={!value}
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-transparent transition-all disabled:opacity-50 md:hover:bg-bg-600"
-          >
-            {sending ? (
-              <Spinner className="h-5 w-5 fill-white" />
-            ) : (
-              <PaperAirplaneIcon className="h-5 w-5" />
-            )}
-          </button>
-        </form>
-      )}
+    <div className="flex w-full flex-col gap-5">
+      <div className="flex flex-col gap-3">
+        <span className="font-medium leading-none">Comments</span>
+        {user && (
+          <form onSubmit={onSubmit} className="flex flex-row gap-3">
+            <input
+              className="h-9 flex-grow rounded-full bg-bg-600 px-4 text-sm font-light leading-none focus:outline-none"
+              placeholder="Say something nice!"
+              value={value}
+              disabled={sending}
+              onChange={(e) => setValue(e.target.value)}
+            />
+            <button
+              type="submit"
+              disabled={!value}
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-transparent transition-all disabled:opacity-50 md:hover:bg-bg-600"
+            >
+              {sending ? (
+                <Spinner className="h-5 w-5 fill-white" />
+              ) : (
+                <PaperAirplaneIcon className="h-5 w-5" />
+              )}
+            </button>
+          </form>
+        )}
+      </div>
       {commentsLoading ? (
         <>
-          <div className="flex w-full flex-row gap-4">
+          <div className="flex w-full flex-row gap-3">
             <div className="h-8 w-8 flex-shrink-0 rounded-full bg-bg-600"></div>
             <div className="flex w-full flex-col gap-1">
               <div className="h-3 w-32 rounded-full bg-bg-600"></div>
               <div className="h-6 w-full rounded-full bg-bg-600"></div>
             </div>
           </div>
-          <div className="flex w-full flex-row gap-4">
+          <div className="flex w-full flex-row gap-3">
             <div className="h-8 w-8 flex-shrink-0 rounded-full bg-bg-600"></div>
             <div className="flex w-full flex-col gap-1">
               <div className="h-3 w-32 rounded-full bg-bg-600"></div>
               <div className="h-6 w-full rounded-full bg-bg-600"></div>
             </div>
           </div>
-          <div className="flex w-full flex-row gap-4">
+          <div className="flex w-full flex-row gap-3">
             <div className="h-8 w-8 flex-shrink-0 rounded-full bg-bg-600"></div>
             <div className="flex w-full flex-col gap-1">
               <div className="h-3 w-32 rounded-full bg-bg-600"></div>
@@ -89,7 +91,7 @@ const CommentSection = ({ artworkId }: CommentSectionProps) => {
           {comments.map((comment) => {
             if (!comment.author) return;
             return (
-              <div key={comment.comment.id} className="flex flex-row gap-4">
+              <div key={comment.comment.id} className="flex flex-row gap-3">
                 <Link href={`/user/${comment.author.username}`}>
                   <img
                     src={comment.author.profileImageUrl}
@@ -98,12 +100,12 @@ const CommentSection = ({ artworkId }: CommentSectionProps) => {
                 </Link>
                 <div className="flex flex-col gap-1">
                   <Link
-                    className="text-sm font-medium opacity-50"
+                    className="text-sm leading-none opacity-50"
                     href={`/user/${comment.author.username}`}
                   >
                     {comment.author.username}
                   </Link>
-                  <span className="font-light leading-none opacity-75">
+                  <span className="font-light leading-snug opacity-75">
                     {comment.comment.text}
                   </span>
                 </div>

@@ -12,6 +12,7 @@ const schemaPostArtworkData = z.object({
   imageSizes: z.array(z.object({ width: z.number(), height: z.number() })),
   wantsFeedback: z.boolean(),
   thumbnailIndex: z.number().min(0),
+  wip: z.boolean(),
 });
 
 export type PostArtworkData = z.infer<typeof schemaPostArtworkData>;
@@ -42,6 +43,7 @@ export async function POST(request: NextRequest) {
       description: data.description,
       user_id: userId,
       feedback: data.wantsFeedback,
+      wip: data.wip,
     });
 
     // add images

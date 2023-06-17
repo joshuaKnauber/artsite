@@ -7,10 +7,10 @@ import {
   EyeIcon,
   EyeSlashIcon,
 } from "@heroicons/react/24/outline";
-import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
+import { ArrowDownIcon, PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import useFeedbackBubbles from "../../hooks/useFeedbackBubbles";
 import { useClerk } from "@clerk/nextjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FeedbackBubble from "./FeedbackBubble";
 
 type FeedbackOverlayProps = {
@@ -24,6 +24,8 @@ const FeedbackOverlay = ({ image }: FeedbackOverlayProps) => {
 
   const [feedback, setFeedback] = useState<string>("");
   const [sendingFeedback, setSendingFeedback] = useState<boolean>(false);
+
+  const [showTutorial, setShowTutorial] = useState<boolean>(false);
 
   const {
     refContainer,
@@ -53,6 +55,10 @@ const FeedbackOverlay = ({ image }: FeedbackOverlayProps) => {
     }
     setSendingFeedback(false);
   };
+
+  useEffect(() => {
+    setShowTutorial(!localStorage.getItem("seenTutorial"));
+  }, []);
 
   return (
     <div
@@ -119,21 +125,39 @@ const FeedbackOverlay = ({ image }: FeedbackOverlayProps) => {
         </div>
       )}
       <div className="absolute bottom-2 right-2 z-10 flex flex-row items-center gap-2">
-        <button
-          onClick={() => setShowFeedback(!showFeedback)}
-          className="hidden h-9 w-9 items-center justify-center rounded-md bg-black bg-opacity-50 transition-all md:flex md:hover:bg-opacity-60"
-        >
-          {showFeedback ? (
-            <EyeSlashIcon className="h-4 w-4" />
-          ) : (
-            <EyeIcon className="h-4 w-4" />
-          )}
-        </button>
-        {user && (
+        {comments.length > 0 && (
           <button
-            onClick={onClickFeedback}
+            onClick={() => setShowFeedback(!showFeedback)}
             className="hidden h-9 w-9 items-center justify-center rounded-md bg-black bg-opacity-50 transition-all md:flex md:hover:bg-opacity-60"
           >
+            {showFeedback ? (
+              <EyeSlashIcon className="h-4 w-4" />
+            ) : (
+              <EyeIcon className="h-4 w-4" />
+            )}
+          </button>
+        )}
+        {user && (
+          <button
+            onClick={(e) => {
+              setShowTutorial(false);
+              localStorage.setItem("seenTutorial", "true");
+              onClickFeedback(e);
+            }}
+            className="relative hidden h-9 w-9 items-center justify-center rounded-md bg-black bg-opacity-50 transition-all md:flex md:hover:bg-opacity-60"
+          >
+            {showTutorial && (
+              <div className="absolute -top-1 right-0 -translate-y-full">
+                <div className="animate-bounce rounded-md bg-bg-500">
+                  <div className="flex h-9 flex-row items-center gap-3 rounded-md border border-orange-400 bg-orange-900 bg-opacity-20 px-4 pr-3 text-sm text-orange-400">
+                    <span className="whitespace-nowrap">
+                      Click here to comment
+                    </span>
+                    <ArrowDownIcon className="h-4 w-4 flex-shrink-0" />
+                  </div>
+                </div>
+              </div>
+            )}
             <ChatBubbleOvalLeftEllipsisIcon className="h-5 w-5" />
           </button>
         )}

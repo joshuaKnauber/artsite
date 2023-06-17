@@ -10,6 +10,7 @@ type UploadSectionPublishProps = {
   files: File[];
   feedback: boolean;
   thumbnailIndex: number;
+  wip: boolean;
 };
 
 const UploadSectionPublish = ({
@@ -19,6 +20,7 @@ const UploadSectionPublish = ({
   files,
   feedback,
   thumbnailIndex,
+  wip,
 }: UploadSectionPublishProps) => {
   return (
     <div className="flex flex-col gap-8">
@@ -37,10 +39,21 @@ const UploadSectionPublish = ({
           ))}
         </div>
       )}
-      {feedback && (
-        <div className="flex w-fit flex-row items-center gap-2 rounded-full bg-orange-900 bg-opacity-10 px-4 py-1">
-          <CheckIcon className="h-4 w-4 text-orange-400" />
-          <span className="text-sm text-orange-400">Looking for feedback</span>
+      {(feedback || wip) && (
+        <div className="flex flex-row flex-wrap gap-2">
+          {feedback && (
+            <div className="flex w-fit flex-row items-center gap-2 rounded-full border border-orange-400 bg-orange-900 bg-opacity-10 px-4 py-1">
+              <CheckIcon className="h-4 w-4 text-orange-400" />
+              <span className="text-sm text-orange-400">
+                Looking for feedback
+              </span>
+            </div>
+          )}
+          {wip && (
+            <div className="flex w-fit flex-row items-center gap-2 rounded-full border border-purple-400 bg-purple-900 bg-opacity-10 px-4 py-1">
+              <span className="text-sm text-purple-400">Work In Progress</span>
+            </div>
+          )}
         </div>
       )}
       {files.length > 0 && (

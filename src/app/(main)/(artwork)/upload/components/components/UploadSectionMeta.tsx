@@ -13,6 +13,8 @@ type UploadSectionMetaProps = {
   setTags: (tags: string[]) => void;
   feedback: boolean;
   setFeedback: (feedback: boolean) => void;
+  wip: boolean;
+  setWip: (wip: boolean) => void;
 };
 
 const UploadSectionMeta = ({
@@ -24,6 +26,8 @@ const UploadSectionMeta = ({
   setTags,
   feedback,
   setFeedback,
+  wip,
+  setWip,
 }: UploadSectionMetaProps) => {
   return (
     <div className="flex flex-col gap-8">
@@ -47,6 +51,7 @@ const UploadSectionMeta = ({
         placeholder="Tags"
       /> */}
       <Toggle label="Allow Feedback" value={feedback} onChange={setFeedback} />
+      <Toggle label="WIP" value={wip} onChange={setWip} />
     </div>
   );
 };

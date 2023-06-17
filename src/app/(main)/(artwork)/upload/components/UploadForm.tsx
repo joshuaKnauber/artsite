@@ -17,13 +17,22 @@ const UploadForm = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [thumbnailIndex, setThumbnailIndex] = useState<number>(0);
   const [feedback, setFeedback] = useState<boolean>(true);
+  const [wip, setWip] = useState<boolean>(false);
 
   const { onUpload, error, uploading } = useOnUpload();
 
   const onFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (step === 2) {
-      onUpload({ title, description, tags, files, feedback, thumbnailIndex });
+      onUpload({
+        title,
+        description,
+        tags,
+        files,
+        feedback,
+        thumbnailIndex,
+        wip,
+      });
     } else {
       setStep(step + 1);
     }
@@ -47,6 +56,8 @@ const UploadForm = () => {
                 setTags,
                 feedback,
                 setFeedback,
+                wip,
+                setWip,
               }}
             />
             <button
@@ -76,7 +87,15 @@ const UploadForm = () => {
         ) : step === 2 ? (
           <form onSubmit={onFormSubmit} className="flex flex-col gap-8">
             <UploadSectionPublish
-              {...{ title, description, tags, files, feedback, thumbnailIndex }}
+              {...{
+                title,
+                description,
+                tags,
+                files,
+                feedback,
+                thumbnailIndex,
+                wip,
+              }}
             />
             <button
               type="submit"

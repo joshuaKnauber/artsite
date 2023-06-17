@@ -17,6 +17,7 @@ export const artworks = mysqlTable("artworks", {
   title: varchar("title", { length: 256 }).notNull(),
   description: text("description").notNull(),
   feedback: boolean("feedback").notNull().default(true),
+  wip: boolean("wip").notNull().default(false),
   created_at: timestamp("created_at", { mode: "string" })
     .defaultNow()
     .notNull(),

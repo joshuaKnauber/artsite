@@ -32,6 +32,7 @@ const useOnUpload = () => {
     files,
     feedback,
     thumbnailIndex,
+    wip,
   }: {
     title: string;
     description: string;
@@ -39,6 +40,7 @@ const useOnUpload = () => {
     files: File[];
     feedback: boolean;
     thumbnailIndex: number;
+    wip: boolean;
   }) => {
     try {
       setUploading(true);
@@ -56,6 +58,7 @@ const useOnUpload = () => {
         imageSizes: imageResponse.map((_, i) => imageSizes[i]),
         thumbnailIndex,
         wantsFeedback: feedback,
+        wip,
       };
       const metaResponse = await fetch("/api/artworks", {
         method: "POST",

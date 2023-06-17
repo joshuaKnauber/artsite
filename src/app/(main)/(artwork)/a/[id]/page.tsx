@@ -51,12 +51,18 @@ export default async function ArtworkPage({
                 {artwork.description}
               </span>
             )}
-            {artwork.feedback && !minimal && (
-              <div className="flex w-fit flex-row items-center gap-3 rounded-full bg-orange-900 bg-opacity-10 px-4 py-1">
-                <div className="h-1 w-1 rounded-full bg-orange-400"></div>
-                <span className="text-sm text-orange-400">
-                  Looking for feedback
-                </span>
+            {(artwork.wip || (artwork.feedback && !minimal)) && (
+              <div className="flex flex-row flex-wrap gap-4">
+                {artwork.wip && (
+                  <div className="flex h-7 w-fit flex-row items-center gap-3 rounded-full border border-purple-400 bg-purple-900 bg-opacity-10 px-3 text-sm font-light text-purple-400">
+                    Work In Progress
+                  </div>
+                )}
+                {artwork.feedback && !minimal && (
+                  <div className="flex h-7 w-fit flex-row items-center gap-3 rounded-full border border-orange-400 bg-orange-900 bg-opacity-10 px-3 text-sm font-light text-orange-400">
+                    Looking for feedback
+                  </div>
+                )}
               </div>
             )}
           </div>

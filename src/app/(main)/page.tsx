@@ -49,7 +49,14 @@ export default async function HomePage() {
   }
 
   const artworks = await db.query.artworks.findMany({
-    columns: { id: true, key: true, title: true, user_id: true },
+    columns: {
+      id: true,
+      key: true,
+      title: true,
+      wip: true,
+      feedback: true,
+      user_id: true,
+    },
     orderBy: desc(artworksTable.created_at),
   });
 
@@ -65,6 +72,8 @@ export default async function HomePage() {
                 artworkKey={artwork.key}
                 key={artwork.id}
                 artistId={artwork.user_id}
+                wip={artwork.wip}
+                feedback={artwork.feedback}
               />
             ))}
           </ArtworkGrid>
