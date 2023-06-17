@@ -4,7 +4,7 @@ import { clerkClient, currentUser } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
 import Link from "next/link";
 import DeleteBtn from "./components/DeleteBtn";
-import Header from "@/app/components/Header";
+import Header from "@/app/components/Header/Header";
 import Artwork from "./components/Artwork/Artwork";
 import CommentSection from "./components/CommentSection";
 

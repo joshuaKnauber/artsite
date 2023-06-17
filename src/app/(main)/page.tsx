@@ -6,7 +6,7 @@ import { artworks as artworksTable } from "@/db/schema";
 import { desc } from "drizzle-orm";
 import ArtworkGrid from "@/app/components/ArtworkGrid";
 import ArtworkCard from "../components/ArtworkCard";
-import Header from "../components/Header";
+import Header from "../components/Header/Header";
 import Link from "next/link";
 
 export default async function HomePage() {

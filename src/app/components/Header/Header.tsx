@@ -1,5 +1,6 @@
 import { currentUser } from "@clerk/nextjs";
 import Link from "next/link";
+import NotificationBell from "./NotificationBell";
 
 const Header = async () => {
   const user = await currentUser();
@@ -22,6 +23,7 @@ const Header = async () => {
           >
             Upload
           </Link>
+          <NotificationBell />
           <Link href={`/user/${user.username}`}>
             <img src={user.profileImageUrl} className="h-8 w-8 rounded-full" />
           </Link>

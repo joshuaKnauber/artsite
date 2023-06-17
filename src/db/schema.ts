@@ -60,6 +60,26 @@ export const comments = mysqlTable(
   })
 );
 
+export const notifications = mysqlTable(
+  "notifications",
+  {
+    id: int("id").primaryKey().autoincrement(),
+    user_id: varchar("user_id", { length: 256 }).notNull(),
+    source_id: int("source_id").notNull(),
+    source_type: varchar("source_type", { length: 256 }).notNull(),
+    created_at: timestamp("created_at", { mode: "string" })
+      .defaultNow()
+      .notNull(),
+    is_read: boolean("is_read").notNull().default(false),
+  },
+  (table) => ({
+    userIdx: index("user_idx").on(table.user_id),
+  })
+);
+
 export type Artwork = InferModel<typeof artworks>;
 export type Image = InferModel<typeof images>;
 export type Comment = InferModel<typeof comments>;
+export type Notification = InferModel<typeof notifications> & {
+  source_type: "comment";
+};

@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { clerkClient, getAuth } from "@clerk/nextjs/server";
 import z from "zod";
 import db from "@/db";
-import { comments as commentsTable } from "@/db/schema";
+import {
+  artworks as artworksTable,
+  comments as commentsTable,
+  notifications as notificationsTable,
+} from "@/db/schema";
 import { desc, eq } from "drizzle-orm";
 
 const schemaPostComment = z.object({
@@ -48,6 +52,19 @@ export async function POST(
       feedback_image_x: (data.posX || 0).toString(),
       feedback_image_y: (data.posY || 0).toString(),
     });
+
+    const artwork = await db.query.artworks.findFirst({
+      where: eq(artworksTable.id, artworkId),
+      columns: { user_id: true },
+    });
+
+    // send notification to artwork owner
+    if (artwork && artwork.user_id !== userId)
+      await db.insert(notificationsTable).values({
+        user_id: artwork.user_id,
+        source_id: parseInt(commentId),
+        source_type: "comment",
+      });
 
     return NextResponse.json({ id: commentId });
   } catch (error) {
