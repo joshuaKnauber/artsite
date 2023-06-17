@@ -29,6 +29,13 @@
       "when": 1686957348095,
       "tag": "0003_nebulous_energizer",
       "breakpoints": false
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1686960427935,
+      "tag": "0004_low_kronos",
+      "breakpoints": false
     }
   ]
 }

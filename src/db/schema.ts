@@ -7,7 +7,6 @@ import {
   int,
   decimal,
   index,
-  uniqueIndex,
 } from "drizzle-orm/mysql-core";
 import { InferModel } from "drizzle-orm";
 
@@ -35,7 +34,7 @@ export const images = mysqlTable(
   },
   (table) => {
     return {
-      artworkIdx: uniqueIndex("artwork_idx").on(table.artwork_id),
+      artworkIdx: index("artwork_idx").on(table.artwork_id),
     };
   }
 );
