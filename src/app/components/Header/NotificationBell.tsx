@@ -25,7 +25,7 @@ const NotificationBell = () => {
         ></div>
       )}
       <div
-        className={`fixed left-0 top-header z-10 flex max-h-[500px] w-full origin-top flex-col items-center gap-2 overflow-y-auto rounded-sm bg-bg-600 p-2 transition-all md:absolute md:-bottom-2 md:right-4 md:w-[300px] md:origin-top-right md:translate-y-full ${
+        className={`fixed left-0 top-header z-10 flex max-h-[500px] w-full origin-top flex-col items-center gap-2 overflow-y-auto rounded-sm bg-bg-600 p-2 transition-all md:absolute md:-bottom-2 md:left-[unset] md:right-4 md:top-[unset] md:w-[300px] md:origin-top-right md:translate-y-full ${
           showNotifications ? "scale-100" : "scale-0"
         }`}
       >
