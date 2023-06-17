@@ -10,8 +10,14 @@ export async function generateMetadata({
 
   const [user] = await clerkClient.users.getUserList({ username: [name] });
 
+  const title = user
+    ? user.firstName || user.lastName
+      ? `${user.firstName} ${user.lastName}`
+      : user.username
+    : "Portfolio";
+
   return {
-    title: user ? `${user.username}` : "Duet",
+    title,
   };
 }
 
