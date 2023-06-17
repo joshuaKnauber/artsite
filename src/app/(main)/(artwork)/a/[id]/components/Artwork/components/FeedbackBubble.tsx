@@ -16,7 +16,7 @@ const FeedbackBubble = ({ feedback }: FeedbackBubbleProps) => {
   return (
     <div
       key={comment.id}
-      className={`scale-in group/bubble absolute flex w-[250px] origin-bottom-left scale-0 flex-row hover:z-10 hover:p-1 ${
+      className={`scale-in group/bubble absolute flex w-[250px] origin-bottom-left scale-0 flex-row hover:z-10 ${
         inRightHalf ? "justify-end" : "justify-start"
       }`}
       style={{
