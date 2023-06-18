@@ -7,17 +7,20 @@ import DeleteBtn from "./components/DeleteBtn";
 import Header from "@/app/components/Header/Header";
 import Artwork from "./components/Artwork/Artwork";
 import CommentSection from "./components/CommentSection";
+import { PencilIcon } from "@heroicons/react/24/solid";
+import EditMetaForm from "./components/EditMetaForm";
 
 export default async function ArtworkPage({
   params,
   searchParams,
 }: {
   params: { id: string };
-  searchParams: { min: string };
+  searchParams: { min: string; edit: string };
 }) {
   const { id } = params;
-  const { min } = searchParams;
+  const { min, edit } = searchParams;
   const minimal = min === "1";
+  let isEditing = edit === "1";
 
   const artwork = await db.query.artworks.findFirst({
     where: eq(artworksTable.key, id),
@@ -32,6 +35,7 @@ export default async function ArtworkPage({
 
   const artist = await clerkClient.users.getUser(artwork.user_id);
   const isOwnArtwork = user?.id === artwork.user_id;
+  isEditing = isEditing && isOwnArtwork;
 
   return (
     <>
@@ -42,58 +46,73 @@ export default async function ArtworkPage({
             minimal ? "md:top-0" : "md:top-header md:max-h-[calc(100vh-4rem)]"
           }`}
         >
-          <div className="flex flex-col gap-4">
-            <h1 className="text-2xl font-medium leading-snug">
-              {artwork.title}
-            </h1>
-            {artwork.description && (
-              <span className="font-light leading-snug opacity-75">
-                {artwork.description}
-              </span>
-            )}
-            {(artwork.wip || (artwork.feedback && !minimal)) && (
-              <div className="flex flex-row flex-wrap gap-4">
-                {artwork.wip && (
-                  <div className="flex h-7 w-fit flex-row items-center gap-3 rounded-full border border-purple-400 bg-purple-900 bg-opacity-10 px-3 text-sm font-light text-purple-400">
-                    Work In Progress
-                  </div>
-                )}
-                {artwork.feedback && !minimal && (
-                  <div className="flex h-7 w-fit flex-row items-center gap-3 rounded-full border border-orange-400 bg-orange-900 bg-opacity-10 px-3 text-sm font-light text-orange-400">
-                    Looking for feedback
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-          <Link
-            href={
-              minimal ? `/u/${artist.username}` : `/user/${artist.username}`
-            }
-            className="flex flex-row gap-4"
-          >
-            <img
-              src={artist.profileImageUrl}
-              className="h-12 w-12 rounded-full"
-            />
-            <div className="flex flex-col gap-1.5">
-              {artist.firstName || artist.lastName ? (
-                <>
-                  <span className="font-medium leading-none">
-                    {artist.firstName} {artist.lastName}
-                  </span>
-                  <span className="text-sm font-light leading-none opacity-75">
-                    @{artist.username}
-                  </span>
-                </>
-              ) : (
-                <span className="font-mediun leading-none">
-                  @{artist.username}
+          {isEditing && <EditMetaForm artwork={artwork} />}
+          {!isEditing && (
+            <div className="flex flex-col gap-4">
+              {isOwnArtwork && (
+                <Link
+                  href={`/a/${artwork.key}?edit=1`}
+                  className="font.light flex w-fit flex-row items-center gap-2 rounded-md border border-white border-opacity-30 bg-white bg-opacity-0 px-4 py-1 text-sm opacity-75 md:hover:bg-opacity-5 md:hover:opacity-100"
+                >
+                  <PencilIcon className="h-3 w-3" />
+                  Edit
+                </Link>
+              )}
+              <h1 className="text-2xl font-medium leading-snug">
+                {artwork.title}
+              </h1>
+              {artwork.description && (
+                <span className="font-light leading-snug opacity-75">
+                  {artwork.description}
                 </span>
               )}
+              {(artwork.wip || (artwork.feedback && !minimal)) &&
+                !isEditing && (
+                  <div className="flex flex-row flex-wrap gap-4">
+                    {artwork.wip && (
+                      <div className="flex h-7 w-fit flex-row items-center gap-3 rounded-full border border-purple-400 bg-purple-900 bg-opacity-10 px-3 text-sm font-light text-purple-400">
+                        Work In Progress
+                      </div>
+                    )}
+                    {artwork.feedback && !minimal && (
+                      <div className="flex h-7 w-fit flex-row items-center gap-3 rounded-full border border-orange-400 bg-orange-900 bg-opacity-10 px-3 text-sm font-light text-orange-400">
+                        Looking for feedback
+                      </div>
+                    )}
+                  </div>
+                )}
             </div>
-          </Link>
-          {!minimal && (
+          )}
+          {!isEditing && (
+            <Link
+              href={
+                minimal ? `/u/${artist.username}` : `/user/${artist.username}`
+              }
+              className="flex flex-row gap-4"
+            >
+              <img
+                src={artist.profileImageUrl}
+                className="h-12 w-12 rounded-full"
+              />
+              <div className="flex flex-col gap-1.5">
+                {artist.firstName || artist.lastName ? (
+                  <>
+                    <span className="font-medium leading-none">
+                      {artist.firstName} {artist.lastName}
+                    </span>
+                    <span className="text-sm font-light leading-none opacity-75">
+                      @{artist.username}
+                    </span>
+                  </>
+                ) : (
+                  <span className="font-mediun leading-none">
+                    @{artist.username}
+                  </span>
+                )}
+              </div>
+            </Link>
+          )}
+          {!minimal && !isEditing && (
             <div className="hidden md:block">
               <CommentSection artworkId={artwork.id} />
               {isOwnArtwork && (
@@ -108,14 +127,14 @@ export default async function ArtworkPage({
         <div className="flex flex-col items-center gap-4 px-4 md:flex-grow md:gap-8 md:bg-bg-400 md:px-16 md:py-8">
           {images.map((image) => (
             <Artwork
-              withFeedback={artwork.feedback}
+              withFeedback={artwork.feedback && !isEditing}
               image={image}
               key={image.id}
               minimal={minimal}
             />
           ))}
         </div>
-        {!minimal && (
+        {!minimal && !isEditing && (
           <div className="block p-4 md:hidden">
             <CommentSection artworkId={artwork.id} />
           </div>
