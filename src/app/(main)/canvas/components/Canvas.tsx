@@ -51,6 +51,10 @@ const Canvas = ({ children }: CanvasProps) => {
     <div
       className="polka absolute bottom-0 left-0 right-0 top-header cursor-grab touch-none overflow-hidden"
       ref={refWrapper}
+      style={{
+        backgroundPositionX: state.x,
+        backgroundPositionY: state.y,
+      }}
     >
       <TransformWrapper
         limitToBounds={false}
