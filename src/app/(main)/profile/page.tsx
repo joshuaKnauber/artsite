@@ -14,12 +14,10 @@ export default async function ProfilePage() {
   const invites = await getInvites();
 
   return (
-    <>
-      <ProfileForm
-        invites={invites}
-        metadata={user.publicMetadata}
-        username={user.username || ""}
-      />
-    </>
+    <ProfileForm
+      invites={invites}
+      metadata={user.publicMetadata}
+      username={user.username || ""}
+    />
   );
 }

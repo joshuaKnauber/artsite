@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { CommentWithAuthor } from "../../hooks/useComments";
+import { TwicImg } from "@twicpics/components/react";
 
 type FeedbackBubbleProps = {
   feedback: CommentWithAuthor;
@@ -34,8 +35,8 @@ const FeedbackBubble = ({ feedback }: FeedbackBubbleProps) => {
         }`}
       >
         <Link href={`/user/${author.username}`}>
-          <img
-            src={author.profileImageUrl}
+          <TwicImg
+            src={`/users/${author.profileImageUrl.split("/")[4]}`}
             className="h-5 w-5 flex-shrink-0 rounded-full transition-all duration-200"
           />
         </Link>

@@ -10,6 +10,7 @@ import CommentSection from "./components/CommentSection";
 import { PencilIcon } from "@heroicons/react/24/solid";
 import EditMetaForm from "./components/EditMetaForm";
 import { Metadata } from "next";
+import { TwicImg } from "@twicpics/components/react";
 
 export async function generateMetadata({
   params,
@@ -109,8 +110,8 @@ export default async function ArtworkPage({
             }
             className="flex flex-row gap-4"
           >
-            <img
-              src={artist.profileImageUrl}
+            <TwicImg
+              src={`/users/${artist.profileImageUrl.split("/")[4]}`}
               className="h-12 w-12 rounded-full"
             />
             <div className="flex flex-col gap-1.5">

@@ -5,6 +5,7 @@ import useNotifications from "./hooks/useNotifications";
 import Link from "next/link";
 import { useState } from "react";
 import Spinner from "../Spinner/Spinner";
+import { TwicImg } from "@twicpics/components/react";
 
 const NotificationBell = () => {
   const [showNotifications, setShowNotifications] = useState<boolean>(false);
@@ -42,10 +43,14 @@ const NotificationBell = () => {
               notification.is_read ? "opacity-50" : "opacity-100"
             }`}
           >
-            <img
-              src={notification.sourceAuthor?.profileImageUrl || ""}
-              className="h-5 w-5 rounded-full"
-            />
+            {notification.sourceAuthor && (
+              <TwicImg
+                src={`/users/${
+                  notification.sourceAuthor.profileImageUrl.split("/")[4]
+                }`}
+                className="h-5 w-5 rounded-full"
+              />
+            )}
             <div className="flex flex-grow flex-col gap-0 overflow-hidden">
               <span className="min-w-0 overflow-x-hidden text-ellipsis whitespace-nowrap text-sm leading-tight">
                 {notification.sourceAuthor?.username || ""}

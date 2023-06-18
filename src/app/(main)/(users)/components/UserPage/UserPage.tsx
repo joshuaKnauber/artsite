@@ -11,6 +11,7 @@ import ProfileDialog from "./components/ProfileDialog";
 import { InstagramIcon, TwitterIcon } from "./components/Icons";
 import { ClerkUser } from "@/types";
 import PortfolioLinks from "./components/PortfolioLinks";
+import { TwicImg } from "@twicpics/components/react";
 
 type UserPageProps = {
   name: string;
@@ -49,8 +50,8 @@ const UserPage = async ({ name, minimal }: UserPageProps) => {
             </div>
           )}
           <div className="flex w-full flex-row items-start gap-4">
-            <img
-              src={user.profileImageUrl}
+            <TwicImg
+              src={`/users/${user.profileImageUrl.split("/")[4]}`}
               alt="Profile Picture"
               className="h-28 w-28 rounded-full"
             />

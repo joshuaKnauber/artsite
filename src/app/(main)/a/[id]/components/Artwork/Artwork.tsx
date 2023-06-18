@@ -19,12 +19,12 @@ const Artwork = ({ image, minimal, withFeedback }: ArtworkProps) => {
           aspectRatio: image.width / image.height,
         }}
       >
-        {!minimal && withFeedback && <FeedbackOverlay image={image} />}
         <TwicImg
           className="w-full"
-          src={image.key}
+          src={`/art/${image.key}`}
           ratio={image.width / image.height}
         />
+        {!minimal && withFeedback && <FeedbackOverlay image={image} />}
       </div>
     </div>
   );

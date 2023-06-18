@@ -5,6 +5,7 @@ import Link from "next/link";
 import NotificationBell from "./NotificationBell";
 import { usePathname, useSearchParams } from "next/navigation";
 import { C } from "drizzle-orm/select.types.d-e43b2599";
+import { TwicImg } from "@twicpics/components/react";
 
 const Header = () => {
   const { user } = useClerk();
@@ -57,7 +58,10 @@ const Header = () => {
           </Link>
           <NotificationBell />
           <Link href={`/user/${user.username}`}>
-            <img src={user.profileImageUrl} className="h-8 w-8 rounded-full" />
+            <TwicImg
+              src={`/users/${user.profileImageUrl.split("/")[4]}`}
+              className="h-8 w-8 rounded-full"
+            />
           </Link>
         </div>
       ) : (

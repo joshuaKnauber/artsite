@@ -7,6 +7,7 @@ import Spinner from "@/app/components/Spinner/Spinner";
 import Link from "next/link";
 import { useClerk } from "@clerk/nextjs";
 import TextInput from "@/app/components/Inputs/TextInput";
+import { TwicImg } from "@twicpics/components/react";
 
 type CommentSectionProps = {
   artworkId: number;
@@ -103,8 +104,10 @@ const CommentSection = ({ artworkId }: CommentSectionProps) => {
             return (
               <div key={comment.comment.id} className="flex flex-row gap-3">
                 <Link href={`/user/${comment.author.username}`}>
-                  <img
-                    src={comment.author.profileImageUrl}
+                  <TwicImg
+                    src={`/users/${
+                      comment.author.profileImageUrl.split("/")[4]
+                    }`}
                     className="h-8 w-8 rounded-full"
                   />
                 </Link>

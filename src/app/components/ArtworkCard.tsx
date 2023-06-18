@@ -58,7 +58,7 @@ const ArtworkCard = async ({
         </div>
         {thumbnail && (
           <TwicImg
-            src={thumbnail.key}
+            src={`/art/${thumbnail.key}`}
             className="w-full"
             ratio={thumbnail.width / thumbnail.height}
           />
@@ -71,8 +71,8 @@ const ArtworkCard = async ({
             href={`/user/${artist.username || ""}`}
             className="absolute bottom-4 left-4 flex w-fit flex-row items-center gap-3 opacity-0 transition-all md:group-hover/artwork:opacity-100"
           >
-            <img
-              src={artist.profileImageUrl || ""}
+            <TwicImg
+              src={`/users/${artist.profileImageUrl.split("/")[4]}`}
               className="h-7 w-7 rounded-full"
             />
             <span className="leading-none">{artist.username || ""}</span>

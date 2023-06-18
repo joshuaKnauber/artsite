@@ -12,6 +12,7 @@ import useFeedbackBubbles from "../../hooks/useFeedbackBubbles";
 import { useClerk } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import FeedbackBubble from "./FeedbackBubble";
+import { TwicImg } from "@twicpics/components/react";
 
 type FeedbackOverlayProps = {
   image: Image;
@@ -99,8 +100,8 @@ const FeedbackOverlay = ({ image }: FeedbackOverlayProps) => {
           {sendingFeedback ? (
             <Spinner className="h-6 w-6 flex-shrink-0 rounded-full" />
           ) : (
-            <img
-              src={user.profileImageUrl}
+            <TwicImg
+              src={`/users/${user.profileImageUrl.split("/")[4]}`}
               className="h-6 w-6 flex-shrink-0 rounded-full"
             />
           )}
