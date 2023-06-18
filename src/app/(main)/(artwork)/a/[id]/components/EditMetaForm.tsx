@@ -67,6 +67,7 @@ const EditMetaForm = ({ artwork }: EditMetaFormProps) => {
           {updating ? <Spinner className="" /> : "Save"}
         </button>
         <Link
+          replace
           className="flex h-full flex-1 items-center justify-center rounded-md border border-white border-opacity-30 opacity-75 md:hover:opacity-100"
           href={`/a/${artwork.key}`}
         >
