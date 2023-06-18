@@ -29,26 +29,24 @@ const FeedbackBubble = ({ feedback }: FeedbackBubbleProps) => {
       }}
     >
       <div
-        className={`flex w-fit flex-row items-start justify-end rounded-2xl bg-white p-1 shadow-md ${
+        className={`flex w-fit flex-row items-start justify-end rounded-2xl bg-white p-1 shadow-md transition-all group-hover/bubble:p-2 ${
           inRightHalf ? "rounded-br-sm" : "rounded-bl-sm"
         }`}
       >
         <Link href={`/user/${author.username}`}>
           <img
             src={author.profileImageUrl}
-            className="h-5 w-5 flex-shrink-0 rounded-full transition-all duration-200 group-hover/bubble:mt-0.5"
+            className="h-5 w-5 flex-shrink-0 rounded-full transition-all duration-200"
           />
         </Link>
-        <div className="mx-0 my-0 grid grid-cols-[0fr] transition-all duration-200 group-hover/bubble:mx-2 group-hover/bubble:my-1 group-hover/bubble:grid-cols-[1fr]">
-          <div className="grid grid-rows-[0fr] transition-all duration-200 group-hover/bubble:grid-rows-[1fr]">
-            <div className="flex flex-col gap-1 overflow-hidden">
-              <span className="whitespace-nowrap text-sm font-medium leading-none text-black">
-                {author.username}
-              </span>
-              <span className="max-w-[250px] text-sm leading-tight text-black">
-                {comment.text}
-              </span>
-            </div>
+        <div className="grid grid-cols-[0fr] grid-rows-[0fr] overflow-hidden transition-all group-hover/bubble:grid-cols-[1fr] group-hover/bubble:grid-rows-[1fr]">
+          <div className="ml-0 flex w-fit flex-col gap-1 overflow-hidden transition-all group-hover/bubble:ml-2">
+            <span className="whitespace-nowrap text-sm font-medium leading-none text-black">
+              {author.username}
+            </span>
+            <span className="w-max max-w-[250px] text-sm leading-tight text-black">
+              {comment.text}
+            </span>
           </div>
         </div>
       </div>
