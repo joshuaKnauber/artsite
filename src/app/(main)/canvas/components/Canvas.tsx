@@ -4,7 +4,7 @@ import { useUpdateMyPresence } from "./liveblocks.config";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "./canvas.css";
 import CanvasUsers from "./CanvasUsers";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 
 type CanvasProps = {
@@ -21,6 +21,24 @@ const Canvas = ({ children }: CanvasProps) => {
     scale: 1,
   });
 
+  const refWrapper = useRef<HTMLDivElement>(null);
+
+  const bounds = useMemo(() => {
+    if (!refWrapper.current)
+      return {
+        minX: 0,
+        minY: 0,
+        maxX: 0,
+        maxY: 0,
+      };
+    return {
+      minX: -state.x / state.scale,
+      minY: -state.y / state.scale,
+      maxX: (-state.x + refWrapper.current.clientWidth) / state.scale,
+      maxY: (-state.y + refWrapper.current.clientHeight) / state.scale,
+    };
+  }, [state]);
+
   useEffect(() => {
     updateMyPresence({
       userId: user?.id || null,
@@ -30,7 +48,10 @@ const Canvas = ({ children }: CanvasProps) => {
   }, [user]);
 
   return (
-    <div className="polka absolute bottom-0 left-0 right-0 top-header cursor-grab touch-none overflow-hidden">
+    <div
+      className="polka absolute bottom-0 left-0 right-0 top-header cursor-grab touch-none overflow-hidden"
+      ref={refWrapper}
+    >
       <TransformWrapper
         limitToBounds={false}
         maxScale={3}
@@ -58,7 +79,7 @@ const Canvas = ({ children }: CanvasProps) => {
           onPointerLeave={() => updateMyPresence({ cursor: null })}
         >
           <TransformComponent>
-            <CanvasUsers />
+            <CanvasUsers scale={state.scale} {...bounds} />
             {children}
           </TransformComponent>
         </div>
