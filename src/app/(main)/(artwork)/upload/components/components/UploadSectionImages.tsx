@@ -89,6 +89,7 @@ const UploadSectionImages = ({
           >
             {files.map((file, i) => (
               <UploadListItem
+                key={file.name}
                 file={file}
                 itemIndex={i}
                 removeItem={() => onRemove(i)}
