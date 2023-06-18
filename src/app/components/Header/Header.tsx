@@ -1,9 +1,20 @@
-import { currentUser } from "@clerk/nextjs";
+"use client";
+
+import { useClerk } from "@clerk/nextjs";
 import Link from "next/link";
 import NotificationBell from "./NotificationBell";
+import { usePathname, useSearchParams } from "next/navigation";
+import { C } from "drizzle-orm/select.types.d-e43b2599";
 
-const Header = async () => {
-  const user = await currentUser();
+const Header = () => {
+  const { user } = useClerk();
+
+  const path = usePathname();
+  const searchParams = useSearchParams();
+  const min = searchParams.get("min") || "0";
+
+  const HIDE_PATHS = [/\/u\/.*/];
+  if (HIDE_PATHS.some((p) => p.test(path)) || min === "1") return null;
 
   return (
     <header className="sticky left-0 top-0 z-40 flex h-header w-full flex-row items-center justify-between border-b border-b-white border-opacity-10 bg-bg-500 px-4 md:px-8">

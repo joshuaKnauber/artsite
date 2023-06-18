@@ -36,10 +36,7 @@ const NotificationBell = () => {
         {notifications.map((notification) => (
           <Link
             key={notification.id}
-            onClick={() => {
-              setShowNotifications(false);
-              markAsRead(notification.id);
-            }}
+            onClick={() => markAsRead(notification.id)}
             href={`/a/${notification.sourceOrigin?.key || ""}`}
             className={`flex w-full flex-grow flex-row items-center gap-3 rounded-md bg-white bg-opacity-0 p-2 transition-all md:hover:bg-opacity-5 ${
               notification.is_read ? "opacity-50" : "opacity-100"

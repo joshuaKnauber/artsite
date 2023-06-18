@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 
-export default function UserErrorPage() {
+export default function ArtworkErrorPage() {
   const { name } = useParams();
 
   return (

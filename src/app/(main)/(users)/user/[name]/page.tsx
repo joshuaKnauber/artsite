@@ -1,4 +1,4 @@
-import Header from "@/app/components/Header/Header";
+import UserPage from "../../components/UserPage/UserPage";
 import { clerkClient } from "@clerk/nextjs";
 import { Metadata } from "next";
 
@@ -22,15 +22,8 @@ export async function generateMetadata({
   };
 }
 
-export default function UserLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <main className="flex w-full flex-col">
-      <Header />
-      {children}
-    </main>
-  );
+export default async function Page({ params }: { params: { name: string } }) {
+  const { name } = params;
+
+  return <UserPage name={name} />;
 }

@@ -6,7 +6,6 @@ import { artworks as artworksTable } from "@/db/schema";
 import { desc } from "drizzle-orm";
 import ArtworkGrid from "@/app/components/ArtworkGrid";
 import ArtworkCard from "../components/ArtworkCard";
-import Header from "../components/Header/Header";
 import Link from "next/link";
 
 export default async function HomePage() {
@@ -14,7 +13,7 @@ export default async function HomePage() {
 
   if (!user) {
     return (
-      <main className="flex w-full flex-col items-center gap-8 px-4 pt-[30vh]">
+      <div className="flex w-full flex-col items-center gap-8 px-4 pt-[30vh]">
         <span className="flex h-5 flex-col justify-center rounded-md border border-blue-200 bg-blue-800 bg-opacity-10 px-2 text-xs leading-none text-blue-200">
           CLOSED BETA
         </span>
@@ -32,19 +31,19 @@ export default async function HomePage() {
         >
           Sign Up
         </Link>
-      </main>
+      </div>
     );
   }
 
   if (!user.publicMetadata.unlocked) {
     return (
-      <main className="flex w-full flex-col items-center gap-8 px-4 pt-[30vh]">
+      <div className="flex w-full flex-col items-center gap-8 px-4 pt-[30vh]">
         <span className="flex h-5 flex-col justify-center rounded-md border border-blue-200 bg-blue-800 bg-opacity-10 px-2 text-xs leading-none text-blue-200">
           CLOSED BETA
         </span>
         <span className="text-2xl opacity-75">{"Hey, you'll be in soon!"}</span>
         <InviteForm />
-      </main>
+      </div>
     );
   }
 
@@ -61,24 +60,19 @@ export default async function HomePage() {
   });
 
   return (
-    <>
-      <Header />
-      <main className="flex w-full flex-col">
-        <div className="flex w-full px-4 py-4 md:px-8 md:py-8">
-          <ArtworkGrid>
-            {artworks.map((artwork) => (
-              <ArtworkCard
-                id={artwork.id}
-                artworkKey={artwork.key}
-                key={artwork.id}
-                artistId={artwork.user_id}
-                wip={artwork.wip}
-                feedback={artwork.feedback}
-              />
-            ))}
-          </ArtworkGrid>
-        </div>
-      </main>
-    </>
+    <div className="flex w-full px-4 py-4 md:px-8 md:py-8">
+      <ArtworkGrid>
+        {artworks.map((artwork) => (
+          <ArtworkCard
+            id={artwork.id}
+            artworkKey={artwork.key}
+            key={artwork.id}
+            artistId={artwork.user_id}
+            wip={artwork.wip}
+            feedback={artwork.feedback}
+          />
+        ))}
+      </ArtworkGrid>
+    </div>
   );
 }
