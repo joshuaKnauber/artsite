@@ -19,14 +19,11 @@ export default async function CanvasPage() {
 
   return (
     <CanvasContext>
-      <CanvasUsers />
       <Canvas>
         <CanvasItem
           x={0}
           y={0}
-          className={
-            "flex w-[4000px] flex-row flex-wrap items-center gap-[200px]"
-          }
+          className={"flex flex-row flex-wrap items-center gap-[200px]"}
         >
           {artworks.map((a, i) => (
             <ArtworkDisplay key={a.id} artwork={a} />

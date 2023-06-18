@@ -13,13 +13,14 @@ const CanvasUser = ({ presence }: CanvasUserProps) => {
 
   return (
     <div
-      className="absolute"
+      className="absolute -translate-x-1/2 -translate-y-1/2 transition-all duration-[20ms] ease-linear"
       style={{
         top: presence.cursor.y,
         left: presence.cursor.x,
       }}
     >
-      {user ? <span>{presence.userId}</span> : <span>{presence.userId}</span>}
+      {/* {user ? <span>{presence.userId}</span> : <span>{presence.userId}</span>} */}
+      <div className="h-8 w-8 rounded-full bg-red-500"></div>
     </div>
   );
 };

@@ -6,18 +6,7 @@ type CanvasItemProps = {
 };
 
 const CanvasItem = ({ children, x, y, className }: CanvasItemProps) => {
-  return (
-    <div
-      style={{
-        position: "absolute",
-        left: x,
-        top: y,
-      }}
-      className={className}
-    >
-      {children}
-    </div>
-  );
+  return <div className={className}>{children}</div>;
 };
 
 export default CanvasItem;
