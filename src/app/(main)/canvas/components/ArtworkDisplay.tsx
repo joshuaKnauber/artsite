@@ -1,5 +1,6 @@
 import db from "@/db";
 import { Artwork, images as imagesTable } from "@/db/schema";
+import { TwicImg } from "@twicpics/components/react";
 import { eq } from "drizzle-orm";
 
 type ArtworkDisplayProps = {
@@ -17,13 +18,10 @@ const ArtworkDisplay = async ({ artwork }: ArtworkDisplayProps) => {
   return (
     <div className="flex flex-col">
       <span className="text-2xl">{artwork.title}</span>
-      <img
-        className="pointer-events-none max-w-none"
-        src={`https://uploadthing.com/f/${thumbnail.key}`}
-        style={{
-          width: 500,
-          aspectRatio: thumbnail.width / thumbnail.height,
-        }}
+      <TwicImg
+        className="pointer-events-none w-[500px] max-w-none"
+        src={`/art/${thumbnail.key}`}
+        ratio={thumbnail.width / thumbnail.height}
       />
     </div>
   );
