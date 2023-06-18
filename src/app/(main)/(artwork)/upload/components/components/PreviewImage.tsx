@@ -1,13 +1,21 @@
-import { TrashIcon, XMarkIcon } from "@heroicons/react/24/solid";
+"use client";
+
+import { TrashIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 
 type PreviewImageProps = {
   file: File;
   onRemove?: () => void;
   showLabel?: boolean;
+  dragHandle?: React.ReactNode;
 };
 
-const PreviewImage = ({ file, onRemove, showLabel }: PreviewImageProps) => {
+const PreviewImage = ({
+  file,
+  onRemove,
+  showLabel,
+  dragHandle,
+}: PreviewImageProps) => {
   const [preview, setPreview] = useState<string>("");
 
   useEffect(() => {
@@ -21,6 +29,7 @@ const PreviewImage = ({ file, onRemove, showLabel }: PreviewImageProps) => {
     <div className="flex w-full flex-col gap-1">
       {showLabel && (
         <div className="flex flex-row items-center gap-4">
+          {dragHandle}
           <span className="flex-grow whitespace-nowrap text-sm leading-none opacity-50">
             {file.name}
           </span>

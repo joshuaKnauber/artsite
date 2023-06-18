@@ -2,10 +2,20 @@
 
 import { generateReactHelpers } from "@uploadthing/react/hooks";
 import { ArtworkFileRouter } from "@/app/api/uploadthing/core";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
-import PreviewImage from "./PreviewImage";
-import { PhotoIcon } from "@heroicons/react/24/outline";
+import {
+  DndContext,
+  closestCenter,
+  DragEndEvent,
+  DragOverlay,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import UploadListItem from "./UploadListItem";
 
 export const { useUploadThing, uploadFiles } =
   generateReactHelpers<ArtworkFileRouter>();
@@ -13,18 +23,21 @@ export const { useUploadThing, uploadFiles } =
 type UploadSectionImagesProps = {
   files: File[];
   setFiles: (files: File[]) => void;
-  thumbnailIndex: number;
-  setThumbnailIndex: (index: number) => void;
+  thumbnailId: string | null;
+  setThumbnailId: (index: string | null) => void;
 };
 
 const UploadSectionImages = ({
   files,
   setFiles,
-  thumbnailIndex,
-  setThumbnailIndex,
+  thumbnailId,
+  setThumbnailId,
 }: UploadSectionImagesProps) => {
   const onDrop = useCallback(
     (acceptedFiles: FileWithPath[]) => {
+      acceptedFiles = acceptedFiles.filter(
+        (file) => !files.find((f) => f.name === file.name)
+      );
       setFiles([...files, ...acceptedFiles]);
     },
     [files]
@@ -47,30 +60,55 @@ const UploadSectionImages = ({
     maxFiles: 16,
   });
 
+  const [activeDragId, setActiveDragId] = useState<string | null>(null);
+  const activeDragFile = files.find((f) => f.name === activeDragId) as
+    | undefined
+    | File;
+
+  const onDragEnd = (event: DragEndEvent) => {
+    setActiveDragId(null);
+    const { active, over } = event;
+    if (active.id !== over?.id) {
+      const oldIndex = files.findIndex((file) => file.name === active.id);
+      const newIndex = files.findIndex((file) => file.name === over?.id);
+      setFiles(arrayMove([...files], oldIndex, newIndex));
+    }
+  };
+
   return (
     <div className="flex flex-col gap-8">
       {files.length > 0 && (
-        <div className="flex flex-col gap-4">
-          {files.map((file, i) => (
-            <div className="relative" key={i}>
-              <button
-                onClick={() => setThumbnailIndex(i)}
-                type="button"
-                className={`absolute bottom-4 right-4 flex h-8 flex-row items-center gap-2 rounded-md border border-white border-opacity-50 bg-black bg-opacity-50 px-3 text-sm font-light ${
-                  thumbnailIndex === i ? "opacity-100" : "opacity-50"
-                }`}
-              >
-                <PhotoIcon className="h-4 w-4" />
-                {thumbnailIndex === i ? "Thumbnail" : ""}
-              </button>
-              <PreviewImage
-                showLabel
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragStart={(e) => setActiveDragId(e.active.id as string)}
+          onDragEnd={onDragEnd}
+        >
+          <SortableContext
+            items={files.map((file) => file.name)}
+            strategy={verticalListSortingStrategy}
+          >
+            {files.map((file, i) => (
+              <UploadListItem
                 file={file}
-                onRemove={() => onRemove(i)}
+                itemIndex={i}
+                removeItem={() => onRemove(i)}
+                setThumbnailId={setThumbnailId}
+                thumbnailId={thumbnailId}
               />
-            </div>
-          ))}
-        </div>
+            ))}
+          </SortableContext>
+          <DragOverlay>
+            {activeDragId && activeDragFile ? (
+              <UploadListItem
+                file={activeDragFile}
+                itemIndex={files.indexOf(activeDragFile)}
+                removeItem={() => onRemove(files.indexOf(activeDragFile))}
+                setThumbnailId={setThumbnailId}
+                thumbnailId={thumbnailId}
+              />
+            ) : null}
+          </DragOverlay>
+        </DndContext>
       )}
       <div
         className="flex h-32 w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-md border-2 border-dashed border-white border-opacity-10 bg-white bg-opacity-5"

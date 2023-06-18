@@ -14,6 +14,8 @@
   "dependencies": {
     "@clerk/nextjs": "^4.21.3",
     "@clerk/themes": "^1.7.5",
+    "@dnd-kit/core": "^6.0.8",
+    "@dnd-kit/sortable": "^7.0.2",
     "@heroicons/react": "^2.0.18",
     "@planetscale/database": "^1.7.0",
     "@tanstack/react-query": "^4.29.14",

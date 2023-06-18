@@ -9,7 +9,7 @@ type UploadSectionPublishProps = {
   tags: string[];
   files: File[];
   feedback: boolean;
-  thumbnailIndex: number;
+  thumbnailId: string | null;
   wip: boolean;
 };
 
@@ -19,7 +19,7 @@ const UploadSectionPublish = ({
   tags,
   files,
   feedback,
-  thumbnailIndex,
+  thumbnailId,
   wip,
 }: UploadSectionPublishProps) => {
   return (
@@ -68,7 +68,7 @@ const UploadSectionPublish = ({
         <div className="flex flex-col gap-4">
           {files.map((file, i) => (
             <div key={i} className="relative">
-              {thumbnailIndex === i && (
+              {(thumbnailId === file.name || (!thumbnailId && i === 0)) && (
                 <div className="absolute bottom-4 right-4 flex h-8 flex-row items-center gap-2 rounded-md border border-white border-opacity-50 bg-black bg-opacity-50 px-3 text-sm font-light">
                   <PhotoIcon className="h-4 w-4" />
                   Thumbnail
