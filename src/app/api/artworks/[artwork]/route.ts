@@ -105,12 +105,15 @@ export async function PATCH(
     }
 
     // update metadata
-    await db.update(artworksTable).set({
-      title: data.title,
-      description: data.description,
-      wip: data.wip,
-      feedback: data.wantsFeedback,
-    });
+    await db
+      .update(artworksTable)
+      .set({
+        title: data.title,
+        description: data.description,
+        wip: data.wip,
+        feedback: data.wantsFeedback,
+      })
+      .where(eq(artworksTable.id, artworkId));
 
     return new NextResponse(null, { status: 204 });
   } catch (error) {

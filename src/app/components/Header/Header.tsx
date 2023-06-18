@@ -18,13 +18,34 @@ const Header = () => {
 
   return (
     <header className="sticky left-0 top-0 z-40 flex h-header w-full flex-row items-center justify-between border-b border-b-white border-opacity-10 bg-bg-500 px-4 md:px-8">
-      <div className="flex flex-row items-center gap-4">
-        <Link className="font-semibold leading-none" href="/">
-          Duet
+      <div className="flex flex-row items-center gap-8">
+        <div className="flex flex-row items-center gap-4">
+          <Link className="font-semibold leading-none" href="/">
+            Duet
+          </Link>
+          <span className="flex h-5 flex-col justify-center rounded-md border border-blue-200 bg-blue-800 bg-opacity-10 px-2 text-xs leading-none text-blue-200">
+            BETA
+          </span>
+        </div>
+      </div>
+      <div className="flex flex-row items-center gap-8">
+        <Link
+          href="/"
+          className={`${path === "/" ? "opacity-100" : "opacity-50"}`}
+        >
+          Home
         </Link>
-        <span className="flex h-5 flex-col justify-center rounded-md border border-blue-200 bg-blue-800 bg-opacity-10 px-2 text-xs leading-none text-blue-200">
-          BETA
-        </span>
+        <Link href="/canvas" className="flex flex-row items-center gap-2">
+          <div className="relative">
+            <div className="h-2 w-2 rounded-full bg-red-500"></div>
+            <div className="absolute left-0 top-0 h-2 w-2 animate-ping rounded-full bg-red-500"></div>
+          </div>
+          <span
+            className={`${path === "/canvas" ? "opacity-100" : "opacity-50"}`}
+          >
+            Canvas
+          </span>
+        </Link>
       </div>
       {user ? (
         <div className="flex flex-row items-center gap-4">

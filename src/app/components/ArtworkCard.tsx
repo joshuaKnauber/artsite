@@ -4,6 +4,7 @@ import db from "@/db";
 import { eq } from "drizzle-orm";
 import { images as imagesTable } from "@/db/schema";
 import { ChatBubbleOvalLeftEllipsisIcon } from "@heroicons/react/24/outline";
+import { TwicImg } from "@twicpics/components/react";
 
 type ArtworkCardProps = {
   id: number;
@@ -56,12 +57,10 @@ const ArtworkCard = async ({
           )}
         </div>
         {thumbnail && (
-          <img
-            src={`https://uploadthing.com/f/${thumbnail.key}`}
+          <TwicImg
+            src={thumbnail.key}
             className="w-full"
-            style={{
-              aspectRatio: thumbnail ? thumbnail.width / thumbnail.height : 1,
-            }}
+            ratio={thumbnail.width / thumbnail.height}
           />
         )}
       </Link>

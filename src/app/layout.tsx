@@ -1,8 +1,11 @@
-import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import localFont from "next/font/local";
 import QueryProvider from "./components/QueryProvider";
 import { Analytics } from "@vercel/analytics/react";
+import ImageOptimization from "./components/ImageOptimization";
+
+import "./globals.css";
+import "@twicpics/components/style.css";
 
 const outfit = localFont({
   src: "../fonts/Outfit-Variable.ttf",
@@ -28,6 +31,7 @@ export default function RootLayout({
             {children}
           </body>
           <Analytics />
+          <ImageOptimization />
         </html>
       </QueryProvider>
     </ClerkProvider>

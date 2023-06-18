@@ -2,7 +2,7 @@
 
 import { Image } from "@/db/schema";
 import FeedbackOverlay from "./components/FeedbackOverlay";
-import { useState } from "react";
+import { TwicImg } from "@twicpics/components/react";
 
 type ArtworkProps = {
   image: Image;
@@ -11,21 +11,21 @@ type ArtworkProps = {
 };
 
 const Artwork = ({ image, minimal, withFeedback }: ArtworkProps) => {
-  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
-
   return (
-    <div className="relative">
-      {!minimal && withFeedback && imageLoaded && (
-        <FeedbackOverlay image={image} />
-      )}
-      <img
-        onLoad={() => setImageLoaded(true)}
-        className="w-full md:max-h-[calc(100vh-8rem)] md:w-auto"
-        src={`https://uploadthing.com/f/${image.key}`}
+    <div className="w-full">
+      <div
+        className="relative mx-auto md:max-h-[calc(100vh-8rem)] md:w-auto"
         style={{
-          aspectRatio: image.height ? image.width / image.height : 1,
+          aspectRatio: image.width / image.height,
         }}
-      />
+      >
+        {!minimal && withFeedback && <FeedbackOverlay image={image} />}
+        <TwicImg
+          className="w-full"
+          src={image.key}
+          ratio={image.width / image.height}
+        />
+      </div>
     </div>
   );
 };
