@@ -7,6 +7,7 @@ import CanvasItem from "./components/CanvasItem";
 import ArtworkDisplay from "./components/ArtworkDisplay";
 import CanvasContext from "./components/CanvasContext";
 import CanvasUsers from "./components/CanvasUsers";
+import CanvasUserCount from "./components/CanvasUserCount";
 
 export const metadata: Metadata = {
   robots: "noindex, nofollow",
@@ -30,6 +31,7 @@ export default async function CanvasPage() {
           ))}
         </CanvasItem>
       </Canvas>
+      <CanvasUserCount />
     </CanvasContext>
   );
 }
