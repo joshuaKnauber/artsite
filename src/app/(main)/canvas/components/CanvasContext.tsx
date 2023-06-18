@@ -1,6 +1,6 @@
 "use client";
 
-import { useClerk } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import { RoomProvider } from "./liveblocks.config";
 
 type CanvasContextProps = {
@@ -8,12 +8,17 @@ type CanvasContextProps = {
 };
 
 const CanvasContext = ({ children }: CanvasContextProps) => {
-  const { user } = useClerk();
+  const { user } = useUser();
 
   return (
     <RoomProvider
       id="canvas"
-      initialPresence={{ cursor: null, userId: user?.id || null }}
+      initialPresence={{
+        cursor: null,
+        userId: user?.id || null,
+        username: user?.username || null,
+        profileImgUrl: user?.profileImageUrl || null,
+      }}
     >
       {children}
     </RoomProvider>

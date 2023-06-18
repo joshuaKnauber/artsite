@@ -4,7 +4,8 @@ import { useUpdateMyPresence } from "./liveblocks.config";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import "./canvas.css";
 import CanvasUsers from "./CanvasUsers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useUser } from "@clerk/nextjs";
 
 type CanvasProps = {
   children?: React.ReactNode;
@@ -12,12 +13,21 @@ type CanvasProps = {
 
 const Canvas = ({ children }: CanvasProps) => {
   const updateMyPresence = useUpdateMyPresence();
+  const { user } = useUser();
 
   const [state, setState] = useState<{ x: number; y: number; scale: number }>({
     x: 0,
     y: 0,
     scale: 1,
   });
+
+  useEffect(() => {
+    updateMyPresence({
+      userId: user?.id || null,
+      username: user?.username || null,
+      profileImgUrl: user?.profileImageUrl || null,
+    });
+  }, [user]);
 
   return (
     <div className="polka absolute bottom-0 left-0 right-0 top-header cursor-grab touch-none overflow-hidden">

@@ -1,6 +1,5 @@
-import { clerkClient } from "@clerk/nextjs";
+import { TwicImg } from "@twicpics/components/react";
 import { Presence } from "./liveblocks.config";
-import { User } from "@clerk/nextjs/dist/types/server";
 
 type CanvasUserProps = {
   presence: Presence;
@@ -8,8 +7,6 @@ type CanvasUserProps = {
 
 const CanvasUser = ({ presence }: CanvasUserProps) => {
   if (!presence.cursor) return null;
-
-  let user: User | null = null;
 
   return (
     <div
@@ -19,8 +16,16 @@ const CanvasUser = ({ presence }: CanvasUserProps) => {
         left: presence.cursor.x,
       }}
     >
-      {/* {user ? <span>{presence.userId}</span> : <span>{presence.userId}</span>} */}
-      <div className="h-8 w-8 rounded-full bg-red-500"></div>
+      {presence.userId ? (
+        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white p-0.5">
+          <TwicImg
+            className="w-full rounded-full"
+            src={`/users/${(presence.profileImgUrl || "").split("/")[4]}`}
+          />
+        </div>
+      ) : (
+        <span>anonymous</span>
+      )}
     </div>
   );
 };

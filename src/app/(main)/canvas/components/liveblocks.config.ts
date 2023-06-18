@@ -8,6 +8,8 @@ const client = createClient({
 
 export type Presence = {
   userId: string | null;
+  username: string | null;
+  profileImgUrl: string | null;
   cursor: { x: number; y: number } | null;
 };
 
