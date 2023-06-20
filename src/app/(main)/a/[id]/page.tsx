@@ -151,12 +151,21 @@ export default async function ArtworkPage({
         </div>
         <div className="flex flex-col items-center gap-4 px-4 md:flex-grow md:gap-8 md:bg-bg-400 md:px-16 md:py-8">
           {images.map((image) => (
-            <Artwork
-              withFeedback={artwork.feedback && !isEditing}
-              image={image}
-              key={image.id}
-              minimal={minimal}
-            />
+            <div key={image.id} className="w-full">
+              <div
+                className="relative mx-auto md:max-h-[calc(100vh-8rem)] md:w-auto"
+                style={{
+                  aspectRatio: image.width / image.height,
+                }}
+              >
+                <Artwork
+                  className="w-full"
+                  withFeedback={artwork.feedback && !isEditing}
+                  image={image}
+                  minimal={minimal}
+                />
+              </div>
+            </div>
           ))}
         </div>
         {!minimal && !isEditing && (

@@ -8,25 +8,19 @@ type ArtworkProps = {
   image: Image;
   minimal?: boolean;
   withFeedback: boolean;
+  className?: string;
 };
 
-const Artwork = ({ image, minimal, withFeedback }: ArtworkProps) => {
+const Artwork = ({ image, minimal, withFeedback, className }: ArtworkProps) => {
   return (
-    <div className="w-full">
-      <div
-        className="relative mx-auto md:max-h-[calc(100vh-8rem)] md:w-auto"
-        style={{
-          aspectRatio: image.width / image.height,
-        }}
-      >
-        <TwicImg
-          className="w-full"
-          src={`/art/${image.key}`}
-          ratio={image.width / image.height}
-        />
-        {!minimal && withFeedback && <FeedbackOverlay image={image} />}
-      </div>
-    </div>
+    <>
+      <TwicImg
+        className={className}
+        src={`/art/${image.key}`}
+        ratio={image.width / image.height}
+      />
+      {!minimal && withFeedback && <FeedbackOverlay image={image} />}
+    </>
   );
 };
 

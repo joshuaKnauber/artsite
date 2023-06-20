@@ -1,9 +1,9 @@
 import db from "@/db";
 import { Artwork, images as imagesTable } from "@/db/schema";
 import { clerkClient } from "@clerk/nextjs";
-import { TwicImg } from "@twicpics/components/react";
 import { eq } from "drizzle-orm";
 import FrameLinks from "./FrameLinks";
+import FrameImage from "./FrameImage";
 
 type ArtworkFrameProps = {
   artwork: Artwork;
@@ -34,7 +34,11 @@ const ArtworkFrame = async ({ artwork }: ArtworkFrameProps) => {
 
   return (
     <div className="relative flex flex-col gap-8 rounded-xl border border-white border-opacity-20 bg-bg-500 p-12 pt-8">
-      <FrameLinks artwork={artwork} artist={artist} />
+      <FrameLinks
+        artwork={artwork}
+        username={artist.username || undefined}
+        profilePicture={artist.profileImageUrl || undefined}
+      />
       <div className="absolute -left-3 -top-3 flex flex-row gap-2">
         <div className="rounded-full bg-bg-500">
           <span className="flex h-7 w-fit flex-row items-center justify-center rounded-full border border-purple-400 bg-purple-900 bg-opacity-10 px-3 text-sm font-light text-purple-400">
@@ -51,17 +55,13 @@ const ArtworkFrame = async ({ artwork }: ArtworkFrameProps) => {
         {artwork.title}
       </span>
       <div
+        className="relative"
         style={{
           width: imgWidth,
           height: imgHeight,
         }}
       >
-        <TwicImg
-          className={`h-[${imgHeight}px] w-[${imgWidth}px]`}
-          src={`/art/${thumbnail.key}`}
-          ratio={thumbnail.width / thumbnail.height}
-          mode="contain"
-        />
+        <FrameImage width={imgWidth} height={imgHeight} thumbnail={thumbnail} />
       </div>
     </div>
   );

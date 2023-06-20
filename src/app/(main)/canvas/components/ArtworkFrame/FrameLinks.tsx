@@ -17,10 +17,11 @@ import { isMobileOrTablet } from "@/utils/isMobile";
 
 type FrameLinksProps = {
   artwork: Artwork;
-  artist?: User;
+  username?: string;
+  profilePicture?: string;
 };
 
-const FrameLinks = ({ artwork, artist }: FrameLinksProps) => {
+const FrameLinks = ({ artwork, username, profilePicture }: FrameLinksProps) => {
   const scale = useAtomValue(scaleAtom);
   const panning = useAtomValue(panningAtom);
 
@@ -52,9 +53,9 @@ const FrameLinks = ({ artwork, artist }: FrameLinksProps) => {
 
   return (
     <>
-      {artist && (
+      {username && (
         <Link
-          href={`/user/${artist.username}`}
+          href={`/user/${username}`}
           target="_blank"
           className="absolute bottom-0 left-0 flex h-14 -translate-x-1/3 translate-y-1/3 flex-row items-center gap-4 rounded-full border border-white border-opacity-20 bg-bg-500 p-2 transition-all md:hover:bg-bg-600"
           style={{
@@ -64,9 +65,9 @@ const FrameLinks = ({ artwork, artist }: FrameLinksProps) => {
         >
           <TwicImg
             className="aspect-square h-full rounded-full"
-            src={`/users/${artist.profileImageUrl.split("/")[4]}`}
+            src={`/users/${(profilePicture || "").split("/")[4]}`}
           />
-          <span className="mr-2 text-lg">{artist.username}</span>
+          <span className="mr-2 text-lg">{username}</span>
         </Link>
       )}
       <div
