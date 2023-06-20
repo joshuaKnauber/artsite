@@ -101,7 +101,7 @@ const FeedbackOverlay = ({ image }: FeedbackOverlayProps) => {
             <Spinner className="h-6 w-6 flex-shrink-0 rounded-full" />
           ) : (
             <TwicImg
-              src={`/users/${user.profileImageUrl.split("/")[4]}`}
+              src={`/users/${user.imageUrl.split("/").slice(-1)[0]}`}
               className="h-6 w-6 flex-shrink-0 rounded-full"
             />
           )}

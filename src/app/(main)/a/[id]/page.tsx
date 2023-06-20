@@ -116,7 +116,7 @@ export default async function ArtworkPage({
               className="flex flex-row gap-4"
             >
               <TwicImg
-                src={`/users/${artist.profileImageUrl.split("/")[4]}`}
+                src={`/users/${artist.imageUrl.split("/").slice(-1)[0]}`}
                 className="h-12 w-12 rounded-full"
               />
               <div className="flex flex-col gap-1.5">

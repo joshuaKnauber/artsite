@@ -51,7 +51,7 @@ const UserPage = async ({ name, minimal }: UserPageProps) => {
           )}
           <div className="flex w-full flex-row items-start gap-4">
             <TwicImg
-              src={`/users/${user.profileImageUrl.split("/")[4]}`}
+              src={`/users/${user.imageUrl.split("/").slice(-1)[0]}`}
               alt="Profile Picture"
               className="h-28 w-28 rounded-full"
             />

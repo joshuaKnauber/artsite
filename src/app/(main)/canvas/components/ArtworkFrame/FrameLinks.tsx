@@ -64,7 +64,7 @@ const FrameLinks = ({ artwork, username, profilePicture }: FrameLinksProps) => {
         >
           <TwicImg
             className="aspect-square h-full rounded-full"
-            src={`/users/${(profilePicture || "").split("/")[4]}`}
+            src={`/users/${(profilePicture || "").split("/").slice(-1)[0]}`}
           />
           <span className="mr-2 text-lg">{username}</span>
         </Link>

@@ -73,7 +73,7 @@ const Header = () => {
           <NotificationBell />
           <Link href={`/user/${user.username}`}>
             <TwicImg
-              src={`/users/${user.profileImageUrl.split("/")[4]}`}
+              src={`/users/${user.imageUrl.split("/").slice(-1)[0]}`}
               className="h-8 w-8 rounded-full"
             />
           </Link>

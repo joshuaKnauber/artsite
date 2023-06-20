@@ -24,7 +24,7 @@ const DeleteBtn = ({ id }: DeleteBtnProps) => {
           console.error(response);
           return;
         }
-        router.push("/");
+        router.replace("/");
       } catch (error) {
         console.error(error);
       }

@@ -72,7 +72,7 @@ const ArtworkCard = async ({
             className="absolute bottom-4 left-4 flex w-fit flex-row items-center gap-3 opacity-0 transition-all md:group-hover/artwork:opacity-100"
           >
             <TwicImg
-              src={`/users/${artist.profileImageUrl.split("/")[4]}`}
+              src={`/users/${artist.imageUrl.split("/").slice(-1)[0]}`}
               className="h-7 w-7 rounded-full"
             />
             <span className="leading-none">{artist.username || ""}</span>

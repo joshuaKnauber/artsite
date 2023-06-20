@@ -36,7 +36,7 @@ const FeedbackBubble = ({ feedback }: FeedbackBubbleProps) => {
       >
         <Link href={`/user/${author.username}`}>
           <TwicImg
-            src={`/users/${author.profileImageUrl.split("/")[4]}`}
+            src={`/users/${author.imageUrl.split("/").slice(-1)[0]}`}
             className="h-5 w-5 flex-shrink-0 rounded-full transition-all duration-200"
           />
         </Link>

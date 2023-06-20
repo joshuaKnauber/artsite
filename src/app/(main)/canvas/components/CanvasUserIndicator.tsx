@@ -20,7 +20,7 @@ const CanvasUserIndicator = () => {
           <TwicImg
             key={user.id}
             className="relative h-9 w-9 rounded-full"
-            src={`/users/${user.presence.profileImgUrl?.split("/")[4] || ""}`}
+            src={`/users/${user.presence.profileImgUrl?.split("/").slice(-1)[0] || ""}`}
           />
         </div>
       ))} */}

@@ -17,7 +17,7 @@ const CanvasContext = ({ children }: CanvasContextProps) => {
         cursor: null,
         userId: user?.id || null,
         username: user?.username || null,
-        profileImgUrl: user?.profileImageUrl || null,
+        profileImgUrl: user?.imageUrl || null,
       }}
     >
       {children}

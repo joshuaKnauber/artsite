@@ -87,7 +87,9 @@ const CanvasUser = ({
           >
             <TwicImg
               className="h-6 w-6 rounded-full"
-              src={`/users/${(presence.profileImgUrl || "").split("/")[4]}`}
+              src={`/users/${
+                (presence.profileImgUrl || "").split("/").slice(-1)[0]
+              }`}
             />
             {/* <span className="mx-2 my-1 leading-none">@{presence.username}</span> */}
           </div>

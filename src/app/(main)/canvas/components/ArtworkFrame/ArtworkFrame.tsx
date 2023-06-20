@@ -4,7 +4,6 @@ import { clerkClient } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
 import FrameLinks from "./FrameLinks";
 import FrameImage from "./FrameImage";
-import { FastAverageColor } from "fast-average-color";
 import FrameGlow from "./FrameGlow";
 
 type ArtworkFrameProps = {
@@ -36,24 +35,28 @@ const ArtworkFrame = async ({ artwork }: ArtworkFrameProps) => {
 
   return (
     <div>
-      <FrameGlow imageKey={thumbnail.key} />
+      {/* <FrameGlow imageKey={thumbnail.key} /> */}
       <div className="relative flex flex-col gap-8 rounded-xl border border-white border-opacity-20 bg-bg-500 p-12 pt-8">
         <FrameLinks
           artwork={artwork}
           username={artist.username || undefined}
-          profilePicture={artist.profileImageUrl || undefined}
+          profilePicture={artist.imageUrl || undefined}
         />
         <div className="absolute -left-3 -top-3 flex flex-row gap-2">
-          <div className="rounded-full bg-bg-500">
-            <span className="flex h-7 w-fit flex-row items-center justify-center rounded-full border border-purple-400 bg-purple-900 bg-opacity-10 px-3 text-sm font-light text-purple-400">
-              WIP
-            </span>
-          </div>
-          <div className="rounded-full bg-bg-500">
-            <span className="flex h-7 w-fit flex-row items-center gap-3 rounded-full border border-orange-400 bg-orange-900 bg-opacity-10 px-3 text-sm font-light text-orange-400">
-              Looking for feedback
-            </span>
-          </div>
+          {artwork.wip && (
+            <div className="rounded-full bg-bg-500">
+              <span className="flex h-7 w-fit flex-row items-center justify-center rounded-full border border-purple-400 bg-purple-900 bg-opacity-10 px-3 text-sm font-light text-purple-400">
+                WIP
+              </span>
+            </div>
+          )}
+          {artwork.feedback && (
+            <div className="rounded-full bg-bg-500">
+              <span className="flex h-7 w-fit flex-row items-center gap-3 rounded-full border border-orange-400 bg-orange-900 bg-opacity-10 px-3 text-sm font-light text-orange-400">
+                Looking for feedback
+              </span>
+            </div>
+          )}
         </div>
         <span className={`text-2xl font-medium max-w-[${SIZE}px] leading-snug`}>
           {artwork.title}

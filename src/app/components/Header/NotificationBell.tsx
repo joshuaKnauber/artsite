@@ -46,7 +46,7 @@ const NotificationBell = () => {
             {notification.sourceAuthor && (
               <TwicImg
                 src={`/users/${
-                  notification.sourceAuthor.profileImageUrl.split("/")[4]
+                  notification.sourceAuthor.imageUrl.split("/").slice(-1)[0]
                 }`}
                 className="h-5 w-5 rounded-full"
               />

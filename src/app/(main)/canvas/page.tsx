@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Canvas from "./components/Canvas";
 import db from "@/db";
 import { artworks as artworksTable } from "@/db/schema";
-import { desc } from "drizzle-orm";
+import { asc } from "drizzle-orm";
 import CanvasItem from "./components/CanvasItem";
 import CanvasContext from "./components/CanvasContext";
 import CanvasUserIndicator from "./components/CanvasUserIndicator";
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export default async function CanvasPage() {
   const artworks = await db.query.artworks.findMany({
-    orderBy: desc(artworksTable.created_at),
+    orderBy: asc(artworksTable.created_at),
   });
 
   const spiral = generateSpiral(artworks.length);

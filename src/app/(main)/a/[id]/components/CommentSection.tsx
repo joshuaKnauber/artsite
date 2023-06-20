@@ -106,7 +106,7 @@ const CommentSection = ({ artworkId }: CommentSectionProps) => {
                 <Link href={`/user/${comment.author.username}`}>
                   <TwicImg
                     src={`/users/${
-                      comment.author.profileImageUrl.split("/")[4]
+                      comment.author.imageUrl.split("/").slice(-1)[0]
                     }`}
                     className="h-8 w-8 rounded-full"
                   />
