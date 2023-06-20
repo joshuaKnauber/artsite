@@ -1,7 +1,6 @@
 "use client";
 
 import { Artwork } from "@/db/schema";
-import { User } from "@clerk/nextjs/dist/types/server";
 import {
   ArrowTopRightOnSquareIcon,
   CheckIcon,

@@ -8,6 +8,8 @@ import CanvasContext from "./components/CanvasContext";
 import CanvasUserIndicator from "./components/CanvasUserIndicator";
 import ArtworkFrame from "./components/ArtworkFrame/ArtworkFrame";
 import CanvasInteractions from "./components/CanvasInteractions";
+import { generateSpiral } from "./components/utils/spiral";
+import { randomSeeded } from "./components/utils/randomSeeded";
 
 export const metadata: Metadata = {
   robots: "noindex, nofollow",
@@ -18,6 +20,8 @@ export default async function CanvasPage() {
     orderBy: desc(artworksTable.created_at),
   });
 
+  const spiral = generateSpiral(artworks.length);
+
   return (
     <CanvasContext>
       <Canvas>
@@ -25,9 +29,14 @@ export default async function CanvasPage() {
           className="pointer-events-none h-[200vh] w-[200vw]"
           aria-hidden
         ></div>
-        {artworks.map((a, i) => (
-          <CanvasItem key={a.id} x={i * 800} y={i * 800} id={a.key}>
-            <ArtworkFrame artwork={a} />
+        {spiral.map(([x, y], i) => (
+          <CanvasItem
+            key={artworks[i].id}
+            x={x * 1500 + (randomSeeded(i + x) - 0.5) * 400}
+            y={y * 1500 + (randomSeeded(i + y) - 0.5) * 400}
+            id={artworks[i].key}
+          >
+            <ArtworkFrame artwork={artworks[i]} />
           </CanvasItem>
         ))}
       </Canvas>
