@@ -25,8 +25,8 @@ export default async function CanvasPage() {
           aria-hidden
         ></div>
         {artworks.map((a, i) => (
-          <CanvasItem x={i * 800} y={i * 800} id={a.key}>
-            <ArtworkFrame key={a.id} artwork={a} />
+          <CanvasItem key={a.id} x={i * 800} y={i * 800} id={a.key}>
+            <ArtworkFrame artwork={a} />
           </CanvasItem>
         ))}
       </Canvas>
