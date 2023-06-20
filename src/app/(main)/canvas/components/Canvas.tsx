@@ -1,27 +1,44 @@
 "use client";
 
 import { useUpdateMyPresence } from "./liveblocks.config";
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import {
+  TransformWrapper,
+  TransformComponent,
+  ReactZoomPanPinchRef,
+} from "react-zoom-pan-pinch";
 import "./canvas.css";
 import CanvasUsers from "./CanvasUsers";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useUser } from "@clerk/nextjs";
+import { useAtom, useSetAtom } from "jotai";
+import {
+  panningAtom,
+  posXAtom,
+  posYAtom,
+  scaleAtom,
+} from "./atoms/canvasAtoms";
+import { useSearchParams } from "next/navigation";
 
 type CanvasProps = {
   children?: React.ReactNode;
 };
 
 const Canvas = ({ children }: CanvasProps) => {
+  const searchParams = useSearchParams();
+  const paramArtwork = searchParams.get("a") || null;
+
+  const transformComponentRef = useRef<ReactZoomPanPinchRef | null>(null);
+  const refWrapper = useRef<HTMLDivElement>(null);
+
   const updateMyPresence = useUpdateMyPresence();
   const { user } = useUser();
 
-  const [state, setState] = useState<{ x: number; y: number; scale: number }>({
-    x: 0,
-    y: 0,
-    scale: 1,
-  });
+  const [posX, setPosX] = useAtom(posXAtom);
+  const [posY, setPosY] = useAtom(posYAtom);
+  const [scale, setScale] = useAtom(scaleAtom);
 
-  const refWrapper = useRef<HTMLDivElement>(null);
+  const tempPanning = useRef<boolean>(false);
+  const setPanning = useSetAtom(panningAtom);
 
   const bounds = useMemo(() => {
     if (!refWrapper.current)
@@ -32,12 +49,27 @@ const Canvas = ({ children }: CanvasProps) => {
         maxY: 0,
       };
     return {
-      minX: -state.x / state.scale,
-      minY: -state.y / state.scale,
-      maxX: (-state.x + refWrapper.current.clientWidth) / state.scale,
-      maxY: (-state.y + refWrapper.current.clientHeight) / state.scale,
+      minX: -posX / scale,
+      minY: -posY / scale,
+      maxX: (-posX + refWrapper.current.clientWidth) / scale,
+      maxY: (-posY + refWrapper.current.clientHeight) / scale,
     };
-  }, [state]);
+  }, [posX, posY, scale]);
+
+  useEffect(() => {
+    if (paramArtwork && transformComponentRef.current) {
+      // transformComponentRef.current?.zoomToElement(paramArtwork, 1);
+      const element = document.getElementById(paramArtwork);
+      if (element && refWrapper.current) {
+        const { x, y, width, height } = element.getBoundingClientRect();
+        const wrapperRect = refWrapper.current.getBoundingClientRect();
+        const centerX = -x + wrapperRect.width / 2 - width / 2;
+        const centerY =
+          -y + wrapperRect.height / 2 - height / 2 + wrapperRect.top;
+        transformComponentRef.current?.setTransform(centerX, centerY, 1);
+      }
+    }
+  }, [paramArtwork]);
 
   useEffect(() => {
     updateMyPresence({
@@ -52,21 +84,30 @@ const Canvas = ({ children }: CanvasProps) => {
       className="polka absolute bottom-0 left-0 right-0 top-header cursor-grab touch-none overflow-hidden"
       ref={refWrapper}
       style={{
-        backgroundPositionX: state.x,
-        backgroundPositionY: state.y,
+        backgroundPositionX: posX,
+        backgroundPositionY: posY,
       }}
     >
       <TransformWrapper
+        ref={transformComponentRef}
         limitToBounds={false}
         maxScale={3}
         centerOnInit
         minScale={0.2}
         onTransformed={(e) => {
-          setState({
-            x: e.state.positionX,
-            y: e.state.positionY,
-            scale: e.state.scale,
-          });
+          setPosX(e.state.positionX);
+          setPosY(e.state.positionY);
+          setScale(e.state.scale);
+        }}
+        onPanningStart={() => {
+          tempPanning.current = true;
+          setTimeout(() => {
+            if (tempPanning.current) setPanning(true);
+          }, 100);
+        }}
+        onPanningStop={() => {
+          tempPanning.current = false;
+          setPanning(false);
         }}
       >
         <div
@@ -75,15 +116,15 @@ const Canvas = ({ children }: CanvasProps) => {
             if (!updateMyPresence) return;
             updateMyPresence({
               cursor: {
-                x: (e.clientX - rect.left - state.x) / state.scale,
-                y: (e.clientY - rect.top - state.y) / state.scale,
+                x: (e.clientX - rect.left - posX) / scale,
+                y: (e.clientY - rect.top - posY) / scale,
               },
             });
           }}
           onPointerLeave={() => updateMyPresence({ cursor: null })}
         >
           <TransformComponent>
-            <CanvasUsers scale={state.scale} {...bounds} />
+            {/* <CanvasUsers {...bounds} /> */}
             {children}
           </TransformComponent>
         </div>

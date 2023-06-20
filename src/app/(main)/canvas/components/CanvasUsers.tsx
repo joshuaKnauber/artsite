@@ -8,10 +8,9 @@ type CanvasUsersProps = {
   minY: number;
   maxX: number;
   maxY: number;
-  scale: number;
 };
 
-const CanvasUsers = ({ minX, minY, maxX, maxY, scale }: CanvasUsersProps) => {
+const CanvasUsers = ({ minX, minY, maxX, maxY }: CanvasUsersProps) => {
   const others = useOthers();
 
   return (
@@ -24,7 +23,6 @@ const CanvasUsers = ({ minX, minY, maxX, maxY, scale }: CanvasUsersProps) => {
             minY={minY}
             maxX={maxX}
             maxY={maxY}
-            scale={scale}
             key={user.presence.userId}
             presence={user.presence}
           />

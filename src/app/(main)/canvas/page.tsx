@@ -4,10 +4,9 @@ import db from "@/db";
 import { artworks as artworksTable } from "@/db/schema";
 import { desc } from "drizzle-orm";
 import CanvasItem from "./components/CanvasItem";
-import ArtworkDisplay from "./components/ArtworkDisplay";
 import CanvasContext from "./components/CanvasContext";
-import CanvasUsers from "./components/CanvasUsers";
 import CanvasUserCount from "./components/CanvasUserCount";
+import ArtworkFrame from "./components/ArtworkFrame/ArtworkFrame";
 
 export const metadata: Metadata = {
   robots: "noindex, nofollow",
@@ -21,15 +20,15 @@ export default async function CanvasPage() {
   return (
     <CanvasContext>
       <Canvas>
-        <CanvasItem
-          x={0}
-          y={0}
-          className={"flex flex-row flex-wrap items-center gap-[200px]"}
-        >
-          {artworks.map((a, i) => (
-            <ArtworkDisplay key={a.id} artwork={a} />
-          ))}
-        </CanvasItem>
+        <div
+          className="pointer-events-none h-[200vh] w-[200vw]"
+          aria-hidden
+        ></div>
+        {artworks.map((a, i) => (
+          <CanvasItem x={i * 800} y={i * 800} id={a.key}>
+            <ArtworkFrame key={a.id} artwork={a} />
+          </CanvasItem>
+        ))}
       </Canvas>
       <CanvasUserCount />
     </CanvasContext>
