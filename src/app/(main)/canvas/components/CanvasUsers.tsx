@@ -19,6 +19,7 @@ const CanvasUsers = ({ minX, minY, maxX, maxY }: CanvasUsersProps) => {
         if (!user.presence) return null;
         return (
           <CanvasUser
+            connectionId={user.connectionId}
             minX={minX}
             minY={minY}
             maxX={maxX}

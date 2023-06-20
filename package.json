@@ -19,6 +19,7 @@
     "@heroicons/react": "^2.0.18",
     "@liveblocks/client": "^1.0.12",
     "@liveblocks/react": "^1.0.12",
+    "@marko19907/string-to-color": "^0.0.6",
     "@planetscale/database": "^1.7.0",
     "@tanstack/react-query": "^4.29.14",
     "@twicpics/components": "^0.19.0",

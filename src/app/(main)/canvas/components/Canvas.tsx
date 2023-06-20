@@ -12,6 +12,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useAtom, useSetAtom } from "jotai";
 import {
+  mousePosAtom,
   panningAtom,
   posXAtom,
   posYAtom,
@@ -26,6 +27,7 @@ type CanvasProps = {
 const Canvas = ({ children }: CanvasProps) => {
   const searchParams = useSearchParams();
   const paramArtwork = searchParams.get("a") || null;
+  const paramUser = searchParams.get("u") || null;
 
   const transformComponentRef = useRef<ReactZoomPanPinchRef | null>(null);
   const refWrapper = useRef<HTMLDivElement>(null);
@@ -39,6 +41,8 @@ const Canvas = ({ children }: CanvasProps) => {
 
   const tempPanning = useRef<boolean>(false);
   const setPanning = useSetAtom(panningAtom);
+
+  const setMousePos = useSetAtom(mousePosAtom);
 
   const bounds = useMemo(() => {
     if (!refWrapper.current)
@@ -56,20 +60,34 @@ const Canvas = ({ children }: CanvasProps) => {
     };
   }, [posX, posY, scale]);
 
-  useEffect(() => {
-    if (paramArtwork && transformComponentRef.current) {
-      // transformComponentRef.current?.zoomToElement(paramArtwork, 1);
-      const element = document.getElementById(paramArtwork);
-      if (element && refWrapper.current) {
-        const { x, y, width, height } = element.getBoundingClientRect();
-        const wrapperRect = refWrapper.current.getBoundingClientRect();
-        const centerX = -x + wrapperRect.width / 2 - width / 2;
-        const centerY =
-          -y + wrapperRect.height / 2 - height / 2 + wrapperRect.top;
-        transformComponentRef.current?.setTransform(centerX, centerY, 1);
+  const goToElement = (element: Element) => {
+    const { x, y, width, height } = element.getBoundingClientRect();
+    const wrapperRect = refWrapper.current?.getBoundingClientRect();
+    if (!wrapperRect) return;
+    const centerX = -x + wrapperRect.width / 2 - width / 2;
+    const centerY = -y + wrapperRect.height / 2 - height / 2 + wrapperRect.top;
+    transformComponentRef.current?.setTransform(centerX, centerY, 1);
+  };
+
+  const goToId = (id: string, tries = 0) => {
+    const element = document.getElementById(id);
+    if (element) {
+      goToElement(element);
+    } else {
+      if (tries < 10) {
+        setTimeout(() => {
+          goToId(id, tries + 1);
+        }, 100);
       }
     }
-  }, [paramArtwork]);
+  };
+
+  useEffect(() => {
+    const id = paramArtwork || paramUser;
+    if (id) {
+      goToId(id);
+    }
+  }, [paramArtwork, paramUser]);
 
   useEffect(() => {
     updateMyPresence({
@@ -113,6 +131,7 @@ const Canvas = ({ children }: CanvasProps) => {
         <div
           onPointerMove={(e) => {
             const rect = e.currentTarget.getBoundingClientRect();
+            setMousePos({ x: e.clientX, y: e.clientY - rect.top });
             if (!updateMyPresence) return;
             updateMyPresence({
               cursor: {
@@ -124,7 +143,7 @@ const Canvas = ({ children }: CanvasProps) => {
           onPointerLeave={() => updateMyPresence({ cursor: null })}
         >
           <TransformComponent>
-            {/* <CanvasUsers {...bounds} /> */}
+            <CanvasUsers {...bounds} />
             {children}
           </TransformComponent>
         </div>

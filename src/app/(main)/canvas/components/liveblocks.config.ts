@@ -13,5 +13,16 @@ export type Presence = {
   cursor: { x: number; y: number } | null;
 };
 
-export const { RoomProvider, useOthers, useUpdateMyPresence } =
-  createRoomContext<Presence>(client);
+export type Broadcast = {
+  type: "EMOJI" | "CHAT";
+  emoji?: string;
+  message?: string;
+};
+
+export const {
+  RoomProvider,
+  useOthers,
+  useUpdateMyPresence,
+  useBroadcastEvent,
+  useEventListener,
+} = createRoomContext<Presence, never, never, Broadcast>(client);

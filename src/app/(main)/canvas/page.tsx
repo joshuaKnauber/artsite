@@ -5,8 +5,9 @@ import { artworks as artworksTable } from "@/db/schema";
 import { desc } from "drizzle-orm";
 import CanvasItem from "./components/CanvasItem";
 import CanvasContext from "./components/CanvasContext";
-import CanvasUserCount from "./components/CanvasUserCount";
+import CanvasUserIndicator from "./components/CanvasUserIndicator";
 import ArtworkFrame from "./components/ArtworkFrame/ArtworkFrame";
+import CanvasInteractions from "./components/CanvasInteractions";
 
 export const metadata: Metadata = {
   robots: "noindex, nofollow",
@@ -30,7 +31,8 @@ export default async function CanvasPage() {
           </CanvasItem>
         ))}
       </Canvas>
-      <CanvasUserCount />
+      <CanvasUserIndicator />
+      <CanvasInteractions />
     </CanvasContext>
   );
 }
