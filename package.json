@@ -36,7 +36,7 @@
     "eslint-config-next": "^13.4.6",
     "fast-average-color": "^9.3.0",
     "jotai": "^2.2.0",
-    "next": "^13.4.7-canary.1",
+    "next": "^13.4.6",
     "postcss": "8.4.24",
     "postgres": "^3.3.5",
     "react": "18.2.0",
@@ -54,8 +54,6 @@
     "dotenv": "^16.3.0",
     "drizzle-kit": "^0.18.1",
     "prettier": "^2.8.8",
-    "prettier-plugin-tailwindcss": "^0.3.0",
-    "tsx": "^3.12.7",
-    "undici": "^5.22.1"
+    "prettier-plugin-tailwindcss": "^0.3.0"
   }
 }
