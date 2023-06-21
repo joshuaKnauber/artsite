@@ -3,6 +3,7 @@
 import { useAtomValue, useSetAtom } from "jotai";
 import {
   mousePosAtom,
+  panningAtom,
   playReaction,
   reactionsAtom,
   relMousePosAtom,
@@ -14,6 +15,7 @@ const CanvasInteractions = () => {
   const mousePos = useAtomValue(mousePosAtom);
   const relMousePos = useAtomValue(relMousePosAtom);
   const setReactions = useSetAtom(reactionsAtom);
+  const panning = useAtomValue(panningAtom);
 
   const [showHelp, setShowHelp] = useState<boolean>(false);
 
@@ -79,13 +81,13 @@ const CanvasInteractions = () => {
     }
   };
 
-  const onMouseDown = () => {
+  const onMouseUp = () => {
     if (showChat || showEmojis) {
       setShowChat(false);
       setShowEmojis(false);
       setChat("");
     }
-    if (selectedEmoji) {
+    if (selectedEmoji && !panning) {
       broadcast({
         type: "EMOJI",
         emoji: selectedEmoji,
@@ -120,14 +122,14 @@ const CanvasInteractions = () => {
     }
 
     document.addEventListener("keydown", onKeyDown);
-    document.addEventListener("click", onMouseDown);
+    document.addEventListener("mouseup", onMouseUp);
     document.addEventListener("contextmenu", onContextMenu);
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      document.removeEventListener("click", onMouseDown);
+      document.removeEventListener("mouseup", onMouseUp);
       document.removeEventListener("contextmenu", onContextMenu);
     };
-  }, [relMousePos, showChat, showEmojis, selectedEmoji]);
+  }, [relMousePos, panning, showChat, showEmojis, selectedEmoji]);
 
   return (
     <>
