@@ -15,7 +15,7 @@ const CanvasInteractions = () => {
   const relMousePos = useAtomValue(relMousePosAtom);
   const setReactions = useSetAtom(reactionsAtom);
 
-  const [showHelp, setShowHelp] = useState<boolean>(true);
+  const [showHelp, setShowHelp] = useState<boolean>(false);
 
   const [showChat, setShowChat] = useState<boolean>(false);
   const [showEmojis, setShowEmojis] = useState<boolean>(false);
