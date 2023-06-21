@@ -1,10 +1,11 @@
 "use client";
 
 import { useEventListener } from "./liveblocks.config";
-import { useAtom } from "jotai";
-import { playReaction, reactionsAtom } from "./atoms/canvasAtoms";
+import { useAtom, useAtomValue } from "jotai";
+import { playReaction, reactionsAtom, scaleAtom } from "./atoms/canvasAtoms";
 
 const CanvasReactions = () => {
+  const scale = useAtomValue(scaleAtom);
   const [reactions, setReactions] = useAtom(reactionsAtom);
 
   useEventListener(({ connectionId, event }) => {
@@ -21,7 +22,9 @@ const CanvasReactions = () => {
           key={key}
           className="pointer-events-none fixed z-10 text-lg"
           style={{
-            transform: `translate(${position.x - 30}px, ${position.y - 30}px)`,
+            transform: `translate(${position.x - 30}px, ${
+              position.y - 30
+            }px) scale(${1 / scale})`,
           }}
         >
           <div className="animate-emojifloat transition-all duration-500">

@@ -29,6 +29,7 @@ module.exports = {
       animation: {
         fade: "fade 2s ease-in-out forwards",
         emojifloat: "emojifloat 2s linear forwards",
+        delayedFadeIn: "delayedFadeIn 0.7s ease-in-out forwards",
       },
       keyframes: {
         fade: {
@@ -36,6 +37,11 @@ module.exports = {
           "30%": { opacity: "1" },
           "70%": { opacity: "1" },
           "100%": { opacity: "0" },
+        },
+        delayedFadeIn: {
+          "0%": { opacity: "0" },
+          "50%": { opacity: "0" },
+          "100%": { opacity: "1" },
         },
         emojifloat: {
           "0%": {

@@ -64,23 +64,28 @@ const Canvas = ({ children }: CanvasProps) => {
     };
   }, [posX, posY, scale]);
 
-  const goToElement = (element: Element) => {
+  const goToElement = (element: Element, animation: boolean = true) => {
     const { x, y, width, height } = element.getBoundingClientRect();
     const wrapperRect = refWrapper.current?.getBoundingClientRect();
     if (!wrapperRect) return;
     const centerX = -x + wrapperRect.width / 2 - width / 2;
     const centerY = -y + wrapperRect.height / 2 - height / 2 + wrapperRect.top;
-    transformComponentRef.current?.setTransform(centerX, centerY, 1);
+    transformComponentRef.current?.setTransform(
+      centerX,
+      centerY,
+      1,
+      animation ? undefined : 100
+    );
   };
 
-  const goToId = (id: string, tries = 0) => {
+  const goToId = (id: string, animation: boolean = true, tries = 0) => {
     const element = document.getElementById(id);
     if (element) {
-      goToElement(element);
+      goToElement(element, animation);
     } else {
       if (tries < 10) {
         setTimeout(() => {
-          goToId(id, tries + 1);
+          goToId(id, animation, tries + 1);
         }, 100);
       }
     }
@@ -100,6 +105,19 @@ const Canvas = ({ children }: CanvasProps) => {
       imageUrl: user?.imageUrl || null,
     });
   }, [user]);
+
+  useEffect(() => {
+    if (transformComponentRef.current && refChildren.current) {
+      // get ids of all children
+      const artworkIds = Array.from(
+        refChildren.current.querySelectorAll("[id]")
+      ).map((el) => el.id);
+      console.log(artworkIds);
+      const randomArtworkId =
+        artworkIds[Math.floor(Math.random() * artworkIds.length)];
+      goToId(randomArtworkId, false);
+    }
+  }, []);
 
   return (
     <div
@@ -161,7 +179,9 @@ const Canvas = ({ children }: CanvasProps) => {
         >
           <TransformComponent>
             <CanvasUsers {...bounds} />
-            <div ref={refChildren}>{children}</div>
+            <div className="animate-delayedFadeIn" ref={refChildren}>
+              {children}
+            </div>
           </TransformComponent>
         </div>
       </TransformWrapper>
