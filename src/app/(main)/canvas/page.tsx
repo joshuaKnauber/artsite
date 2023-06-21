@@ -13,6 +13,7 @@ import { randomSeeded } from "./components/utils/randomSeeded";
 
 export const metadata: Metadata = {
   robots: "noindex, nofollow",
+  title: "Canvas | Duet",
 };
 
 export default async function CanvasPage() {
@@ -32,8 +33,8 @@ export default async function CanvasPage() {
         {spiral.map(([x, y], i) => (
           <CanvasItem
             key={artworks[i].id}
-            x={x * 1500 + (randomSeeded(i + x) - 0.5) * 400}
-            y={y * 1500 + (randomSeeded(i + y) - 0.5) * 400}
+            x={x * 1500}
+            y={y * 1500}
             id={artworks[i].key}
           >
             <ArtworkFrame artwork={artworks[i]} />

@@ -34,7 +34,13 @@ const ArtworkFrame = async ({ artwork }: ArtworkFrameProps) => {
       : Math.round((SIZE * thumbnail.height) / thumbnail.width);
 
   return (
-    <div>
+    <div
+      className="flex items-center justify-center"
+      style={{
+        width: SIZE,
+        height: SIZE,
+      }}
+    >
       {/* <FrameGlow imageKey={thumbnail.key} /> */}
       <div className="relative flex flex-col gap-8 rounded-xl border border-white border-opacity-20 bg-bg-500 p-12 pt-8">
         <FrameLinks
