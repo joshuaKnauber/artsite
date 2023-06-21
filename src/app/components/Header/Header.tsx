@@ -65,7 +65,7 @@ const Header = () => {
         <div className="flex flex-row items-center gap-4">
           <Link
             href="/upload"
-            className="flex h-8 flex-row items-center rounded-full border border-white bg-white bg-opacity-0 px-5 text-sm leading-none text-white transition-all md:hover:bg-opacity-5"
+            className="flex h-8 w-10 flex-row items-center justify-center rounded-full border border-white bg-white bg-opacity-0 text-sm leading-none text-white transition-all md:w-auto md:px-5 md:hover:bg-opacity-5"
           >
             <span className="hidden md:block">Upload</span>
             <ArrowUpTrayIcon className="h-4 w-4 md:hidden" />

@@ -58,7 +58,17 @@ const FeedbackOverlay = ({ image }: FeedbackOverlayProps) => {
   };
 
   useEffect(() => {
-    setShowTutorial(!localStorage.getItem("seenTutorial"));
+    const seenTutorial = Boolean(localStorage.getItem("seenTutorial"));
+    setShowTutorial(!seenTutorial);
+    if (!seenTutorial) {
+      const interval = setInterval(() => {
+        // continue checking to hide on all on canvas
+        if (localStorage.getItem("seenTutorial")) {
+          setShowTutorial(false);
+          clearInterval(interval);
+        }
+      }, 1000);
+    }
   }, []);
 
   const inRightHalf = mousePos[0] > 50;

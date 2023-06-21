@@ -32,6 +32,7 @@ const useComments = (artworkId: number) => {
     refetch: refetchComments,
   } = useQuery(["comments", artworkId], fetchComments, {
     enabled: !!artworkId,
+    staleTime: 1000 * 60 * 5,
   });
 
   const sendComment = async (text: string) => {

@@ -16,6 +16,7 @@ import {
   panningAtom,
   posXAtom,
   posYAtom,
+  relMousePosAtom,
   scaleAtom,
 } from "./atoms/canvasAtoms";
 import { useSearchParams } from "next/navigation";
@@ -31,6 +32,7 @@ const Canvas = ({ children }: CanvasProps) => {
 
   const transformComponentRef = useRef<ReactZoomPanPinchRef | null>(null);
   const refWrapper = useRef<HTMLDivElement>(null);
+  const refChildren = useRef<HTMLDivElement>(null);
 
   const updateMyPresence = useUpdateMyPresence();
   const { user } = useUser();
@@ -43,6 +45,8 @@ const Canvas = ({ children }: CanvasProps) => {
   const setPanning = useSetAtom(panningAtom);
 
   const setMousePos = useSetAtom(mousePosAtom);
+  const setRelMousePos = useSetAtom(relMousePosAtom);
+  const [step, setStep] = useState<number>(0.05);
 
   const bounds = useMemo(() => {
     if (!refWrapper.current)
@@ -93,7 +97,7 @@ const Canvas = ({ children }: CanvasProps) => {
     updateMyPresence({
       userId: user?.id || null,
       username: user?.username || null,
-      profileImgUrl: user?.imageUrl || null,
+      imageUrl: user?.imageUrl || null,
     });
   }, [user]);
 
@@ -104,6 +108,7 @@ const Canvas = ({ children }: CanvasProps) => {
       style={{
         backgroundPositionX: posX,
         backgroundPositionY: posY,
+        backgroundSize: `${scale * 1.5 * 20}px ${scale * 1.5 * 20}px`,
       }}
     >
       <TransformWrapper
@@ -112,6 +117,12 @@ const Canvas = ({ children }: CanvasProps) => {
         maxScale={3}
         centerOnInit
         minScale={0.2}
+        doubleClick={{
+          disabled: true,
+        }}
+        wheel={{
+          step: step,
+        }}
         onTransformed={(e) => {
           setPosX(e.state.positionX);
           setPosY(e.state.positionY);
@@ -127,24 +138,30 @@ const Canvas = ({ children }: CanvasProps) => {
           tempPanning.current = false;
           setPanning(false);
         }}
+        onWheel={(_, e) => {
+          // hack while zoom on trackpad is broken
+          if (Math.abs(e.deltaY) !== 0) {
+            setStep((step) => ((step + Math.abs(e.deltaY)) / 2) * 0.001);
+          }
+        }}
       >
         <div
           onPointerMove={(e) => {
             const rect = e.currentTarget.getBoundingClientRect();
             setMousePos({ x: e.clientX, y: e.clientY - rect.top });
+            const relMousePos = {
+              x: (e.clientX - rect.left - posX) / scale,
+              y: (e.clientY - rect.top - posY) / scale,
+            };
+            setRelMousePos(relMousePos);
             if (!updateMyPresence) return;
-            updateMyPresence({
-              cursor: {
-                x: (e.clientX - rect.left - posX) / scale,
-                y: (e.clientY - rect.top - posY) / scale,
-              },
-            });
+            updateMyPresence({ cursor: relMousePos });
           }}
           onPointerLeave={() => updateMyPresence({ cursor: null })}
         >
           <TransformComponent>
             <CanvasUsers {...bounds} />
-            {children}
+            <div ref={refChildren}>{children}</div>
           </TransformComponent>
         </div>
       </TransformWrapper>

@@ -1,5 +1,6 @@
 "use client";
 
+import CanvasReactions from "./CanvasReactions";
 import CanvasUser from "./CanvasUser";
 import { useOthers } from "./liveblocks.config";
 
@@ -15,6 +16,7 @@ const CanvasUsers = ({ minX, minY, maxX, maxY }: CanvasUsersProps) => {
 
   return (
     <>
+      <CanvasReactions />
       {others.map((user) => {
         if (!user.presence) return null;
         return (

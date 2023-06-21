@@ -42,9 +42,12 @@ const FeedbackBubble = ({ feedback }: FeedbackBubbleProps) => {
         </Link>
         <div className="grid grid-cols-[0fr] grid-rows-[0fr] overflow-hidden transition-all group-hover/bubble:grid-cols-[1fr] group-hover/bubble:grid-rows-[1fr]">
           <div className="ml-0 flex w-fit flex-col gap-1 overflow-hidden transition-all group-hover/bubble:ml-2">
-            <span className="whitespace-nowrap text-sm font-medium leading-none text-black">
+            <Link
+              href={`/user/${author.username}`}
+              className="whitespace-nowrap text-sm font-medium leading-none text-black"
+            >
               {author.username}
-            </span>
+            </Link>
             <span className="w-max max-w-[250px] text-sm leading-tight text-black">
               {comment.text}
             </span>

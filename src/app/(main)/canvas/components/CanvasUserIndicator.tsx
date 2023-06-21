@@ -20,15 +20,15 @@ const CanvasUserIndicator = () => {
           <TwicImg
             key={user.id}
             className="relative h-9 w-9 rounded-full"
-            src={`/users/${user.presence.profileImgUrl?.split("/").slice(-1)[0] || ""}`}
+            src={`/users/${user.presence.imageUrl?.split("/").slice(-1)[0] || ""}`}
           />
         </div>
       ))} */}
       <div
-        className={`flex h-10 w-10 flex-row items-center justify-center gap-1 rounded-full border border-white border-opacity-20 bg-bg-600`}
+        className={`flex h-10 w-14 flex-row items-center justify-center gap-1 rounded-full border border-white border-opacity-20 bg-bg-600`}
       >
         <span className="text-sm font-medium text-white">
-          {active.length + 1}
+          {others.length + 1}
         </span>
         <UserIcon className="h-3 w-3" />
       </div>

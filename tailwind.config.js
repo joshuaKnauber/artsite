@@ -26,6 +26,56 @@ module.exports = {
       spacing: {
         header: "4rem",
       },
+      animation: {
+        fade: "fade 2s ease-in-out forwards",
+        emojifloat: "emojifloat 2s linear forwards",
+      },
+      keyframes: {
+        fade: {
+          "0%": { opacity: "0" },
+          "30%": { opacity: "1" },
+          "70%": { opacity: "1" },
+          "100%": { opacity: "0" },
+        },
+        emojifloat: {
+          "0%": {
+            opacity: "1",
+            transform: "translate3d(0, 0, 0)",
+          },
+          "10%": {
+            transform: "translate3d(-15%, -50%, 0)",
+          },
+          "20%": {
+            transform: "translate3d(-30%, -100%, 0)",
+          },
+          "30%": {
+            transform: "translate3d(0%, -150%, 0)",
+          },
+          "40%": {
+            transform: "translate3d(30%, -200%, 0)",
+          },
+          "50%": {
+            transform: "translate3d(5%, -250%, 0)",
+          },
+          "60%": {
+            transform: "translate3d(-20%, -300%, 0)",
+          },
+          "70%": {
+            transform: "translate3d(0%, -325%, 0)",
+          },
+          "80%": {
+            transform: "translate3d(20%, -350%, 0)",
+          },
+          "90%": {
+            opacity: "0.5",
+            transform: "translate3d(10%, -370%, 0)",
+          },
+          "100%": {
+            opacity: "0",
+            transform: "translate3d(0%, -390%, 0)",
+          },
+        },
+      },
     },
   },
   plugins: [],

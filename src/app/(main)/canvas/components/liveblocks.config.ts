@@ -9,14 +9,15 @@ const client = createClient({
 export type Presence = {
   userId: string | null;
   username: string | null;
-  profileImgUrl: string | null;
+  imageUrl: string | null;
   cursor: { x: number; y: number } | null;
+  chat: string;
 };
 
 export type Broadcast = {
-  type: "EMOJI" | "CHAT";
+  type: "EMOJI";
   emoji?: string;
-  message?: string;
+  emojiPosition?: { x: number; y: number };
 };
 
 export const {
