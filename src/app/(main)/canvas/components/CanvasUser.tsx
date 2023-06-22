@@ -127,7 +127,7 @@ const CanvasUser = ({
                 <span className="text-xs font-medium leading-none">
                   {presence.username || "Anonymous"}
                 </span>
-                <span className="max-w-lg text-sm font-light leading-none">
+                <span className="max-w-md text-sm font-light leading-none">
                   {presence.chat}
                 </span>
               </div>
