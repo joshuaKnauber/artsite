@@ -105,7 +105,7 @@ const CanvasUser = ({
             />
           </svg>
         )}
-        {presence.userId ? (
+        {true ? (
           <div
             className="flex flex-row items-start gap-2 rounded-2xl border border-white border-opacity-20 bg-bg-600 p-0.5"
             style={{
@@ -125,7 +125,7 @@ const CanvasUser = ({
                 }`}
               >
                 <span className="text-xs font-medium leading-none">
-                  {presence.username}
+                  {presence.username || "Anonymous"}
                 </span>
                 <span className="text-sm font-light leading-none">
                   {presence.chat}

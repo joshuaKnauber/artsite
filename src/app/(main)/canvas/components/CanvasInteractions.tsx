@@ -183,7 +183,7 @@ const CanvasInteractions = () => {
               </div>
             )}
             {showChat &&
-              (user ? (
+              (true ? (
                 <input
                   className="h-10 w-full rounded-2xl rounded-tl-sm border border-white border-opacity-20 bg-bg-600 px-4 text-sm font-light focus:outline-none"
                   onChange={(e) => setChat(e.target.value)}
