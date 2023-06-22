@@ -10,12 +10,15 @@ import {
 } from "./atoms/canvasAtoms";
 import { useEffect, useState } from "react";
 import { useBroadcastEvent, useUpdateMyPresence } from "./liveblocks.config";
+import { useClerk } from "@clerk/nextjs";
 
 const CanvasInteractions = () => {
   const mousePos = useAtomValue(mousePosAtom);
   const relMousePos = useAtomValue(relMousePosAtom);
   const setReactions = useSetAtom(reactionsAtom);
   const panning = useAtomValue(panningAtom);
+
+  const { user } = useClerk();
 
   const [showHelp, setShowHelp] = useState<boolean>(false);
 
@@ -30,14 +33,14 @@ const CanvasInteractions = () => {
   const broadcast = useBroadcastEvent();
   const updateMyPresence = useUpdateMyPresence();
 
-  const EMOJIS = ["👋", "👏", "👍", "😍", "👀", "💯"];
+  const EMOJIS = ["👋", "😱", "👍", "😍", "👀", "💯"];
 
   const onKeyDown = (e: KeyboardEvent) => {
     // show chat
     if (
       e.code === "Space" &&
       !(showChat || showEmojis) &&
-      e.target === document.body
+      (e.target as Element).tagName !== "INPUT"
     ) {
       window.localStorage.setItem("seenCanvasHelp", "true");
       setShowHelp(false);
@@ -50,7 +53,7 @@ const CanvasInteractions = () => {
     else if (
       e.code === "KeyE" &&
       !(showChat || showEmojis) &&
-      e.target === document.body
+      (e.target as Element).tagName !== "INPUT"
     ) {
       window.localStorage.setItem("seenCanvasHelp", "true");
       setShowHelp(false);
@@ -117,7 +120,7 @@ const CanvasInteractions = () => {
   }, [chat, showChat, updateMyPresence]);
 
   useEffect(() => {
-    if (!window.localStorage.getItem("seenCanvasHelp")) {
+    if (!window.localStorage.getItem("seenCanvasHelp") && !showHelp) {
       setShowHelp(true);
     }
 
@@ -129,13 +132,13 @@ const CanvasInteractions = () => {
       document.removeEventListener("mouseup", onMouseUp);
       document.removeEventListener("contextmenu", onContextMenu);
     };
-  }, [relMousePos, panning, showChat, showEmojis, selectedEmoji]);
+  }, [relMousePos, panning, showHelp, showChat, showEmojis, selectedEmoji]);
 
   return (
     <>
       {showHelp && (
         <div
-          className="pointer-events-none fixed z-20 hidden h-6 items-center justify-center rounded-md border border-white border-opacity-20 bg-bg-600 px-2 text-xs leading-none tracking-wider text-white text-opacity-50 md:flex"
+          className="pointer-events-none fixed hidden h-6 items-center justify-center rounded-md border border-white border-opacity-20 bg-bg-600 px-2 text-xs leading-none tracking-wider text-white text-opacity-50 md:flex"
           style={{
             transform: `translate(${mousePos.x + 20}px, ${mousePos.y - 12}px)`,
           }}
@@ -179,15 +182,23 @@ const CanvasInteractions = () => {
                 <span className="text-xs font-light opacity-50">[ESC]</span>
               </div>
             )}
-            {showChat && (
-              <input
-                className="h-10 w-full rounded-2xl rounded-tl-sm border border-white border-opacity-20 bg-bg-600 px-4 text-sm font-light focus:outline-none"
-                onChange={(e) => setChat(e.target.value)}
-                value={chat}
-                placeholder="Chat"
-                autoFocus
-              ></input>
-            )}
+            {showChat &&
+              (user ? (
+                <input
+                  className="h-10 w-full rounded-2xl rounded-tl-sm border border-white border-opacity-20 bg-bg-600 px-4 text-sm font-light focus:outline-none"
+                  onChange={(e) => setChat(e.target.value)}
+                  value={chat}
+                  placeholder="Chat"
+                  autoFocus
+                ></input>
+              ) : (
+                <div className="flex flex-col gap-1 rounded-2xl rounded-tl-sm border border-white border-opacity-20 bg-bg-600 px-4 py-2 text-sm">
+                  <span>Sign in to chat!</span>
+                  <span className="text-xs font-light opacity-50">
+                    (You can still use reactions)
+                  </span>
+                </div>
+              ))}
           </div>
         </>
       )}

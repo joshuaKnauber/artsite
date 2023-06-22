@@ -134,7 +134,12 @@ const CanvasUser = ({
             )}
           </div>
         ) : (
-          <span>anonymous</span>
+          <div
+            className="flex h-7 w-7 flex-row items-start gap-2 rounded-2xl border border-white border-opacity-20 bg-bg-600 p-0.5"
+            style={{
+              backgroundColor: color,
+            }}
+          ></div>
         )}
       </div>
     </Link>
