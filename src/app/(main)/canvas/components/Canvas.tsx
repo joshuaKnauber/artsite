@@ -46,7 +46,6 @@ const Canvas = ({ children }: CanvasProps) => {
 
   const setMousePos = useSetAtom(mousePosAtom);
   const setRelMousePos = useSetAtom(relMousePosAtom);
-  const [step, setStep] = useState<number>(0.05);
 
   const bounds = useMemo(() => {
     if (!refWrapper.current)
@@ -135,11 +134,9 @@ const Canvas = ({ children }: CanvasProps) => {
         maxScale={3}
         centerOnInit
         minScale={0.2}
+        smooth
         doubleClick={{
           disabled: true,
-        }}
-        wheel={{
-          step: step,
         }}
         onTransformed={(e) => {
           setPosX(e.state.positionX);
@@ -155,12 +152,6 @@ const Canvas = ({ children }: CanvasProps) => {
         onPanningStop={() => {
           tempPanning.current = false;
           setPanning(false);
-        }}
-        onWheel={(_, e) => {
-          // hack while zoom on trackpad is broken
-          if (Math.abs(e.deltaY) !== 0) {
-            setStep((step) => ((step + Math.abs(e.deltaY)) / 2) * 0.001);
-          }
         }}
       >
         <div
