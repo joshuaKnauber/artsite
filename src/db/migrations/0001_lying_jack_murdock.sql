@@ -1,1 +1,0 @@
-ALTER TABLE `artworks` ADD `key` varchar(256) NOT NULL;

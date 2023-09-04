@@ -1,17 +1,18 @@
 import {
-  mysqlTable,
+  pgTable,
   text,
   varchar,
   timestamp,
   boolean,
-  int,
+  serial,
+  integer,
   decimal,
   index,
-} from "drizzle-orm/mysql-core";
+} from "drizzle-orm/pg-core";
 import { InferModel } from "drizzle-orm";
 
-export const artworks = mysqlTable("artworks", {
-  id: int("id").primaryKey().autoincrement(),
+export const artworks = pgTable("artworks", {
+  id: serial("id").primaryKey().notNull(),
   key: varchar("key", { length: 256 }).notNull(),
   user_id: varchar("user_id", { length: 256 }).notNull(),
   title: varchar("title", { length: 256 }).notNull(),
@@ -23,14 +24,14 @@ export const artworks = mysqlTable("artworks", {
     .notNull(),
 });
 
-export const images = mysqlTable(
+export const images = pgTable(
   "images",
   {
-    id: int("id").primaryKey().autoincrement(),
-    artwork_id: int("artwork_id").notNull(),
+    id: serial("id").primaryKey().notNull(),
+    artwork_id: integer("artwork_id").notNull(),
     key: varchar("key", { length: 256 }).notNull(),
-    width: int("width").notNull().default(0),
-    height: int("height").notNull().default(0),
+    width: integer("width").notNull().default(0),
+    height: integer("height").notNull().default(0),
     is_thumbnail: boolean("is_thumbnail").notNull().default(false),
   },
   (table) => {
@@ -40,18 +41,18 @@ export const images = mysqlTable(
   }
 );
 
-export const comments = mysqlTable(
+export const comments = pgTable(
   "comments",
   {
-    id: int("id").primaryKey().autoincrement(),
-    artwork_id: int("artwork_id").notNull(),
+    id: serial("id").primaryKey().notNull(),
+    artwork_id: integer("artwork_id").notNull(),
     user_id: varchar("user_id", { length: 256 }).notNull(),
     text: text("text").notNull(),
     created_at: timestamp("created_at", { mode: "string" })
       .defaultNow()
       .notNull(),
     is_feedback: boolean("is_feedback").notNull().default(false),
-    feedback_image_id: int("feedback_image_id"),
+    feedback_image_id: integer("feedback_image_id"),
     feedback_image_x: decimal("feedback_image_x"),
     feedback_image_y: decimal("feedback_image_y"),
   },
@@ -60,12 +61,12 @@ export const comments = mysqlTable(
   })
 );
 
-export const notifications = mysqlTable(
+export const notifications = pgTable(
   "notifications",
   {
-    id: int("id").primaryKey().autoincrement(),
+    id: serial("id").primaryKey().notNull(),
     user_id: varchar("user_id", { length: 256 }).notNull(),
-    source_id: int("source_id").notNull(),
+    source_id: integer("source_id").notNull(),
     source_type: varchar("source_type", { length: 256 }).notNull(),
     created_at: timestamp("created_at", { mode: "string" })
       .defaultNow()

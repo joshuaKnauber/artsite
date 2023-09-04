@@ -37,19 +37,23 @@ export async function POST(request: NextRequest) {
   try {
     // add artwork
     const artworkKey = crypto.randomUUID().replaceAll("-", "");
-    const { insertId: artworkId } = await db.insert(artworksTable).values({
-      key: artworkKey,
-      title: data.title,
-      description: data.description,
-      user_id: userId,
-      feedback: data.wantsFeedback,
-      wip: data.wip,
-    });
+    const res = await db
+      .insert(artworksTable)
+      .values({
+        key: artworkKey,
+        title: data.title,
+        description: data.description,
+        user_id: userId,
+        feedback: data.wantsFeedback,
+        wip: data.wip,
+      })
+      .returning({ artworkId: artworksTable.id });
+    const { artworkId } = res[0];
 
     // add images
     await db.insert(imagesTable).values(
       data.imageIds.map((imageId, i) => ({
-        artwork_id: parseInt(artworkId),
+        artwork_id: artworkId,
         key: imageId,
         is_thumbnail: i === data.thumbnailIndex,
         width: data.imageSizes[i].width,

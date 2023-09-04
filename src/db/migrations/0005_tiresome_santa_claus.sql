@@ -1,1 +1,0 @@
-ALTER TABLE `artworks` ADD `wip` boolean DEFAULT false NOT NULL;

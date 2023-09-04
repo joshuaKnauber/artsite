@@ -1,54 +1,12 @@
 {
   "version": "5",
-  "dialect": "mysql",
+  "dialect": "pg",
   "entries": [
     {
       "idx": 0,
       "version": "5",
-      "when": 1686955346639,
-      "tag": "0000_chief_blazing_skull",
-      "breakpoints": false
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1686956061496,
-      "tag": "0001_lying_jack_murdock",
-      "breakpoints": false
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1686957007192,
-      "tag": "0002_brief_jubilee",
-      "breakpoints": false
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1686957348095,
-      "tag": "0003_nebulous_energizer",
-      "breakpoints": false
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1686960427935,
-      "tag": "0004_low_kronos",
-      "breakpoints": false
-    },
-    {
-      "idx": 5,
-      "version": "5",
-      "when": 1686998688657,
-      "tag": "0005_tiresome_santa_claus",
-      "breakpoints": false
-    },
-    {
-      "idx": 6,
-      "version": "5",
-      "when": 1687003629284,
-      "tag": "0006_smooth_moon_knight",
+      "when": 1693815168205,
+      "tag": "0000_loose_sabretooth",
       "breakpoints": false
     }
   ]
