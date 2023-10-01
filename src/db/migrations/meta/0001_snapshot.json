@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "05f48fad-f7dc-46dd-9752-ff54ee04ba7f",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "5290f62c-5986-48fa-afb3-f33d2498d452",
+  "prevId": "05f48fad-f7dc-46dd-9752-ff54ee04ba7f",
   "tables": {
     "artworks": {
       "name": "artworks",
@@ -51,7 +51,7 @@
           "name": "thumbnail_image_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "created_at": {
           "name": "created_at",
@@ -232,9 +232,9 @@
           "primaryKey": false,
           "notNull": true
         },
-        "artwork_id": {
-          "name": "artwork_id",
-          "type": "uuid",
+        "comment_id": {
+          "name": "comment_id",
+          "type": "serial",
           "primaryKey": false,
           "notNull": true
         },

@@ -19,7 +19,7 @@ const Artwork = ({ image, minimal, withFeedback, className }: ArtworkProps) => {
     <div ref={ref}>
       <TwicImg
         className={className}
-        src={`/art/${image.key}`}
+        src={`/art/${image.file_key}`}
         ratio={image.width / image.height}
       />
       {!minimal && withFeedback && inView && <FeedbackOverlay image={image} />}

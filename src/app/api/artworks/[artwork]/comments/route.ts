@@ -22,14 +22,14 @@ export async function POST(
   request: NextRequest,
   { params }: { params: { artwork: string } }
 ) {
-  const artworkId = parseInt(params.artwork || "");
+  const artworkId = params.artwork || "";
   const data = (await request.json()) as PostComment;
 
   if (
     !schemaPostComment.safeParse(data).success ||
     (data.posX === undefined) !== (data.posY === undefined) ||
     (data.posX !== undefined) !== (data.imageId !== undefined) ||
-    isNaN(artworkId)
+    !artworkId
   ) {
     return new NextResponse("Invalid Data", { status: 400 });
   }
@@ -63,12 +63,13 @@ export async function POST(
     });
 
     // send notification to artwork owner
-    if (artwork && artwork.user_id !== userId)
-      await db.insert(notificationsTable).values({
-        user_id: artwork.user_id,
-        source_id: commentId,
-        source_type: "comment",
-      });
+    // TODO
+    // if (artwork && artwork.user_id !== userId)
+    //   await db.insert(notificationsTable).values({
+    //     user_id: artwork.user_id,
+    //     source_id: commentId,
+    //     source_type: "comment",
+    //   });
 
     return NextResponse.json({ id: commentId });
   } catch (error) {
@@ -81,8 +82,8 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { artwork: string } }
 ) {
-  const artworkId = parseInt(params.artwork || "");
-  if (isNaN(artworkId)) {
+  const artworkId = params.artwork || "";
+  if (!artworkId) {
     return new NextResponse("Invalid Data", { status: 400 });
   }
 

@@ -44,12 +44,12 @@ const UploadSectionMeta = ({
         onChange={setDescription}
         area
       />
-      {/* <TagInput
+      <TagInput
         label="Tags"
         value={tags}
         setValue={setTags}
         placeholder="Tags"
-      /> */}
+      />
       <Toggle label="Allow Feedback" value={feedback} onChange={setFeedback} />
       <Toggle label="WIP" value={wip} onChange={setWip} />
     </div>

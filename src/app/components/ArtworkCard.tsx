@@ -1,35 +1,28 @@
 import Link from "next/link";
 import { clerkClient } from "@clerk/nextjs";
-import db from "@/db";
-import { eq } from "drizzle-orm";
-import { images as imagesTable } from "@/db/schema";
+import { Image, images as imagesTable } from "@/db/schema";
 import { ChatBubbleOvalLeftEllipsisIcon } from "@heroicons/react/24/outline";
 import { TwicImg } from "@twicpics/components/react";
 
 type ArtworkCardProps = {
-  id: number;
-  artworkKey: string;
+  artworkId?: string;
   artistId?: string;
   minimal?: boolean;
   wip?: boolean;
   feedback?: boolean;
+  thumbnail?: Image;
 };
 
 const ArtworkCard = async ({
-  id,
-  artworkKey,
   artistId,
+  artworkId,
   minimal,
   wip,
   feedback,
+  thumbnail,
 }: ArtworkCardProps) => {
   const artist =
     artistId && !minimal && (await clerkClient.users.getUser(artistId));
-
-  const images = await db.query.images.findMany({
-    where: eq(imagesTable.artwork_id, id),
-  });
-  const thumbnail = images.find((img) => img.is_thumbnail);
 
   return (
     <div
@@ -41,7 +34,7 @@ const ArtworkCard = async ({
       }}
     >
       <Link
-        href={minimal ? `/a/${artworkKey}?min=1` : `/a/${artworkKey}`}
+        href={minimal ? `/a/${artworkId}?min=1` : `/a/${artworkId}`}
         className="relative h-full w-full overflow-hidden"
       >
         <div className="absolute right-4 top-4 flex flex-row gap-2">
@@ -58,7 +51,7 @@ const ArtworkCard = async ({
         </div>
         {thumbnail && (
           <TwicImg
-            src={`/art/${thumbnail.key}`}
+            src={`/art/${thumbnail.file_key}`}
             className="w-full"
             ratio={thumbnail.width / thumbnail.height}
           />

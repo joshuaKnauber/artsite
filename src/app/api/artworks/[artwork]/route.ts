@@ -14,10 +14,10 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: { artwork: string } }
 ) {
-  const artworkId = parseInt(params.artwork || "");
+  const artworkId = params.artwork || "";
 
-  if (isNaN(artworkId)) {
-    return new NextResponse("Invalid Data", { status: 400 });
+  if (!artworkId) {
+    return new NextResponse("Invalid Artwork", { status: 400 });
   }
 
   try {
@@ -47,8 +47,8 @@ export async function DELETE(
     // delete artwork
     await db.delete(artworksTable).where(eq(artworksTable.id, artworkId));
 
-    // delete images
-    await utapi.deleteFiles(images.map((image) => image.key));
+    // delete image files
+    await utapi.deleteFiles(images.map((image) => image.file_key));
 
     return new NextResponse(null, { status: 204 });
   } catch (error) {
@@ -76,11 +76,11 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: { artwork: string } }
 ) {
-  const artworkId = parseInt(params.artwork || "");
+  const artworkId = params.artwork || "";
   const data = (await request.json()) as UpdateArtworkData;
 
   if (
-    isNaN(artworkId) ||
+    !artworkId ||
     !schemaUpdateArtwork.safeParse(data).success ||
     (data.imageIds &&
       (!data.imageSizes ||

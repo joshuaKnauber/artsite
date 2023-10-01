@@ -10,7 +10,7 @@ import TextInput from "@/app/components/Inputs/TextInput";
 import { TwicImg } from "@twicpics/components/react";
 
 type CommentSectionProps = {
-  artworkId: number;
+  artworkId: string;
 };
 
 const CommentSection = ({ artworkId }: CommentSectionProps) => {

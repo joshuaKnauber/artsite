@@ -1,6 +1,6 @@
 import db from "@/db";
 import { desc, eq } from "drizzle-orm";
-import { artworks as artworksTable } from "@/db/schema";
+import { artworks as artworksTable, images } from "@/db/schema";
 import { clerkClient, currentUser } from "@clerk/nextjs";
 import ArtworkGrid from "@/app/components/ArtworkGrid";
 import ArtworkCard from "@/app/components/ArtworkCard";
@@ -30,6 +30,11 @@ const UserPage = async ({ name, minimal }: UserPageProps) => {
     where: eq(artworksTable.user_id, user.id),
     columns: { id: true, key: true, title: true, user_id: true, wip: true },
     orderBy: desc(artworksTable.created_at),
+    with: {
+      images: {
+        where: eq(images.is_thumbnail, true),
+      },
+    },
   });
 
   return (
@@ -135,7 +140,7 @@ const UserPage = async ({ name, minimal }: UserPageProps) => {
               if (artwork.wip && minimal) return null;
               return (
                 <ArtworkCard
-                  id={artwork.id}
+                  thumbnail={artwork.images[0]}
                   key={artwork.id}
                   artworkKey={artwork.key}
                   minimal={minimal}

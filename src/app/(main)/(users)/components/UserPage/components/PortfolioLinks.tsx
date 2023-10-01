@@ -1,15 +1,10 @@
 "use client";
 
 import {
-  CheckIcon,
   ClipboardDocumentCheckIcon,
   ClipboardDocumentIcon,
-  LinkIcon,
 } from "@heroicons/react/24/outline";
-import {
-  ArrowRightIcon,
-  InformationCircleIcon,
-} from "@heroicons/react/24/solid";
+import { ArrowRightIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -49,12 +44,6 @@ const PortfolioLinks = ({ username }: PortfolioLinksProps) => {
           )}
         </button>
       </div>
-      <span className="text-sm font-light leading-tight opacity-50">
-        <InformationCircleIcon className="mr-1 mt-[-4px] inline-block h-3 w-3" />
-        {
-          " You can share your portfolio and art with others even while we're in a closed beta!"
-        }
-      </span>
     </div>
   );
 };

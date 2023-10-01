@@ -2,6 +2,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { uploadFiles } from "../components/UploadSectionImages";
 import { PostArtworkData } from "@/app/api/artworks/route";
+import { Artwork } from "@/db/schema";
 
 const useOnUpload = () => {
   const router = useRouter();
@@ -70,8 +71,8 @@ const useOnUpload = () => {
       if (!metaResponse.ok) {
         throw new Error(metaResponse.statusText);
       }
-      const newArtwork = await metaResponse.json();
-      router.replace(`/a/${newArtwork.key}?new=1`);
+      const newArtwork = await metaResponse.json() as Artwork
+      router.replace(`/a/${newArtwork.id}?new=1`);
     } catch (e) {
       console.error(e);
       setError("Something went wrong");

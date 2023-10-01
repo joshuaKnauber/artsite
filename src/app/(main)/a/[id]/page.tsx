@@ -22,7 +22,7 @@ export async function generateMetadata({
   const min = "" as unknown; // FIX searchParams where not working
 
   const artwork = await db.query.artworks.findFirst({
-    where: eq(artworksTable.key, id),
+    where: eq(artworksTable.id, id),
   });
 
   return {
@@ -48,13 +48,25 @@ export default async function ArtworkPage({
   const isNew = newParam === "1";
 
   const artwork = await db.query.artworks.findFirst({
-    where: eq(artworksTable.key, id),
+    where: eq(artworksTable.id, id),
+    with: {
+      images: true,
+      tagsToArtworks: {
+        columns: {
+          artwork_id: false,
+          tag_id: false,
+        },
+        with: {
+          tag: {
+            columns: {
+              name: true,
+            },
+          },
+        },
+      },
+    },
   });
   if (!artwork) throw new Error("Artwork not found");
-
-  const images = await db.query.images.findMany({
-    where: eq(imagesTable.artwork_id, artwork.id),
-  });
 
   const user = await currentUser();
 
@@ -76,7 +88,7 @@ export default async function ArtworkPage({
             <div className="flex flex-col gap-4">
               {isOwnArtwork && !minimal && (
                 <Link
-                  href={`/a/${artwork.key}?edit=1`}
+                  href={`/a/${artwork.id}?edit=1`}
                   className="font.light flex w-fit flex-row items-center gap-2 rounded-md border border-white border-opacity-30 bg-white bg-opacity-0 px-4 py-1 text-sm opacity-75 md:hover:bg-opacity-5 md:hover:opacity-100"
                 >
                   <PencilIcon className="h-3 w-3" />
@@ -106,6 +118,16 @@ export default async function ArtworkPage({
                     )}
                   </div>
                 )}
+              <div className="flex flex-row flex-wrap items-center gap-2">
+                {artwork.tagsToArtworks.map((t, i) => (
+                  <span
+                    className="rounded-md bg-bg-600 px-3 py-1.5 text-sm leading-none text-white text-opacity-50"
+                    key={i}
+                  >
+                    {t.tag.name}
+                  </span>
+                ))}
+              </div>
             </div>
           )}
           {!isEditing && (
@@ -150,7 +172,7 @@ export default async function ArtworkPage({
           )}
         </div>
         <div className="flex flex-col items-center gap-4 px-4 md:flex-grow md:gap-8 md:bg-bg-400 md:px-16 md:py-8">
-          {images.map((image) => (
+          {artwork.images.map((image) => (
             <div key={image.id} className="w-full">
               <div
                 className="relative mx-auto md:max-h-[calc(100vh-8rem)] md:w-auto"
