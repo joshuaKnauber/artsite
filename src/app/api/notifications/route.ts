@@ -38,9 +38,6 @@ export async function GET(request: NextRequest) {
   // get sources
   const comments =
     commentIds.length > 0
-      // ? await db.query.comments.findMany({
-      //     where: inArray(notificationsTable.id, commentIds),
-      //   })
       ? await db.select().from(commentsTable)
           .leftJoin(artworks, eq(commentsTable.artwork_id, artworks.id))
           .where(inArray(commentsTable.id, commentIds))

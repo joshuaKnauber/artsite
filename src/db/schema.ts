@@ -140,13 +140,20 @@ export const notifications = pgTable(
   {
     id: serial("id").primaryKey().notNull(),
     user_id: varchar("user_id", { length: 256 }).notNull(),
-    comment_id: serial("comment_id"),
+    comment_id: serial("comment_id").references(() => comments.id),
     source_type: notificationTypeEnum("source_type").notNull(),
     created_at: timestamp("created_at", { mode: "string" })
       .defaultNow()
       .notNull(),
     is_read: boolean("is_read").notNull().default(false),
-  });
+});
+
+export const notificationsRelations = relations(notifications, ({ one }) => ({
+  comment: one(comments, {
+    fields: [notifications.comment_id],
+    references: [comments.id],
+  }),
+}));
 
 export type Artwork = typeof artworks.$inferSelect;
 export type Image = typeof images.$inferSelect;
