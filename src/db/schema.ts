@@ -12,7 +12,7 @@ import {
   primaryKey,
   pgEnum,
 } from "drizzle-orm/pg-core";
-import { InferModel, relations, sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 
 export const artworks = pgTable("artworks", {
   id: uuid("id").primaryKey().notNull().default(sql`gen_random_uuid()`),
