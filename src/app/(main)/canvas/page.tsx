@@ -35,7 +35,7 @@ export default async function CanvasPage() {
             key={artworks[i].id}
             x={x * 1500}
             y={y * 1500}
-            id={artworks[i].key}
+            id={artworks[i].id}
           >
             <ArtworkFrame artwork={artworks[i]} />
           </CanvasItem>

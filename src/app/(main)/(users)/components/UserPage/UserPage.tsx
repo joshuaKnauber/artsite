@@ -1,6 +1,6 @@
 import db from "@/db";
 import { desc, eq } from "drizzle-orm";
-import { artworks as artworksTable, images } from "@/db/schema";
+import { artworkThumbnails, artworks as artworksTable, images } from "@/db/schema";
 import { clerkClient, currentUser } from "@clerk/nextjs";
 import ArtworkGrid from "@/app/components/ArtworkGrid";
 import ArtworkCard from "@/app/components/ArtworkCard";
@@ -26,16 +26,10 @@ const UserPage = async ({ name, minimal }: UserPageProps) => {
   const current = await currentUser();
   const isProfile = current && current.id === user.id;
 
-  const artworks = await db.query.artworks.findMany({
-    where: eq(artworksTable.user_id, user.id),
-    columns: { id: true, key: true, title: true, user_id: true, wip: true },
-    orderBy: desc(artworksTable.created_at),
-    with: {
-      images: {
-        where: eq(images.is_thumbnail, true),
-      },
-    },
-  });
+  const artworks = await db.select().from(artworksTable)
+    .leftJoin(artworkThumbnails, eq(artworkThumbnails.artwork_id, artworksTable.id))
+    .leftJoin(images, eq(images.id, artworkThumbnails.thumbnail_image_id))
+    .where(eq(artworksTable.user_id, user.id))
 
   return (
     <>
@@ -137,14 +131,14 @@ const UserPage = async ({ name, minimal }: UserPageProps) => {
         >
           <ArtworkGrid>
             {artworks.map((artwork) => {
-              if (artwork.wip && minimal) return null;
+              if (artwork.artworks.wip && minimal) return null;
               return (
                 <ArtworkCard
-                  thumbnail={artwork.images[0]}
-                  key={artwork.id}
-                  artworkKey={artwork.key}
+                  thumbnail={artwork.images || undefined}
+                  key={artwork.artworks.id}
+                  artworkId={artwork.artworks.id}
                   minimal={minimal}
-                  wip={artwork.wip}
+                  wip={artwork.artworks.wip}
                 />
               );
             })}

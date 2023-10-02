@@ -1,5 +1,5 @@
 import db from "@/db";
-import { Artwork, images as imagesTable } from "@/db/schema";
+import { Artwork, artworkThumbnails, images as imagesTable } from "@/db/schema";
 import { clerkClient } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
 import FrameLinks from "./FrameLinks";
@@ -11,11 +11,14 @@ type ArtworkFrameProps = {
 };
 
 const ArtworkFrame = async ({ artwork }: ArtworkFrameProps) => {
-  const images = await db.query.images.findMany({
-    where: eq(imagesTable.artwork_id, artwork.id),
-  });
+  // const images = await db.query.images.findMany({
+  //   where: eq(imagesTable.artwork_id, artwork.id),
+  // });
+  const images = await db.select().from(imagesTable)
+    .leftJoin(artworkThumbnails, eq(artworkThumbnails.thumbnail_image_id, imagesTable.id))
+    .where(eq(artworkThumbnails.artwork_id, artwork.id));
 
-  const thumbnail = images.find((i) => i.is_thumbnail);
+  const thumbnail = images[0].images
   if (!thumbnail) return null;
 
   const [artist] = await clerkClient.users.getUserList({

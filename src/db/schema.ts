@@ -146,12 +146,11 @@ export const notifications = pgTable(
       .defaultNow()
       .notNull(),
     is_read: boolean("is_read").notNull().default(false),
-  } // TODO source id is missing and should have check depending on type
-);
+  });
 
-export type Artwork = InferModel<typeof artworks>;
-export type Image = InferModel<typeof images>;
-export type Comment = InferModel<typeof comments>;
-export type Notification = InferModel<typeof notifications> & {
+export type Artwork = typeof artworks.$inferSelect;
+export type Image = typeof images.$inferSelect;
+export type Comment = typeof comments.$inferSelect;
+export type Notification = typeof notifications.$inferSelect & {
   source_type: "comment";
 };

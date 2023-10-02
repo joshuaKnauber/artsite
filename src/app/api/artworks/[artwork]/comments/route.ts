@@ -42,34 +42,37 @@ export async function POST(
   }
 
   try {
-    const res = await db
-      .insert(commentsTable)
-      .values({
-        text: data.text,
-        user_id: userId,
-        artwork_id: artworkId,
+    const commentId = await db.transaction(async db => {
+      const res = await db
+        .insert(commentsTable)
+        .values({
+          text: data.text,
+          user_id: userId,
+          artwork_id: artworkId,
+  
+          is_feedback: data.imageId !== undefined,
+          feedback_image_id: data.imageId,
+          feedback_image_x: (data.posX || 0).toString(),
+          feedback_image_y: (data.posY || 0).toString(),
+        })
+        .returning({ commentId: commentsTable.id });
+      const commentId = res[0].commentId;
+  
+      const artwork = await db.query.artworks.findFirst({
+        where: eq(artworksTable.id, artworkId),
+        columns: { user_id: true },
+      });
+  
+      // send notification to artwork owner
+      if (artwork && artwork.user_id !== userId)
+        await db.insert(notificationsTable).values({
+          user_id: artwork.user_id,
+          comment_id: commentId,
+          source_type: "comment",
+        });
 
-        is_feedback: data.imageId !== undefined,
-        feedback_image_id: data.imageId,
-        feedback_image_x: (data.posX || 0).toString(),
-        feedback_image_y: (data.posY || 0).toString(),
-      })
-      .returning({ commentId: commentsTable.id });
-    const commentId = res[0].commentId;
-
-    const artwork = await db.query.artworks.findFirst({
-      where: eq(artworksTable.id, artworkId),
-      columns: { user_id: true },
-    });
-
-    // send notification to artwork owner
-    // TODO
-    // if (artwork && artwork.user_id !== userId)
-    //   await db.insert(notificationsTable).values({
-    //     user_id: artwork.user_id,
-    //     source_id: commentId,
-    //     source_type: "comment",
-    //   });
+      return commentId
+    })
 
     return NextResponse.json({ id: commentId });
   } catch (error) {

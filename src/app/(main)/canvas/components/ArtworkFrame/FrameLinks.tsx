@@ -28,7 +28,7 @@ const FrameLinks = ({ artwork, username, profilePicture }: FrameLinksProps) => {
 
   const onCopy = () => {
     const copyText = () => {
-      copy(`${window.location.origin}/canvas/?a=${artwork.key}`);
+      copy(`${window.location.origin}/canvas/?a=${artwork.id}`);
       setCopied(true);
       setTimeout(() => setCopied(false), 1000);
     };
@@ -38,7 +38,7 @@ const FrameLinks = ({ artwork, username, profilePicture }: FrameLinksProps) => {
         window.navigator.share({
           title: artwork.title,
           text: "test",
-          url: `${window.location.origin}/a/${artwork.key}`,
+          url: `${window.location.origin}/a/${artwork.id}`,
         });
       } catch (err) {
         copyText();
@@ -77,7 +77,7 @@ const FrameLinks = ({ artwork, username, profilePicture }: FrameLinksProps) => {
         }}
       >
         <Link
-          href={`/a/${artwork.key}`}
+          href={`/a/${artwork.id}`}
           target="_blank"
           className="flex aspect-square h-14 items-center justify-center rounded-full border border-white border-opacity-20 bg-bg-500 p-2 transition-all md:hover:bg-bg-600"
         >

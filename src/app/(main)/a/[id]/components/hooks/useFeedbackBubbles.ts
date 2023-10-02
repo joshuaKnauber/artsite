@@ -2,7 +2,7 @@ import { PostComment } from "@/app/api/artworks/[artwork]/comments/route";
 import { useEffect, useRef, useState } from "react";
 import useComments from "./useComments";
 
-const useFeedbackBubbles = (artworkId: number, imageId: number) => {
+const useFeedbackBubbles = (artworkId: string, imageId: number) => {
   const refContainer = useRef<HTMLDivElement>(null);
   const refComment = useRef<HTMLDivElement>(null);
 

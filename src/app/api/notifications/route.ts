@@ -8,6 +8,8 @@ import {
   Comment,
   Notification,
   notifications as notificationsTable,
+  comments as commentsTable,
+  artworks
 } from "@/db/schema";
 
 export type RichNotification = Notification & {
@@ -30,18 +32,20 @@ export async function GET(request: NextRequest) {
     orderBy: desc(notificationsTable.created_at),
   })) as Notification[];
   const commentIds = notifications
-    .map((n) => (n.source_type === "comment" ? n.source_id : null))
+    .map((n) => (n.source_type === "comment" ? n.comment_id : null))
     .filter((id) => id !== null) as number[];
 
   // get sources
   const comments =
     commentIds.length > 0
-      ? await db.query.comments.findMany({
-          where: inArray(notificationsTable.id, commentIds),
-        })
+      // ? await db.query.comments.findMany({
+      //     where: inArray(notificationsTable.id, commentIds),
+      //   })
+      ? await db.select().from(commentsTable)
+          .leftJoin(artworks, eq(commentsTable.artwork_id, artworks.id))
+          .where(inArray(commentsTable.id, commentIds))
       : [];
-  const commentAuthorIds = comments.map((c) => c.user_id);
-  const commentArtworkIds = comments.map((c) => c.artwork_id);
+  const commentAuthorIds = comments.map((c) => c.comments.user_id);
 
   const commentAuthors =
     commentAuthorIds.length > 0
@@ -50,22 +54,13 @@ export async function GET(request: NextRequest) {
         })) as ClerkUser[])
       : [];
 
-  const commentArtworks =
-    commentArtworkIds.length > 0
-      ? await db.query.artworks.findMany({
-          where: inArray(notificationsTable.id, commentArtworkIds),
-        })
-      : [];
-
   // combine notifications with sources
   const notificationsWithSources: RichNotification[] = notifications.map(
     (n) => {
       if (n.source_type === "comment") {
-        const comment = comments.find((c) => c.id === n.source_id);
-        const author = commentAuthors.find((a) => a.id === comment?.user_id);
-        const origin = commentArtworks.find(
-          (a) => a.id === comment?.artwork_id
-        );
+        const comment = comments.find((c) => c.comments.id === n.comment_id)?.comments  || null;
+        const author = commentAuthors.find((a) => a.id === comment?.user_id) || null;
+        const origin = comments.find((c) => c.comments.id === n.comment_id)?.artworks  || null;
         return {
           ...n,
           source: comment || null,
