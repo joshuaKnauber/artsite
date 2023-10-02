@@ -3,6 +3,7 @@ import { getAuth } from "@clerk/nextjs/server";
 import z from "zod";
 import db from "@/db";
 import {
+  artworkThumbnails,
   artworks as artworksTable,
   images as imagesTable,
   tags as tagsTable,
@@ -66,8 +67,11 @@ export async function POST(request: NextRequest) {
       
       // update thumbnail
       const thumbnailId = createdImages[data.thumbnailIndex].id
-      await tx.update(artworksTable).set({ thumbnail_image_id: thumbnailId }).where(eq(artworksTable.id, createdArtwork.id))
-      
+      await tx.insert(artworkThumbnails).values({
+        artwork_id: createdArtwork.id,
+        thumbnail_image_id: thumbnailId,
+      });
+
       // add tags
       if (data.tags.length> 0) {
         const insertedTags = await tx

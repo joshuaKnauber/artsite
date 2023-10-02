@@ -83,7 +83,7 @@ export default async function ArtworkPage({
             minimal ? "md:top-0" : "md:top-header md:max-h-[calc(100vh-4rem)]"
           }`}
         >
-          {isEditing && <EditMetaForm artwork={artwork} />}
+          {isEditing && <EditMetaForm tags={artwork.tagsToArtworks.map(t => t.tag.name)} artwork={artwork} />}
           {!isEditing && (
             <div className="flex flex-col gap-4">
               {isOwnArtwork && !minimal && (

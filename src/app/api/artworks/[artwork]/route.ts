@@ -5,8 +5,11 @@ import {
   artworks as artworksTable,
   images as imagesTable,
   comments as commentsTable,
+  tagsToArtworks,
+  artworkThumbnails,
+  tags as tagsTable,
 } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq, inArray, not, sql } from "drizzle-orm";
 import { utapi } from "uploadthing/server";
 import { z } from "zod";
 
@@ -33,20 +36,34 @@ export async function DELETE(
       });
     }
 
-    // delete comments in db
-    await db
-      .delete(commentsTable)
-      .where(eq(commentsTable.artwork_id, artworkId));
+    const images = await db.transaction(async (tx) => {
+      // delete comments in db
+      await tx
+        .delete(commentsTable)
+        .where(eq(commentsTable.artwork_id, artworkId));
 
-    // delete images in db
-    const images = await db.query.images.findMany({
-      where: eq(imagesTable.artwork_id, artworkId),
-    });
-    await db.delete(imagesTable).where(eq(imagesTable.artwork_id, artworkId));
+      // delete tags in db
+      await tx
+        .delete(tagsToArtworks)
+        .where(eq(tagsToArtworks.artwork_id, artworkId));
 
-    // delete artwork
-    await db.delete(artworksTable).where(eq(artworksTable.id, artworkId));
+      // delete thumbnail in db
+      await tx
+        .delete(artworkThumbnails)
+        .where(eq(artworkThumbnails.artwork_id, artworkId));
+  
+      // delete images in db
+      const images = await tx.query.images.findMany({
+        where: eq(imagesTable.artwork_id, artworkId),
+      });
+      await tx.delete(imagesTable).where(eq(imagesTable.artwork_id, artworkId));
+  
+      // delete artwork
+      await tx.delete(artworksTable).where(eq(artworksTable.id, artworkId));
 
+      return images
+    })
+    
     // delete image files
     await utapi.deleteFiles(images.map((image) => image.file_key));
 
@@ -105,15 +122,51 @@ export async function PATCH(
     }
 
     // update metadata
-    await db
-      .update(artworksTable)
-      .set({
-        title: data.title,
-        description: data.description,
-        wip: data.wip,
-        feedback: data.wantsFeedback,
-      })
-      .where(eq(artworksTable.id, artworkId));
+    await db.transaction(async tx => {
+      // update artwork
+      await db
+        .update(artworksTable)
+        .set({
+          title: data.title,
+          description: data.description,
+          wip: data.wip,
+          feedback: data.wantsFeedback,
+        })
+        .where(eq(artworksTable.id, artworkId));
+
+      // update tags
+      const newTags = data.tags
+      if (newTags) {
+        const insertedTags = await tx
+        .insert(tagsTable)
+        .values(
+          newTags.map(t => ({ name: t }))
+            )
+          .onConflictDoUpdate({
+            target: tagsTable.name,
+            set: {
+              name: sql`excluded.name`,
+            },
+          })
+          .returning({ tagId: tagsTable.id });
+        
+        // remove tags from artwork
+        await tx
+          .delete(tagsToArtworks)
+          .where(and(
+            eq(tagsToArtworks.artwork_id, artworkId),
+            not(inArray(tagsToArtworks.tag_id, insertedTags.map(({ tagId }) => tagId)))
+          ))
+  
+        // add tags to artwork
+        await tx.insert(tagsToArtworks).values(
+          insertedTags.map(({ tagId }) => ({
+            artwork_id: artworkId,
+            tag_id: tagId,
+          }))
+        ).onConflictDoNothing()
+      }
+    })
 
     return new NextResponse(null, { status: 204 });
   } catch (error) {

@@ -11,7 +11,6 @@ import {
   AnyPgColumn,
   primaryKey,
   pgEnum,
-  check,
 } from "drizzle-orm/pg-core";
 import { InferModel, relations, sql } from "drizzle-orm";
 
@@ -22,20 +21,10 @@ export const artworks = pgTable("artworks", {
   description: text("description").notNull(),
   feedback: boolean("feedback").notNull().default(true),
   wip: boolean("wip").notNull().default(false),
-  thumbnail_image_id: integer("thumbnail_image_id").references((): AnyPgColumn => images.id),
   created_at: timestamp("created_at", { mode: "string" })
     .defaultNow()
     .notNull(),
 });
-
-export const artworksRelations = relations(artworks, ({ many, one }) => ({
-  images: many(images),
-  tagsToArtworks: many(tagsToArtworks),
-  thumbnail: one(images, {
-    fields: [artworks.thumbnail_image_id],
-    references: [images.id],
-  }),
-}));
 
 export const images = pgTable(
   "images",
@@ -48,10 +37,46 @@ export const images = pgTable(
   }
 );
 
+export const artworkThumbnails = pgTable(
+  "artwork_thumbnails",
+  {
+    artwork_id: uuid("artwork_id").notNull().references(() => artworks.id),
+    thumbnail_image_id: integer("thumbnail_image_id").notNull().references(() => images.id),
+  }, (table) => {
+    return {
+      pk: primaryKey(table.artwork_id, table.thumbnail_image_id),
+    };
+  }
+);
+
+export const artworksRelations = relations(artworks, ({ many, one }) => ({
+  images: many(images),
+  tagsToArtworks: many(tagsToArtworks),
+  thumbnail: one(artworkThumbnails, {
+    fields: [artworks.id],
+    references: [artworkThumbnails.artwork_id],
+  }),
+}));
+
 export const imagesRelations = relations(images, ({ one }) => ({
   artwork: one(artworks, {
     fields: [images.artwork_id],
     references: [artworks.id],
+  }),
+  artworkThumbnails: one(artworkThumbnails, {
+    fields: [images.id],
+    references: [artworkThumbnails.thumbnail_image_id],
+  }),
+}));
+
+export const artworkThumbnailsRelations = relations(artworkThumbnails, ({ one }) => ({
+  artwork: one(artworks, {
+    fields: [artworkThumbnails.artwork_id],
+    references: [artworks.id],
+  }),
+  thumbnailImage: one(images, {
+    fields: [artworkThumbnails.thumbnail_image_id],
+    references: [images.id],
   }),
 }));
 

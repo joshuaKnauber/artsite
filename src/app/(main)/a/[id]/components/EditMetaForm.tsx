@@ -7,16 +7,19 @@ import { useState } from "react";
 import Link from "next/link";
 import Spinner from "@/app/components/Spinner/Spinner";
 import { UpdateArtworkData } from "@/app/api/artworks/[artwork]/route";
+import TagInput from "@/app/components/Inputs/TagInput";
 
 type EditMetaFormProps = {
   artwork: Artwork;
+  tags: string[]
 };
 
-const EditMetaForm = ({ artwork }: EditMetaFormProps) => {
+const EditMetaForm = ({ artwork, tags: initialTags }: EditMetaFormProps) => {
   const [title, setTitle] = useState<string>(artwork.title);
   const [description, setDescription] = useState<string>(artwork.description);
   const [feedback, setFeedback] = useState<boolean>(artwork.feedback);
   const [wip, setWip] = useState<boolean>(artwork.wip);
+  const [tags, setTags] = useState<string[]>(initialTags);
 
   const [updating, setUpdating] = useState<boolean>(false);
 
@@ -29,6 +32,7 @@ const EditMetaForm = ({ artwork }: EditMetaFormProps) => {
         description,
         wantsFeedback: feedback,
         wip,
+        tags,
       };
       const res = await fetch(`/api/artworks/${artwork.id}`, {
         method: "PATCH",
@@ -56,6 +60,12 @@ const EditMetaForm = ({ artwork }: EditMetaFormProps) => {
         onChange={setDescription}
         area
       />
+      <TagInput
+        label="Tags"
+        value={tags}
+        setValue={setTags}
+        placeholder="Tags"
+      />
       <Toggle label="Feedback" value={feedback} onChange={setFeedback} />
       <Toggle label="WIP" value={wip} onChange={setWip} />
       <div className="flex flex-row items-center gap-4">
@@ -69,7 +79,7 @@ const EditMetaForm = ({ artwork }: EditMetaFormProps) => {
         <Link
           replace
           className="flex h-full flex-1 items-center justify-center rounded-md border border-white border-opacity-30 opacity-75 md:hover:opacity-100"
-          href={`/a/${artwork.key}`}
+          href={`/a/${artwork.id}`}
         >
           Cancel
         </Link>
