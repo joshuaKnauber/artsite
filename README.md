@@ -1,4 +1,4 @@
-# Artapp
+# Artapp (SE_05 Relational Databases Module Assessment)
 
 Deployed at [https://duetart.vercel.app/](https://duetart.vercel.app/)
 
@@ -33,3 +33,12 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## ER Model
 ![ERD](assets/er_model.png "ER Model")
+
+## Contribution List
+- Created a model with multiple complex relationships for a real use case with postgres
+- Iteratively improved the schema to allow for additional features, proper normalization and
+future proofing
+- Implemented the database connection with queries and updates in a web project
+- Used drizzle as an ORM to work with the queried data within a typescript project
+- Used drizzle as a query builder as well as raw sql to perform migrations and to query
+and modify the data
