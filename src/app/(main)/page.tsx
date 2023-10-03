@@ -24,7 +24,7 @@ export default async function HomePage({
   })
     .from(tagsToArtworks)
     .leftJoin(tagsTable, eq(tagsTable.id, tagsToArtworks.tag_id))
-    .leftJoin(artworksTable, eq(artworksTable.id, tagsToArtworks.artwork_id))
+    .rightJoin(artworksTable, eq(artworksTable.id, tagsToArtworks.artwork_id))
     .leftJoin(artworkThumbnails, eq(artworkThumbnails.artwork_id, artworksTable.id))
     .leftJoin(images, eq(images.id, artworkThumbnails.thumbnail_image_id))
     .where(tags.length > 0 ? inArray(tagsTable.name, tags) : undefined)
